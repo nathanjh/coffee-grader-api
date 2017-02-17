@@ -39,7 +39,7 @@ group :development, :test do
   gem 'factory_girl_rails'
   gem 'faker'
   gem 'hirb'
-  gem 'shoulda-matchers', '~> 3.1'
+  gem 'shoulda-matchers', '~> 3.1', require: false
 end
 
 group :development do
