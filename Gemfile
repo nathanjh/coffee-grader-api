@@ -18,6 +18,12 @@ gem 'puma', '~> 3.0'
 # gem 'redis', '~> 3.0'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
+# Devise for user auth
+gem 'devise'
+# Omniauth to use devise_token_auth
+gem 'omniauth'
+# DeviseTokenAuth for token authentication
+gem 'devise_token_auth'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
@@ -33,6 +39,7 @@ group :development, :test do
   gem 'factory_girl_rails'
   gem 'faker'
   gem 'hirb'
+  gem 'shoulda-matchers', '~> 3.1', require: false
 end
 
 group :development do
