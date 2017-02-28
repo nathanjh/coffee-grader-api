@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170228035856) do
+ActiveRecord::Schema.define(version: 20170228052119) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -39,9 +39,10 @@ ActiveRecord::Schema.define(version: 20170228035856) do
   create_table "cuppings", force: :cascade do |t|
     t.string   "location"
     t.datetime "cup_date"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
     t.integer  "host_id"
+    t.integer  "cups_per_sample"
     t.index ["host_id"], name: "index_cuppings_on_host_id", using: :btree
   end
 
