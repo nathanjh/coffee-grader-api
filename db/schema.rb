@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170224015021) do
+ActiveRecord::Schema.define(version: 20170227192931) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -21,6 +21,15 @@ ActiveRecord::Schema.define(version: 20170224015021) do
     t.string   "farm"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "cuppings", force: :cascade do |t|
+    t.string   "location"
+    t.datetime "cup_date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer  "host_id"
+    t.index ["host_id"], name: "index_cuppings_on_host_id", using: :btree
   end
 
   create_table "roasters", force: :cascade do |t|
@@ -60,4 +69,5 @@ ActiveRecord::Schema.define(version: 20170224015021) do
     t.index ["uid", "provider"], name: "index_users_on_uid_and_provider", unique: true, using: :btree
   end
 
+  add_foreign_key "cuppings", "users", column: "host_id"
 end
