@@ -23,6 +23,16 @@ RSpec.describe Cupping, type: :model do
     it { should validate_presence_of(:host_id) }
   end
 
+  describe 'associations' do
+    before { @user = create(:user)
+             @cupping = create(:cupping, host_id: @user.id) }
+
+    subject { @cupping }
+
+    it { should belong_to(:host) }
+
+  end
+
 end
 
 
