@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170227192931) do
+ActiveRecord::Schema.define(version: 20170228035854) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -21,6 +21,19 @@ ActiveRecord::Schema.define(version: 20170227192931) do
     t.string   "farm"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "cupped_coffees", force: :cascade do |t|
+    t.datetime "roast_date"
+    t.string   "coffee_alias"
+    t.integer  "coffee_id"
+    t.integer  "roaster_id"
+    t.integer  "cupping_id"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+    t.index ["coffee_id"], name: "index_cupped_coffees_on_coffee_id", using: :btree
+    t.index ["cupping_id"], name: "index_cupped_coffees_on_cupping_id", using: :btree
+    t.index ["roaster_id"], name: "index_cupped_coffees_on_roaster_id", using: :btree
   end
 
   create_table "cuppings", force: :cascade do |t|
@@ -69,5 +82,8 @@ ActiveRecord::Schema.define(version: 20170227192931) do
     t.index ["uid", "provider"], name: "index_users_on_uid_and_provider", unique: true, using: :btree
   end
 
+  add_foreign_key "cupped_coffees", "coffees"
+  add_foreign_key "cupped_coffees", "cuppings"
+  add_foreign_key "cupped_coffees", "roasters"
   add_foreign_key "cuppings", "users", column: "host_id"
 end
