@@ -2,7 +2,6 @@ class CreateScores < ActiveRecord::Migration[5.0]
   def change
     create_table :scores do |t|
       t.references :cupped_coffee, foreign_key: true
-      t.references :grader, foreign_key: true
       t.references :cupping, foreign_key: true
       t.integer :roast_level
       t.decimal :aroma, precision: 4, scale: 2
