@@ -50,3 +50,6 @@ group :development do
 end
 
 ruby '2.3.1'
+
+# make things work
+gem 'rb-readline'
