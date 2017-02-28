@@ -1,7 +1,7 @@
 FactoryGirl.define do
   factory :roaster do
-    name "MyString"
-    location "MyString"
-    website "MyString"
+    name 'Cafe Grumpy'
+    location 'Greenpoint, Brooklyn'
+    website 'www.cafegrumpy.com'
   end
 end

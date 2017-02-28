@@ -1,7 +1,7 @@
 FactoryGirl.define do
   factory :coffee do
-    name "MyString"
-    origin "MyString"
-    farm "MyString"
+    name 'Aragon'
+    origin 'Guatemala'
+    farm 'Beneficio Bella Vista'
   end
 end
