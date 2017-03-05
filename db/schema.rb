@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170228052119) do
+ActiveRecord::Schema.define(version: 20170305202425) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -44,6 +44,16 @@ ActiveRecord::Schema.define(version: 20170228052119) do
     t.integer  "host_id"
     t.integer  "cups_per_sample"
     t.index ["host_id"], name: "index_cuppings_on_host_id", using: :btree
+  end
+
+  create_table "invites", force: :cascade do |t|
+    t.integer  "cupping_id"
+    t.integer  "grader_id"
+    t.integer  "status",     default: 0
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+    t.index ["cupping_id"], name: "index_invites_on_cupping_id", using: :btree
+    t.index ["grader_id"], name: "index_invites_on_grader_id", using: :btree
   end
 
   create_table "roasters", force: :cascade do |t|
@@ -111,6 +121,8 @@ ActiveRecord::Schema.define(version: 20170228052119) do
   add_foreign_key "cupped_coffees", "cuppings"
   add_foreign_key "cupped_coffees", "roasters"
   add_foreign_key "cuppings", "users", column: "host_id"
+  add_foreign_key "invites", "cuppings"
+  add_foreign_key "invites", "users", column: "grader_id"
   add_foreign_key "scores", "cupped_coffees"
   add_foreign_key "scores", "cuppings"
   add_foreign_key "scores", "users", column: "grader_id"
