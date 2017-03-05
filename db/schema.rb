@@ -49,9 +49,9 @@ ActiveRecord::Schema.define(version: 20170305202425) do
   create_table "invites", force: :cascade do |t|
     t.integer  "cupping_id"
     t.integer  "grader_id"
-    t.integer  "status"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.integer  "status",     default: 0
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
     t.index ["cupping_id"], name: "index_invites_on_cupping_id", using: :btree
     t.index ["grader_id"], name: "index_invites_on_grader_id", using: :btree
   end

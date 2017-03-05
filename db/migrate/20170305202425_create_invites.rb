@@ -3,7 +3,7 @@ class CreateInvites < ActiveRecord::Migration[5.0]
     create_table :invites do |t|
       t.references :cupping, foreign_key: true
       t.references :grader, foreign_key: { to_table: :users }
-      t.integer :status
+      t.integer :status, default: 0
 
       t.timestamps
     end
