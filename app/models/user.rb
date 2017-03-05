@@ -12,5 +12,6 @@ class User < ActiveRecord::Base
 
   has_many :scores, foreign_key: 'grader_id'
   has_many :invites, foreign_key: 'grader_id'
-  has_many :cuppings, foreign_key: 'host_id'
+
+  has_many :hosted_cuppings, foreign_key: 'host_id', class_name: 'Cupping'
 end

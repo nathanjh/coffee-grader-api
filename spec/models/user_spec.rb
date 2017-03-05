@@ -28,8 +28,13 @@ RSpec.describe User, type: :model do
   describe 'assocations' do
     subject { user }
 
-    it { should have_many(:scores) }
-    it { should have_many(:cuppings) }
-    it { should have_many(:invites) }
+    context 'as a grader' do
+      it { should have_many(:scores) }
+      it { should have_many(:invites) }
+      # it { should have_many(:invited_cuppings).through(:invites) }
+    end
+    context 'as a cupping host' do
+      it { should have_many(:hosted_cuppings) }
+    end
   end
 end
