@@ -30,5 +30,6 @@ RSpec.describe User, type: :model do
 
     it { should have_many(:scores) }
     it { should have_many(:cuppings) }
+    it { should have_many(:invites) }
   end
 end

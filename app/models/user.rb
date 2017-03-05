@@ -11,5 +11,6 @@ class User < ActiveRecord::Base
   validates_uniqueness_of :username, case_sensitive: false
 
   has_many :scores, foreign_key: 'grader_id'
+  has_many :invites, foreign_key: 'grader_id'
   has_many :cuppings, foreign_key: 'host_id'
 end
