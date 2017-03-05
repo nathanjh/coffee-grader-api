@@ -28,6 +28,7 @@ RSpec.describe User, type: :model do
   describe 'assocations' do
     subject { user }
 
+    it { should have_many(:scores) }
     it { should have_many(:cuppings) }
   end
 end
