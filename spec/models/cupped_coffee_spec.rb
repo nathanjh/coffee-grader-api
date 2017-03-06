@@ -30,21 +30,5 @@ RSpec.describe CuppedCoffee, type: :model do
     it { should belong_to(:roaster) }
     it { should belong_to(:cupping) }
     it { should have_many(:scores) }
-
-    # it 'belongs to a coffee' do
-    #   pending
-    # end
-    #
-    # it 'belongs to a roaster' do
-    #   pending
-    # end
-    #
-    # it 'belongs to a cupping' do
-    #   pending
-    # end
-    #
-    # it 'has many scores' do
-    #   pending
-    # end
   end
 end

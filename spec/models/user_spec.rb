@@ -31,7 +31,26 @@ RSpec.describe User, type: :model do
     context 'as a grader' do
       it { should have_many(:scores) }
       it { should have_many(:invites) }
-      # it { should have_many(:invited_cuppings).through(:invites) }
+      it { should have_many(:attended_cuppings).through(:invites) }
+
+      describe '#attended_cuppings' do
+        before :each do
+          @host = create(:user)
+          @past_cuppings = Array.new(3) { create(:cupping, host_id: @host.id) }
+          @past_cuppings.each { |cupping| cupping.invites.create(grader_id: user.id) }
+        end
+
+        it "must have an 'accepted' status on invite joins user and cupping" do
+          accepted_invite = user.invites.first.update(status: 1)
+          attended_cuppings = user.attended_cuppings
+          expect(attended_cuppings.size).to eq 1
+          expect(attended_cuppings[0].id).to eq accepted_invite.cupping_id
+        end
+
+        it 'must have occurred in the past (as of current date-time)' do
+          pending
+        end
+      end
     end
     context 'as a cupping host' do
       it { should have_many(:hosted_cuppings) }

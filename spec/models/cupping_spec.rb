@@ -26,16 +26,15 @@ RSpec.describe Cupping, type: :model do
   end
 
   describe 'associations' do
-    before { @user = create(:user)
-             @cupping = create(:cupping, host_id: @user.id) }
+    before do
+      @user = create(:user)
+      @cupping = create(:cupping, host_id: @user.id)
+    end
 
     subject { @cupping }
 
     it { should belong_to(:host) }
-
+    it { should have_many(:invites) }
   end
 
 end
-
-
-
