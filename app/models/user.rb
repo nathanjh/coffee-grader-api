@@ -12,7 +12,15 @@ class User < ActiveRecord::Base
 
   has_many :scores, foreign_key: 'grader_id'
   has_many :invites, foreign_key: 'grader_id'
-  has_many :attended_cuppings, through: :invites, source: :cupping
+  has_many :accepted_invites,
+           -> { where status: 'accepted' },
+           foreign_key: 'grader_id',
+           class_name: 'Invite'
+
+  has_many :attended_cuppings,
+           -> { where('cup_date < ?', DateTime.now) },
+           through: :accepted_invites,
+           source: :cupping
 
   has_many :hosted_cuppings, foreign_key: 'host_id', class_name: 'Cupping'
 end
