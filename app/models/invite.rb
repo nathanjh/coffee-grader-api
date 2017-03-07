@@ -4,7 +4,7 @@ class Invite < ApplicationRecord
   enum status: [
     :pending,
     :accepted,
-    :denied,
+    :declined,
     :maybe
   ]
 end
