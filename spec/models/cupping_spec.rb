@@ -1,8 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe Cupping, type: :model do
-  let(:user) { create(:user) }
-  let(:cupping) { create(:cupping, host_id: user.id) }
+  let(:cupping) do
+    user = create(:user)
+    create(:cupping, host_id: user.id)
+  end
 
   describe 'attributes' do
     subject { cupping }
