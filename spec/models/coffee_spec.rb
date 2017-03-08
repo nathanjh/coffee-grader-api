@@ -34,15 +34,15 @@ RSpec.describe Coffee, type: :model do
       host = create(:user)
       roaster = create(:roaster)
       cupping1 = create(:cupping, host_id: host.id)
-      cupped_coffee1 = create(:cupped_coffee,
-                              coffee_id: coffee.id,
-                              roaster_id: roaster.id,
-                              cupping_id: cupping1.id)
+      create(:cupped_coffee,
+             coffee_id: coffee.id,
+             roaster_id: roaster.id,
+             cupping_id: cupping1.id)
       cupping2 = create(:cupping, host_id: host.id)
-      cupped_coffee2 = create(:cupped_coffee,
-                              coffee_id: coffee.id,
-                              roaster_id: roaster.id,
-                              cupping_id: cupping2.id)
+      create(:cupped_coffee,
+             coffee_id: coffee.id,
+             roaster_id: roaster.id,
+             cupping_id: cupping2.id)
       expect(coffee.cupped_coffees.size).to eq 2
       expect(coffee.roasters.size).to eq 1
       expect(coffee.roasters[0].id).to eq roaster.id
