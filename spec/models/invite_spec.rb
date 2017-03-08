@@ -17,13 +17,13 @@ RSpec.describe Invite, type: :model do
       it "should have a default value of 'pending'" do
         expect(invite.status).to eq 'pending'
       end
-      it "can be updated to 'accepted', 'denied', or 'maybe'" do
+      it "can be updated to 'accepted', 'declined', or 'maybe'" do
         expect { invite.update(status: 1) }
           .to change { invite.status }.from('pending').to('accepted')
         expect { invite.update(status: 2) }
-          .to change { invite.status }.from('accepted').to('denied')
+          .to change { invite.status }.from('accepted').to('declined')
         expect { invite.update(status: 3) }
-          .to change { invite.status }.from('denied').to('maybe')
+          .to change { invite.status }.from('declined').to('maybe')
       end
     end
   end
