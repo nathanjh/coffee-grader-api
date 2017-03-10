@@ -85,7 +85,36 @@ Rspec.describe 'Roasters API', type: :request do
     end
   end
 
+  describe 'PATCH /roasters/:id' do
+    let(:valid_attributes) { { location: 'Carpinteria, CA' } }
 
+    context 'with vaild attributes' do
+      it 'updates the roaster record' do
+        old_location = roaster.location
+        expect { patch roasters_path(roaster), roaster: valid_attributes }
+          .to change(roaster.location).from(old_location).to('Carpinteria, CA')
+      end
 
+      it 'returns the updated roaster record' do
+        patch roasters_path(roaster), roaster: valid_attributes
+        expect(json['location']).to eq('Carpinteria, CA')
+      end
 
+      it 'returns status code 204' do
+        patch roasters_path(roaster), roaster: valid_attributes
+        expect(response).to have_http_status(204)
+      end
+    end
+  end
+
+  describe 'DELETE /roasters/:id' do
+    it 'deletes the roaster record from the database' do
+      expect { delete roasters_path(roaster) }
+        .to change(Roaster, :count).by(-1)
+    end
+    it 'returns status code 204' do
+      delete roasters_path(roaster)
+      expect(response).to have_http_status(204)
+    end
+  end
 end
