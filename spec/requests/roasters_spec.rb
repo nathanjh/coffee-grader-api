@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-Rspec.describe 'Roasters API', type: :request do
+RSpec.describe 'Roasters API', type: :request do
   let(:roasters) { create_list(:roaster, 5) }
   let(:roaster) { roasters.first }
 

@@ -1,7 +1,7 @@
 require 'rails_helper'
 # thinking about including controller tests for internal controller logic testing
 # TODO: finish these, or delete 'em all together if deemed unecessarry
-RSpec.describe CoffeesController, type: :controller do
+RSpec.describe 'CoffeesController', type: :controller do
   describe 'GET #index' do
     it 'collects all coffees into @coffees' do
       coffees = create_list(:coffee, 5)
