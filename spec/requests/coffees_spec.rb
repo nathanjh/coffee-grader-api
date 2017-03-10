@@ -50,7 +50,7 @@ RSpec.describe 'Coffees API', type: :request do
   describe 'POST /coffees' do
     let(:valid_attributes) { attributes_for(:coffee) }
 
-    context 'with valid attirbutes' do
+    context 'with valid attributes' do
       it 'saves a new coffee in the database' do
         expect { post coffees_path, coffee: valid_attributes }
           .to change(Coffee, :count).by(1)
@@ -61,7 +61,7 @@ RSpec.describe 'Coffees API', type: :request do
         expect(json['origin']).to eq(valid_attributes[:origin])
       end
 
-      it 'retursn status code 201' do
+      it 'returns status code 201' do
         post coffees_path, coffee: valid_attributes
         expect(response).to have_http_status(201)
       end
