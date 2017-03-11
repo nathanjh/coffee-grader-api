@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe 'Roasters API', type: :request do
   let!(:roasters) { create_list(:roaster, 5) }
   let(:roaster) { roasters.first }
+  let(:roaster_id) { roaster.id }
 
   describe 'GET /roasters' do
     before { get roasters_path }
@@ -48,37 +49,40 @@ RSpec.describe 'Roasters API', type: :request do
   end
 
   describe 'POST /roasters' do
-    let(:valid_attributes) { attributes_for(:roaster) }
+    let(:valid_attributes) { { name: 'Cafe Elfie', location: 'Millbrae, CA', website: 'www.cafeelfie.com' } }
 
     context 'with valid attributes' do
+      before { post '/roasters', params: valid_attributes }
+
       it 'saves a new roaster in the database' do
-        expect { post roasters_path, roaster: valid_attributes }.to change(Roaster, :count).by(1)
+        get roasters_path
+        expect(json.size).to eq(6)
       end
 
       it 'returns the roaster' do
-        post roasters_path, roaster: valid_attributes
-        expect(json['origin']).to eq(valid_attributes[:origin])
+        # post roasters_path, params: { roaster: valid_attributes }
+        expect(json['location']).to eq(valid_attributes[:location])
       end
 
       it 'returns status code 201' do
-        post roasters_path, roaster: valid_attributes
+        # post roasters_path, params: { roaster: valid_attributes }
         expect(response).to have_http_status(201)
       end
     end
 
     context 'with invalid attributes' do
       it "doesn't save the new roaster in the database" do
-        expect { post roasters_path, roaster: { name: nil } }
+        expect { post roasters_path, params: { roaster: { name: nil }} }
           .not_to change(Roaster, :count)
       end
 
       it 'returns status code 422' do
-        post roasters_path, roaster: { name: nil }
+        post roasters_path, params: { roaster: { name: nil }}
         expect(response).to have_http_status(422)
       end
 
       it 'returns a validation failure message' do
-        post roasters_path, roaster: { name: nil }
+        post roasters_path, params: { roaster: { name: nil }}
         expect(response.body)
           .to match(/Validation failed: Name can't be blank/)
       end
@@ -88,32 +92,28 @@ RSpec.describe 'Roasters API', type: :request do
   describe 'PATCH /roasters/:id' do
     let(:valid_attributes) { { location: 'Carpinteria, CA' } }
 
-    context 'with vaild attributes' do
-      it 'updates the roaster record' do
-        old_location = roaster.location
-        expect { patch roasters_path(roaster), roaster: valid_attributes }
-          .to change(roaster.location).from(old_location).to('Carpinteria, CA')
-      end
+    context 'when the roaster exists' do
+      before { patch "/roasters/#{roaster_id}", params: valid_attributes }
 
-      it 'returns the updated roaster record' do
-        patch roasters_path(roaster), roaster: valid_attributes
-        expect(json['location']).to eq('Carpinteria, CA')
+      it 'updates the roaster' do
+        expect(response.body).to be_empty
       end
 
       it 'returns status code 204' do
-        patch roasters_path(roaster), roaster: valid_attributes
         expect(response).to have_http_status(204)
       end
     end
   end
 
   describe 'DELETE /roasters/:id' do
+    before { delete "/roasters/#{roaster_id}" }
+
     it 'deletes the roaster record from the database' do
-      expect { delete roasters_path(roaster) }
-        .to change(Roaster, :count).by(-1)
+      get roasters_path
+      expect(json.size).to eq(4)
     end
+
     it 'returns status code 204' do
-      delete roasters_path(roaster)
       expect(response).to have_http_status(204)
     end
   end
