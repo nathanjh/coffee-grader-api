@@ -20,7 +20,7 @@ class RoastersController < ApplicationController
 
   # PATCH /roasters/:id
   def update
-    @roaster.update(roaster_params)
+    @roaster.update!(roaster_params)
     head :no_content
   end
 

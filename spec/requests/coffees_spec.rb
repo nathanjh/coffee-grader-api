@@ -51,30 +51,21 @@ RSpec.describe 'Coffees API', type: :request do
     let(:valid_attributes) { attributes_for(:coffee, name: 'El Diamante') }
 
     context 'with valid attributes' do
-      # it 'saves a new coffee in the database' do
-      #   expect { post coffees_path, coffee: valid_attributes }
-      #     .to change(Coffee, :count).by(1)
-      # end
-
       it 'returns the coffee' do
-        post coffees_path, params: { coffee: valid_attributes }
+        post coffees_path, params: valid_attributes
         expect(json['origin']).to eq(valid_attributes[:origin])
       end
 
       it 'returns status code 201' do
-        post coffees_path, params: { coffee: valid_attributes }
+        post coffees_path, params: valid_attributes
         expect(response).to have_http_status(201)
       end
     end
 
     context 'with invalid attributes' do
       before :each do
-        post coffees_path, params: { coffee: { name: nil } }
+        post coffees_path, params: { name: nil }
       end
-      # it "doesn't save the new coffee in the database" do
-      #   expect { post coffees_path, coffee: { name: nil } }
-      #     .not_to change(Coffee, :count)
-      # end
 
       it 'returns status code 422' do
         expect(response).to have_http_status(422)
@@ -91,20 +82,14 @@ RSpec.describe 'Coffees API', type: :request do
     let(:valid_attributes) { { origin: 'Honduras' } }
 
     context 'with vaild attributes' do
-      # it 'updates the coffee record' do
-      #   old_origin = coffee.origin
-      #   expect { patch coffees_path(coffee), coffee: valid_attributes }
-      #     .to change(coffee.origin).from(old_origin).to('Honduras')
-      # end
-
       it 'updates the coffee' do
-        patch coffee_path(coffee), params: { coffee: valid_attributes }
+        patch coffee_path(coffee), params: valid_attributes
         updated_coffee = Coffee.find(coffee.id)
         expect(updated_coffee.origin).to eq('Honduras')
       end
 
       it 'returns status code 204' do
-        patch coffee_path(coffee), params: { coffee: valid_attributes }
+        patch coffee_path(coffee), params: valid_attributes
         expect(response).to have_http_status(204)
       end
     end
@@ -112,9 +97,9 @@ RSpec.describe 'Coffees API', type: :request do
     context 'with invalid attributes' do
       before :each do
         Coffee.create!(name: 'El Limon',
-                      origin: 'Guatemala',
-                      farm: 'Beneficio Bella Vista')
-        patch coffee_path(coffee), params: { coffee: { name: 'El Limon' } }
+                       origin: 'Guatemala',
+                       farm: 'Beneficio Bella Vista')
+        patch coffee_path(coffee), params: { name: 'El Limon' }
       end
       it 'returns a validation failure message' do
         expect(response.body).to match(/Validation failed:/)
