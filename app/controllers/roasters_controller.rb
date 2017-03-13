@@ -1,7 +1,6 @@
 class RoastersController < ApplicationController
   before_action :find_roaster, only: [:show, :update, :destroy]
 
-
   # GET /roasters
   def index
     @roasters = Roaster.all
@@ -21,7 +20,7 @@ class RoastersController < ApplicationController
 
   # PATCH /roasters/:id
   def update
-    @roaster.update(roaster_params)
+    @roaster.update!(roaster_params)
     head :no_content
   end
 
@@ -40,6 +39,4 @@ class RoastersController < ApplicationController
   def roaster_params
     params.permit(:name, :location, :website)
   end
-
 end
-
