@@ -42,7 +42,7 @@ RSpec.describe CoffeesController, type: :controller do
       @coffee = create(:coffee,
                        name: 'Aragon',
                        origin: 'Guatemala',
-                       farm: 'Beneficio Bella Vista')
+                       producer: 'Beneficio Bella Vista')
     end
 
     context 'with valid attributes' do
@@ -64,11 +64,11 @@ RSpec.describe CoffeesController, type: :controller do
       before :each do
         Coffee.create(name: 'Hunapu',
                       origin: 'Guatemala',
-                      farm: 'Beneficio Bella Vista')
+                      producer: 'Beneficio Bella Vista')
       end
 
       it "doesn't change the coffee's attributes" do
-        # record is invalid: uniqueness of name scoped to origin and farm
+        # record is invalid: uniqueness of name scoped to origin and producer
         patch :update, params: { id: @coffee, name: 'Hunapu' }
         expect(@coffee.name).not_to eq('Hunapu')
       end

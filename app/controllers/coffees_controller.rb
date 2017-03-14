@@ -37,6 +37,6 @@ class CoffeesController < ApplicationController
   end
 
   def coffee_params
-    params.permit(:name, :origin, :farm)
+    params.permit(:name, :origin, :producer)
   end
 end

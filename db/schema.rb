@@ -18,7 +18,7 @@ ActiveRecord::Schema.define(version: 20170305202425) do
   create_table "coffees", force: :cascade do |t|
     t.string   "name"
     t.string   "origin"
-    t.string   "farm"
+    t.string   "producer"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

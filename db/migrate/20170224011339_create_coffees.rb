@@ -3,7 +3,7 @@ class CreateCoffees < ActiveRecord::Migration[5.0]
     create_table :coffees do |t|
       t.string :name
       t.string :origin
-      t.string :farm
+      t.string :producer
 
       t.timestamps
     end

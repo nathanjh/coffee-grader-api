@@ -2,6 +2,6 @@ FactoryGirl.define do
   factory :coffee do
     name 'Aragon'
     origin 'Guatemala'
-    farm 'Beneficio Bella Vista'
+    producer 'Beneficio Bella Vista'
   end
 end

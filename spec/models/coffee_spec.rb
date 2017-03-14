@@ -4,7 +4,7 @@ RSpec.describe Coffee, type: :model do
   let(:coffee) do
     Coffee.create(name: 'Aragon',
                   origin: 'Guatemala',
-                  farm: 'Beneficio Bella Vista')
+                  producer: 'Beneficio Bella Vista')
   end
 
   describe 'attributes' do
@@ -12,16 +12,16 @@ RSpec.describe Coffee, type: :model do
 
     it { should respond_to(:name) }
     it { should respond_to(:origin) }
-    it { should respond_to(:farm) }
+    it { should respond_to(:producer) }
   end
 
   describe 'validations' do
     subject { coffee }
 
-    it { should validate_uniqueness_of(:name).scoped_to(:origin, :farm) }
+    it { should validate_uniqueness_of(:name).scoped_to(:origin, :producer) }
 
     it { should validate_presence_of(:name) }
-    it { should validate_presence_of(:farm) }
+    it { should validate_presence_of(:producer) }
     it { should validate_presence_of(:origin) }
   end
 
