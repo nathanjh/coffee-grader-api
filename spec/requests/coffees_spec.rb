@@ -98,7 +98,7 @@ RSpec.describe 'Coffees API', type: :request do
       before :each do
         Coffee.create!(name: 'El Limon',
                        origin: 'Guatemala',
-                       farm: 'Beneficio Bella Vista')
+                       producer: 'Beneficio Bella Vista')
         patch coffee_path(coffee), params: { name: 'El Limon' }
       end
       it 'returns a validation failure message' do

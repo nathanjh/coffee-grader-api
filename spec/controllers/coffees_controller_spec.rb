@@ -1,6 +1,5 @@
 require 'rails_helper'
-# thinking about including controller tests for internal controller logic testing
-# TODO: finish these, or delete 'em all together if deemed unecessarry
+
 RSpec.describe CoffeesController, type: :controller do
   describe 'GET #index' do
     it 'collects all coffees into @coffees' do
@@ -42,7 +41,7 @@ RSpec.describe CoffeesController, type: :controller do
       @coffee = create(:coffee,
                        name: 'Aragon',
                        origin: 'Guatemala',
-                       farm: 'Beneficio Bella Vista')
+                       producer: 'Beneficio Bella Vista')
     end
 
     context 'with valid attributes' do
@@ -64,11 +63,11 @@ RSpec.describe CoffeesController, type: :controller do
       before :each do
         Coffee.create(name: 'Hunapu',
                       origin: 'Guatemala',
-                      farm: 'Beneficio Bella Vista')
+                      producer: 'Beneficio Bella Vista')
       end
 
       it "doesn't change the coffee's attributes" do
-        # record is invalid: uniqueness of name scoped to origin and farm
+        # record is invalid: uniqueness of name scoped to origin and producer
         patch :update, params: { id: @coffee, name: 'Hunapu' }
         expect(@coffee.name).not_to eq('Hunapu')
       end
