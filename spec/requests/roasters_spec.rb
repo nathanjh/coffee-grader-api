@@ -64,11 +64,6 @@ RSpec.describe 'Roasters API', type: :request do
     end
 
     context 'with invalid attributes' do
-      # it "doesn't save the new roaster in the database" do
-      #   expect { post roasters_path, params: { roaster: { name: nil }} }
-      #     .not_to change(Roaster, :count)
-      # end
-
       it 'returns status code 422' do
         post roasters_path, params: { roaster: { name: nil }}
         expect(response).to have_http_status(422)
