@@ -54,27 +54,20 @@ RSpec.describe 'Roasters API', type: :request do
     context 'with valid attributes' do
       before { post '/roasters', params: valid_attributes }
 
-      it 'saves a new roaster in the database' do
-        get roasters_path
-        expect(json.size).to eq(6)
-      end
-
       it 'returns the roaster' do
-        # post roasters_path, params: { roaster: valid_attributes }
         expect(json['location']).to eq(valid_attributes[:location])
       end
 
       it 'returns status code 201' do
-        # post roasters_path, params: { roaster: valid_attributes }
         expect(response).to have_http_status(201)
       end
     end
 
     context 'with invalid attributes' do
-      it "doesn't save the new roaster in the database" do
-        expect { post roasters_path, params: { roaster: { name: nil }} }
-          .not_to change(Roaster, :count)
-      end
+      # it "doesn't save the new roaster in the database" do
+      #   expect { post roasters_path, params: { roaster: { name: nil }} }
+      #     .not_to change(Roaster, :count)
+      # end
 
       it 'returns status code 422' do
         post roasters_path, params: { roaster: { name: nil }}
@@ -107,12 +100,6 @@ RSpec.describe 'Roasters API', type: :request do
 
   describe 'DELETE /roasters/:id' do
     before { delete "/roasters/#{roaster_id}" }
-
-    it 'deletes the roaster record from the database' do
-      get roasters_path
-      expect(json.size).to eq(4)
-    end
-
     it 'returns status code 204' do
       expect(response).to have_http_status(204)
     end
