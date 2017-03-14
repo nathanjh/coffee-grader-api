@@ -50,7 +50,7 @@ RSpec.describe 'Cuppings API', type: :request do
   end
 
   describe 'POST /cuppings' do
-    let(:valid_attributes) { { host_id: 2, location: 'San Francisco, CA', cup_date: Time.now, cups_per_sample: 3 } }
+    let(:valid_attributes) { { host_id: user.id, location: 'San Francisco, CA', cup_date: Time.now, cups_per_sample: 3 } }
 
     context 'with valid attributes' do
       before { post '/cuppings', params: valid_attributes }
@@ -73,7 +73,7 @@ RSpec.describe 'Cuppings API', type: :request do
       it 'returns a validation failure message' do
         post cuppings_path, params: { cupping: { location: nil }}
         expect(response.body)
-          .to match(/Validation failed: Location can't be blank/)
+          .to match(/Validation failed: Host must exist, Location can't be blank, Cup date can't be blank, Cups per sample can't be blank, Host can't be blank/)
       end
     end
   end
