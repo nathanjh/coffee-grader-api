@@ -26,7 +26,7 @@ RSpec.describe CuppingsController, type: :controller do
   describe 'POST #create' do
     context 'with valid attributes' do
       it 'saves a new cupping in the database' do
-        expect { post :create, params: attributes_for(:cupping) }
+        expect { post :create, params: attributes_for(:cupping, host_id: user.id) }
           .to change(Cupping, :count).by(1)
       end
     end
