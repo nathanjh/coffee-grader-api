@@ -4,4 +4,5 @@ class CuppedCoffee < ApplicationRecord
   belongs_to :cupping
   has_many :scores
   validates_presence_of :roast_date
+  validates_uniqueness_of :coffee_alias, scope: :cupping_id
 end
