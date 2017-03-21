@@ -4,7 +4,20 @@ RSpec.describe CuppedCoffeesController, type: :controller do
   let(:cupping) { create(:cupping) }
   let(:coffee) { create(:coffee) }
   let(:roaster) { create(:roaster) }
-  let(:cupped_coffees) { create_list(:cupped_coffees, 5, cupping_id: cupping.id) }
+  let(:cupped_coffees) do
+    [CuppedCoffee.create!(roast_date: DateTime.now - 1,
+                          coffee_alias: Faker::Lorem.characters(7),
+                          cupping_id: cupping.id,
+                          roaster_id: roaster.id,
+                          coffee_id: Coffee.create!(name: 'Aragon',
+                                                    origin: 'Colombia',
+                                                    producer: 'Beneficio Bella Vista').id),
+     CuppedCoffee.create!(roast_date: DateTime.now - 1,
+                          coffee_alias: Faker::Lorem.characters(7),
+                          cupping_id: cupping.id,
+                          roaster_id: roaster.id,
+                          coffee_id: coffee.id)]
+  end
   let(:cupped_coffee) { cupped_coffees.first }
 
   describe 'GET #index' do
@@ -25,17 +38,26 @@ RSpec.describe CuppedCoffeesController, type: :controller do
   describe 'POST #create' do
     context 'with vaild attributes' do
       it 'saves a new cupped_coffee in the database' do
+        # post :create, params: {
+        #   cupped_coffee: { roast_date: DateTime.now - 1,
+        #                    coffee_alias: 'Sample A',
+        #                    coffee_id: coffee.id,
+        #                    roaster_id: roaster.id },
+        #   cupping_id: cupping.id
+        # }, format: :json
+      #
         expect do
           post :create, params: {
-            cupped_coffee: attributes_for(:cupped_coffee,
-                                          cupping_id: cupping.id,
-                                          coffee_id: coffee.id,
-                                          roaster_id: roaster.id),
+            cupped_coffee: { roast_date: DateTime.now - 1,
+                             coffee_alias: 'Sample A',
+                             coffee_id: coffee.id,
+                             roaster_id: roaster.id },
             cupping_id: cupping.id
           }, format: :json
         end
           .to change(CuppedCoffee, :count).by(1)
       end
+      # end
     end
 
     context 'with invalid attributes' do
@@ -91,9 +113,17 @@ RSpec.describe CuppedCoffeesController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
+    it 'locates the requested cupped_coffee' do
+      delete :destroy, params: { id: cupped_coffee,
+                                 cupping_id: cupping.id },
+                       format: :json
+      expect(assigns(:cupped_coffee)).to eq(cupped_coffee)
+    end
+
     it 'deletes the coffee record from the database' do
+      cupped_coffees
       expect do
-        delete :destroy, params: { id: cupped_coffee.id,
+        delete :destroy, params: { id: cupped_coffee,
                                    cupping_id: cupping.id },
                          format: :json
       end

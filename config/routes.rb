@@ -4,5 +4,7 @@ Rails.application.routes.draw do
   resources :users, only: :show, defaults: { format: :json }
   resources :roasters
   resources :coffees
-  resources :cuppings
+  resources :cuppings do
+    resources :cupped_coffees
+  end
 end
