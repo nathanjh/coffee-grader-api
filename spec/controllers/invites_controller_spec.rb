@@ -1,82 +1,106 @@
-# require 'rails_helper'
+require 'rails_helper'
 
-# RSpec.describe InvitesController, type: :controller do
-#   describe 'GET #index' do
-#     it 'collects all roasters into @roasters' do
-#       roasters = [create(:roaster), create(:roaster, name: 'Cup A Joe')]
-#       get :index, format: :json
-#       expect(assigns(:roasters)).to eq roasters
-#     end
-#   end
+RSpec.describe InvitesController, type: :controller do
+  let(:cupping) { create(:cupping) }
+  let(:grader) { create(:user) }
+  let(:invites) do
+      [Invite.create!(cupping_id: cupping.id,
+                      grader_id: grader.id,
+                      status: :pending),
+      Invite.create!(cupping_id: cupping.id,
+                      grader_id: grader.id,
+                      status: :pending),
+      Invite.create!(cupping_id: cupping.id,
+                      grader_id: grader.id,
+                      status: :pending),
+      Invite.create!(cupping_id: cupping.id,
+                      grader_id: grader.id,
+                      status: :pending),
+      Invite.create!(cupping_id: cupping.id,
+                      grader_id: grader.id,
+                      status: :pending)]
+  end
 
-#   describe 'GET #show' do
-#     let(:requested_roaster) { create(:roaster) }
+  let(:invite) { invites.first }
 
-#     it 'assigns the requested roaster as @roaster' do
-#       get :show, params: { id: requested_roaster }
-#       expect(assigns(:roaster)).to eq requested_roaster
-#     end
-#   end
+  let(:valid_attributes) do
+      { cupping_id: cupping.id,
+        grader_id: grader.id,
+        status: :pending }
+  end
 
-#   describe 'POST #create' do
-#     context 'with valid attributes' do
-#       it 'saves a new roaster in the database' do
-#         expect { post :create, params: attributes_for(:roaster) }
-#           .to change(Roaster, :count).by(1)
-#       end
-#     end
+  describe 'GET #index' do
+    it 'returns all invites as @invites' do
+      invites
+      get :index, params: { cupping_id: cupping.id }, format: :json
+      expect(assigns(:invites)).to eq invites
+    end
+  end
 
-#     context 'with invalid attributes' do
-#       it "doesn't save the new roaster in the database" do
-#         expect { post :create, params: { roaster: { name: nil } } }
-#           .not_to change(Roaster, :count)
-#       end
-#     end
-#   end
+  describe 'GET #show' do
+    it 'assigns the requested invite as @invite' do
+      get :show, params: { cupping_id: cupping.id, id: invite.id }
+      expect(assigns(:invite)).to eq invite
+    end
+  end
 
-#   describe 'PATCH #update' do
-#     before :each do
-#       @roaster = create(:roaster,
-#                        name: 'Some Roaster',
-#                        location: 'Arcadia, CA',
-#                        website: 'www.someroaster.com')
-#     end
+  describe 'POST #create' do
+    context 'with vaild attributes' do
+      it 'saves an invite in the database' do
+        expect do
+          post :create, params: {
+            invite: { grader_id: grader.id,
+                      status: :pending },
+            cupping_id: cupping.id
+          }, format: :json
+        end
+          .to change(Invite, :count).by(1)
+      end
+    end
 
-#     context 'with valid attributes' do
-#       it 'locates the requested roaster' do
-#         patch :update, params: { id: @roaster, roaster: attributes_for(:roaster) }
-#         expect(assigns(:roaster)).to eq(@roaster)
-#       end
+    context 'with invalid attributes' do
+      it "doesn't save the new invite in the database" do
+        expect { post :create, params: attributes_for(:invite) }
+          .not_to change(Invite, :count)
+      end
+    end
+  end
 
-#       it "updates roaster's attributes" do
-#         patch :update,
-#               params: { id: @roaster,
-#                         location: 'El Salvador' }
-#         @roaster.reload
-#         expect(@roaster.location).to eq('El Salvador')
-#       end
-#     end
+  describe 'PATCH #update' do
+    context 'with valid attributes' do
+      it 'locates the requested invite' do
+        patch :update, params: { id: invite,
+                                 cupping_id: cupping.id,
+                                 invite: attributes_for(:invite) }, format: :json
+        expect(assigns(:invite)).to eq(invite)
+      end
 
-#     context 'with invalid attributes' do
-#       before :each do
-#         Roaster.create(name: 'Some Roaster',
-#                        location: 'Arcadia, CA',
-#                        website: 'www.someroaster.com')
-#       end
+      it "updates the invite's attributes" do
+        patch :update, params: { id: invite,
+                                 cupping_id: cupping.id,
+                                 invite: { status: :accepted } }, format: :json
+        invite.reload
+        expect(invite.status).to eq("accepted")
+      end
+    end
+  end
 
-#       it "doesn't change the roaster's attributes" do
-#         # record is invalid: uniqueness of name scoped to location
-#         patch :update, params: { id: @roaster, name: 'Cup A Joe' }
-#         expect(@roaster.name).not_to eq('Cup A Joe')
-#       end
-#     end
-#   end
+  describe 'DELETE #destroy' do
+    it 'locates the invite' do
+      delete :destroy, params: { id: invite,
+                                 cupping_id: cupping.id },
+                       format: :json
+      expect(assigns(:invite)).to eq(invite)
+    end
 
-#   describe 'DELETE #destroy' do
-#     it 'deletes the roaster record from the database' do
-#       roaster = create(:roaster)
-#       expect { delete :destroy, params: { id: roaster.id } }
-#         .to change(Roaster, :count).by(-1)
-#     end
-#   end
-# end
+    it 'deletes the invite from the database' do
+      invites
+      expect do
+        delete :destroy, params: { id: invite,
+                                   cupping_id: cupping.id },
+                         format: :json
+      end
+        .to change(Invite, :count).by(-1)
+    end
+  end
+end

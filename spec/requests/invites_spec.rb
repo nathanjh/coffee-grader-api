@@ -134,7 +134,7 @@ RSpec.describe 'Invites API', type: :request do
       before :each do
         patch cupping_invite_path(cupping, invite),
               params: { invite: { grader_id: 100_000_000 } }
-              # tried changing status to "hellyeah", but it wouldn't let me.
+              # tried changing status to "hellyeah", but it wouldn't let me
       end
 
       it 'returns a vaildation failure message' do
