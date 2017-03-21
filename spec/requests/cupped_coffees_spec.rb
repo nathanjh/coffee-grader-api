@@ -52,5 +52,62 @@ RSpec.describe 'CuppedCoffees API', type: :request do
         expect(response).to have_http_status(200)
       end
     end
+
+    context 'when the cupped_coffee does not exist' do
+      before :each do
+        cupped_coffee_id = 1_000_000
+        get "/cuppings/#{cupping.id}/cupped_coffees/#{cupped_coffee_id}"
+      end
+
+      it 'returns status code 404' do
+        expect(response).to have_http_status(404)
+      end
+
+      it 'returns a not found message' do
+        expect(response.body).to match(/Couldn't find CuppedCoffee/)
+      end
+    end
+  end
+
+  describe 'POST /cuppings/:cupping_id/cupped_coffees/' do
+    let(:valid_attributes) do
+      { roast_date: DateTime.now - 2,
+        coffee_alias: 'Sample Alvarius B',
+        cupping_id: cupping.id,
+        roaster_id: roaster.id,
+        coffee_id: coffee.id }
+    end
+
+    context 'with valid attributes' do
+      before :each do
+        post cupping_cupped_coffees_path(cupping), params:
+          { cupped_coffee: valid_attributes }
+      end
+
+      it 'returns the coffee' do
+        expect(json['coffee_alias']).to eq('Sample Alvarius B')
+      end
+
+      it 'returns status code 201' do
+        expect(response).to have_http_status(201)
+      end
+    end
+
+    context 'with invaild attributes' do
+      before :each do
+        post cupping_cupped_coffees_path(cupping), params: { cupped_coffee:
+                                                              { roast_date: nil,
+                                                                coffee_id: nil } }
+      end
+
+      it 'returns status code 422' do
+        expect(response).to have_http_status(422)
+      end
+
+      it 'returns a validation failure message' do
+        expect(response.body)
+          .to match(/Validation failed: Coffee must exist, Roaster must exist/)
+      end
+    end
   end
 end

@@ -15,6 +15,7 @@ class CuppedCoffeesController < ApplicationController
   # POST /cuppings/:cupping_id/cupped_coffees/
   def create
     @cupped_coffee = @cupping.cupped_coffees.create!(cupped_coffee_params)
+    json_response(@cupped_coffee, :created)
   end
 
   # PATCH /cuppings/:cupping_id/cupped_coffees/:id
