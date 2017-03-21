@@ -7,5 +7,6 @@ Rails.application.routes.draw do
   resources :cuppings
   resources :cuppings do
     resources :invites
+    resources :cupped_coffees
   end
 end

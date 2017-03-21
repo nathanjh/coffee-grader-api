@@ -1,14 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe CuppedCoffee, type: :model do
-  let(:cupped_coffee) do
-    user = create(:user)
-    CuppedCoffee.create(roast_date: Date.parse('Feb 24 2017'),
-                        coffee_alias: 'Sample A',
-                        coffee_id: create(:coffee).id,
-                        roaster_id: create(:roaster).id,
-                        cupping_id: create(:cupping, host_id: user.id).id)
-  end
+  let(:cupped_coffee) { create(:cupped_coffee) }
 
   describe 'attributes' do
     subject { cupped_coffee }
@@ -21,6 +14,7 @@ RSpec.describe CuppedCoffee, type: :model do
     subject { cupped_coffee }
 
     it { should validate_presence_of(:roast_date) }
+    it { should validate_uniqueness_of(:coffee_alias).scoped_to(:cupping_id) }
   end
 
   describe 'associations' do
