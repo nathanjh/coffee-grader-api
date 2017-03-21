@@ -21,11 +21,13 @@ class CuppedCoffeesController < ApplicationController
   # PATCH /cuppings/:cupping_id/cupped_coffees/:id
   def update
     @cupped_coffee.update!(cupped_coffee_params)
+    head :no_content
   end
 
   # DELETE /cuppings/:cupping_id/cupped_coffees/:id
   def destroy
     @cupped_coffee.destroy
+    head :no_content
   end
 
   private

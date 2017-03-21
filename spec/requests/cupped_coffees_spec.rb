@@ -110,4 +110,45 @@ RSpec.describe 'CuppedCoffees API', type: :request do
       end
     end
   end
+
+  describe 'PATCH /cuppings/:cupping_id/cupped_coffees/:id' do
+    let(:valid_attributes) { { coffee_alias: 'Late November' } }
+
+    context 'with vaild attributes' do
+      before :each do
+        patch cupping_cupped_coffee_path(cupping, cupped_coffee),
+              params: { cupped_coffee: valid_attributes }
+      end
+      it 'updates the cupped_coffee' do
+        updated_cupped_coffee = CuppedCoffee.find(cupped_coffee.id)
+        expect(updated_cupped_coffee.coffee_alias).to eq('Late November')
+      end
+
+      it 'returns status code 204' do
+        expect(response).to have_http_status(204)
+      end
+    end
+
+    context 'with invalid attributes' do
+      before :each do
+        patch cupping_cupped_coffee_path(cupping, cupped_coffee),
+              params: { cupped_coffee: { roaster_id: 1_000_000 } }
+      end
+
+      it 'returns a vaildation failure message' do
+        expect(response.body).to match(/Validation failed:/)
+      end
+
+      it 'returns status code 422' do
+        expect(response).to have_http_status(422)
+      end
+    end
+  end
+
+  describe 'DELETE /cuppings/:cupping_id/cupped_coffees/:id' do
+    it 'returns status code 204' do
+      delete "/cuppings/#{cupping.id}/cupped_coffees/#{cupped_coffee.id}"
+      expect(response).to have_http_status(204)
+    end
+  end
 end
