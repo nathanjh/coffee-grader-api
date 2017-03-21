@@ -5,5 +5,7 @@ Rails.application.routes.draw do
   resources :roasters
   resources :coffees
   resources :cuppings
-
+  resources :cuppings do
+    resources :invites
+  end
 end
