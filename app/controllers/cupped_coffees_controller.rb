@@ -4,6 +4,7 @@ class CuppedCoffeesController < ApplicationController
   # GET /cuppings/:cupping_id/cupped_coffees/
   def index
     @cupped_coffees = @cupping.cupped_coffees
+    json_response(@cupped_coffees)
   end
 
   # GET /cuppings/:cupping_id/cupped_coffees/:id
