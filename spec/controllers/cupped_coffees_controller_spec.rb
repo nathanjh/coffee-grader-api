@@ -22,6 +22,7 @@ RSpec.describe CuppedCoffeesController, type: :controller do
 
   describe 'GET #index' do
     it 'collects all cuppeded coffees into @cupped_coffees' do
+      cupped_coffees
       get :index, params: { cupping_id: cupping.id }, format: :json
       expect(assigns(:cupped_coffees)).to eq cupped_coffees
     end
@@ -38,14 +39,6 @@ RSpec.describe CuppedCoffeesController, type: :controller do
   describe 'POST #create' do
     context 'with vaild attributes' do
       it 'saves a new cupped_coffee in the database' do
-        # post :create, params: {
-        #   cupped_coffee: { roast_date: DateTime.now - 1,
-        #                    coffee_alias: 'Sample A',
-        #                    coffee_id: coffee.id,
-        #                    roaster_id: roaster.id },
-        #   cupping_id: cupping.id
-        # }, format: :json
-      #
         expect do
           post :create, params: {
             cupped_coffee: { roast_date: DateTime.now - 1,
@@ -57,7 +50,6 @@ RSpec.describe CuppedCoffeesController, type: :controller do
         end
           .to change(CuppedCoffee, :count).by(1)
       end
-      # end
     end
 
     context 'with invalid attributes' do
