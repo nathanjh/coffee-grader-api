@@ -35,4 +35,22 @@ RSpec.describe 'CuppedCoffees API', type: :request do
       expect(response).to have_http_status(200)
     end
   end
+
+  describe 'GET /cuppings/:cupping_id/cuppped_coffees/:id' do
+    context 'when the cupped_coffee exists' do
+      before do
+        cupped_coffees
+        get cupping_cupped_coffee_path(cupping, cupped_coffee)
+      end
+
+      it 'returns the cupped_coffee' do
+        expect(json).not_to be_empty
+        expect(json['id']).to eq(cupped_coffee.id)
+      end
+
+      it 'returns status code 200' do
+        expect(response).to have_http_status(200)
+      end
+    end
+  end
 end

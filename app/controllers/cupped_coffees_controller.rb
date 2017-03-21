@@ -9,6 +9,7 @@ class CuppedCoffeesController < ApplicationController
 
   # GET /cuppings/:cupping_id/cupped_coffees/:id
   def show
+    json_response(@cupped_coffee)
   end
 
   # POST /cuppings/:cupping_id/cupped_coffees/
