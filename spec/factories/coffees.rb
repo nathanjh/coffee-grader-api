@@ -1,7 +1,7 @@
 FactoryGirl.define do
   factory :coffee do
-    name 'Aragon'
-    origin 'Guatemala'
-    producer 'Beneficio Bella Vista'
+    name { Faker::Coffee.blend_name }
+    origin { Faker::Coffee.origin }
+    producer { Faker::Name.name }
   end
 end

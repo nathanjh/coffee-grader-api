@@ -4,20 +4,7 @@ RSpec.describe 'CuppedCoffees API', type: :request do
   let(:cupping) { create(:cupping) }
   let(:coffee) { create(:coffee) }
   let(:roaster) { create(:roaster) }
-  let(:cupped_coffees) do
-    [CuppedCoffee.create!(roast_date: DateTime.now - 1,
-                          coffee_alias: Faker::Lorem.characters(7),
-                          cupping_id: cupping.id,
-                          roaster_id: roaster.id,
-                          coffee_id: Coffee.create!(name: 'Aragon',
-                                                    origin: 'Colombia',
-                                                    producer: 'Beneficio Bella Vista').id),
-     CuppedCoffee.create!(roast_date: DateTime.now - 1,
-                          coffee_alias: Faker::Lorem.characters(7),
-                          cupping_id: cupping.id,
-                          roaster_id: roaster.id,
-                          coffee_id: coffee.id)]
-  end
+  let(:cupped_coffees) { create_list(:cupped_coffee, 2, cupping_id: cupping.id) }
   let(:cupped_coffee) { cupped_coffees.first }
 
   describe 'GET /cuppings/:cupping_id/cupped_coffees' do
