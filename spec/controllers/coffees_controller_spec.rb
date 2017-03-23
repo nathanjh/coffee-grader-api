@@ -37,7 +37,6 @@ RSpec.describe CoffeesController, type: :controller do
 
   describe 'PATCH #update' do
     before :each do
-      # just in case Faker::Coffee PR ever gets merged!
       @coffee = create(:coffee,
                        name: 'Aragon',
                        origin: 'Guatemala',

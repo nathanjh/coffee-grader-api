@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe 'Coffees API', type: :request do
-  let!(:coffees) { [create(:coffee), create(:coffee, name: 'Hunapu')] }
+  let!(:coffees) { create_list(:coffee, 5) }
   let(:coffee) { coffees.first }
 
   describe 'GET /coffees' do
@@ -9,7 +9,7 @@ RSpec.describe 'Coffees API', type: :request do
 
     it 'returns all coffees' do
       expect(json).not_to be_empty
-      expect(json.size).to eq(2)
+      expect(json.size).to eq(5)
     end
 
     it 'returns status code 200' do
@@ -99,7 +99,9 @@ RSpec.describe 'Coffees API', type: :request do
         Coffee.create!(name: 'El Limon',
                        origin: 'Guatemala',
                        producer: 'Beneficio Bella Vista')
-        patch coffee_path(coffee), params: { name: 'El Limon' }
+        patch coffee_path(coffee), params: { name: 'El Limon',
+                                             origin: 'Guatemala',
+                                             producer: 'Beneficio Bella Vista' }
       end
       it 'returns a validation failure message' do
         expect(response.body).to match(/Validation failed:/)
