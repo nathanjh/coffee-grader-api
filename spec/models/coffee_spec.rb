@@ -13,6 +13,7 @@ RSpec.describe Coffee, type: :model do
     it { should respond_to(:name) }
     it { should respond_to(:origin) }
     it { should respond_to(:producer) }
+    it { should respond_to(:variety) }
   end
 
   describe 'validations' do
