@@ -37,7 +37,7 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'rails-controller-testing'
   gem 'factory_girl_rails'
-  gem 'faker'
+  gem 'faker', git: 'git://github.com/stympy/faker.git', branch: 'master'
   gem 'hirb'
   gem 'shoulda-matchers', '~> 3.1', require: false
 end

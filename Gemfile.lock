@@ -1,3 +1,11 @@
+GIT
+  remote: git://github.com/stympy/faker.git
+  revision: 101609556b20933446e706dd0e5e93ffde8dda9d
+  branch: master
+  specs:
+    faker (1.8.0)
+      i18n (~> 0.5)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -59,8 +67,6 @@ GEM
     factory_girl_rails (4.8.0)
       factory_girl (~> 4.8.0)
       railties (>= 3.0.0)
-    faker (1.7.2)
-      i18n (~> 0.5)
     ffi (1.9.17)
     globalid (0.3.7)
       activesupport (>= 4.1.0)
@@ -175,7 +181,7 @@ DEPENDENCIES
   devise
   devise_token_auth
   factory_girl_rails
-  faker
+  faker!
   hirb
   listen (~> 3.0.5)
   omniauth
