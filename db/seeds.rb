@@ -14,25 +14,31 @@ if Rails.env.development?
   end if Roaster.count.zero?
 
   # users
-  users = Array.new(10) do
-    User.create!(name: Faker::Name.name,
-                 username: Faker::Internet.user_name,
-                 email: Faker::Internet.email,
-                 password: 'password',
-                 password_confirmation: 'password')
-  end if User.count.zero?
+  users =
+    # let's make sure we have enough users for invites to make sense
+    if User.count < 10
+      Array.new(10) do
+        User.create!(name: Faker::Name.name,
+                     username: Faker::Internet.user_name,
+                     email: Faker::Internet.email,
+                     password: 'password',
+                     password_confirmation: 'password')
+      end
+    else
+      User.all.limit(10)
+    end
 
   # only make past cuppings if no cuppings exist
-  if Cupping.count.zero?
-    past_cuppings = users.map.with_index do |user, idx|
-      # other half of users are past cupping hosts
-      user.hosted_cuppings.create!(location: Faker::Address.street_address,
-                                   cup_date: DateTime.now - idx,
-                                   cups_per_sample: 5) if idx.even?
+  past_cuppings =
+    if Cupping.count.zero?
+      users.map.with_index do |user, idx|
+        user.hosted_cuppings.create!(location: Faker::Address.street_address,
+                                     cup_date: DateTime.now - idx,
+                                     cups_per_sample: 5) if idx.even?
+      end
+    else
+      []
     end
-  else
-    past_cuppings = []
-  end
 
   # always make new future cuppings
   future_cuppings = users.map.with_index do |user, idx|
