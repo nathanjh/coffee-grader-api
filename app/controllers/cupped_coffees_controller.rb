@@ -1,6 +1,6 @@
-class CuppedCoffeesController < ApplicationController
-  before_action :load_cupping
-  before_action :load_cupped_coffee, only: [:show, :update, :destroy]
+class CuppedCoffeesController < CuppingRouteController
+  before_action :find_cupping, only: [:index, :create]
+  before_action :find_cupped_coffee, only: [:show, :update, :destroy]
   # GET /cuppings/:cupping_id/cupped_coffees/
   def index
     @cupped_coffees = @cupping.cupped_coffees
@@ -31,15 +31,6 @@ class CuppedCoffeesController < ApplicationController
   end
 
   private
-
-  # didn't want to name this 'find_cupping', as it's already defined in cuppings controller
-  def load_cupping
-    @cupping = Cupping.find(params[:cupping_id])
-  end
-
-  def load_cupped_coffee
-    @cupped_coffee = CuppedCoffee.find(params[:id])
-  end
 
   def cupped_coffee_params
     params.require(:cupped_coffee).permit(:roast_date,
