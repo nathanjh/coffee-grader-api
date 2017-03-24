@@ -9,4 +9,5 @@ Rails.application.routes.draw do
     resources :invites
     resources :cupped_coffees
   end
+  resources :scores
 end

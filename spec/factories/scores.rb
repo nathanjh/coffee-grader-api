@@ -1,7 +1,6 @@
 FactoryGirl.define do
   factory :score do
     cupped_coffee nil
-    grader nil
     cupping nil
     roast_level 1
     aroma 8
@@ -16,5 +15,7 @@ FactoryGirl.define do
     defects 1
     total_score 71
     notes "tea-like"
+
+    association :grader, factory: :user
   end
 end
