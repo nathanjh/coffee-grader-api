@@ -28,6 +28,15 @@ RSpec.describe Invite, type: :model do
     end
   end
 
+  describe 'validations' do
+    subject { invite }
+
+    it do
+      should validate_uniqueness_of(:grader_id).scoped_to(:cupping_id)
+        .with_message('has already been invited to this cupping')
+    end
+  end
+
   describe 'associations' do
     subject { invite }
 
