@@ -1,5 +1,5 @@
-class InvitesController < ApplicationController
-  before_action :find_cupping
+class InvitesController < CuppingRouteController
+  before_action :find_cupping, only: [:index, :create]
   before_action :find_invite, only: [:show, :update, :destroy]
 
   # GET /cuppings/:cupping_id/invites
@@ -32,14 +32,6 @@ class InvitesController < ApplicationController
   end
 
   private
-
-  def find_cupping
-    @cupping = Cupping.find(params[:cupping_id])
-  end
-
-  def find_invite
-    @invite = Invite.find(params[:id])
-  end
 
   def invite_params
     params.require(:invite).permit(:cupping_id, :grader_id, :status)

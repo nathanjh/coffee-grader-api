@@ -1,4 +1,4 @@
-class CuppingsController < ApplicationController
+class CuppingsController < CuppingRouteController
   before_action :find_cupping, only: [:show, :update, :destroy]
 
   # GET /cuppings
@@ -31,10 +31,6 @@ class CuppingsController < ApplicationController
   end
 
   private
-
-  def find_cupping
-    @cupping = Cupping.find(params[:id])
-  end
 
   def cupping_params
     params.permit(:location, :cup_date, :cups_per_sample, :host_id)
