@@ -8,6 +8,7 @@ RSpec.describe 'Scores API', type: :request do
   let(:grader) { create(:user) }
   let(:scores) { create_list(:score, 5, cupping_id: cupping.id, cupped_coffee_id: cupped_coffee.id, grader_id: grader.id ) }
   let(:score) { scores.first }
+  let(:score_id) { score.id }
 
   describe 'GET /scores' do
     before do
@@ -87,26 +88,26 @@ RSpec.describe 'Scores API', type: :request do
     end
   end
 
-  # describe 'PATCH /scores/:id' do
-  #   let(:valid_attributes) { { location: 'Carpinteria, CA' } }
+  describe 'PATCH /scores/:id' do
+    let(:valid_attributes) { { acidity: 3 } }
 
-  #   context 'when the score exists' do
-  #     before { patch "/scores/#{score_id}", params: valid_attributes }
+    context 'when the score exists' do
+      before { patch "/scores/#{score_id}", params: valid_attributes }
 
-  #     it 'updates the score' do
-  #       expect(response.body).to be_empty
-  #     end
+      it 'updates the score' do
+        expect(response.body).to be_empty
+      end
 
-  #     it 'returns status code 204' do
-  #       expect(response).to have_http_status(204)
-  #     end
-  #   end
-  # end
+      it 'returns status code 204' do
+        expect(response).to have_http_status(204)
+      end
+    end
+  end
 
-  # describe 'DELETE /scores/:id' do
-  #   before { delete "/scores/#{score_id}" }
-  #   it 'returns status code 204' do
-  #     expect(response).to have_http_status(204)
-  #   end
-  # end
+  describe 'DELETE /scores/:id' do
+    before { delete "/scores/#{score_id}" }
+    it 'returns status code 204' do
+      expect(response).to have_http_status(204)
+    end
+  end
 end
