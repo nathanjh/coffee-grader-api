@@ -1,9 +1,7 @@
 FactoryGirl.define do
   factory :invite do
-    cupping_id 1
     status :pending
-
+    cupping
     association :grader, factory: :user
   end
 end
-

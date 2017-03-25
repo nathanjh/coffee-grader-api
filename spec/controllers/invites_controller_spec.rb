@@ -3,30 +3,13 @@ require 'rails_helper'
 RSpec.describe InvitesController, type: :controller do
   let(:cupping) { create(:cupping) }
   let(:grader) { create(:user) }
-  let(:invites) do
-      [Invite.create!(cupping_id: cupping.id,
-                      grader_id: grader.id,
-                      status: :pending),
-      Invite.create!(cupping_id: cupping.id,
-                      grader_id: grader.id,
-                      status: :pending),
-      Invite.create!(cupping_id: cupping.id,
-                      grader_id: grader.id,
-                      status: :pending),
-      Invite.create!(cupping_id: cupping.id,
-                      grader_id: grader.id,
-                      status: :pending),
-      Invite.create!(cupping_id: cupping.id,
-                      grader_id: grader.id,
-                      status: :pending)]
-  end
-
+  let(:invites) { create_list(:invite, 5, cupping_id: cupping.id) }
   let(:invite) { invites.first }
 
   let(:valid_attributes) do
-      { cupping_id: cupping.id,
-        grader_id: grader.id,
-        status: :pending }
+    { cupping_id: cupping.id,
+      grader_id: grader.id,
+      status: :pending }
   end
 
   describe 'GET #index' do
@@ -60,7 +43,10 @@ RSpec.describe InvitesController, type: :controller do
 
     context 'with invalid attributes' do
       it "doesn't save the new invite in the database" do
-        expect { post :create, params: attributes_for(:invite) }
+        expect do
+          post :create, params: { cupping_id: cupping.id,
+                                  invite: { grader_id: nil } }, format: :json
+        end
           .not_to change(Invite, :count)
       end
     end

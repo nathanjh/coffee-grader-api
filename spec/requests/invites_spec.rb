@@ -4,24 +4,7 @@ RSpec.describe 'Invites API', type: :request do
   # invite requires cupping, and a user as grader
   let(:cupping) { create(:cupping) }
   let(:grader) { create(:user) }
-  let(:invites) do
-      [Invite.create!(cupping_id: cupping.id,
-                      grader_id: grader.id,
-                      status: :pending),
-      Invite.create!(cupping_id: cupping.id,
-                      grader_id: grader.id,
-                      status: :pending),
-      Invite.create!(cupping_id: cupping.id,
-                      grader_id: grader.id,
-                      status: :pending),
-      Invite.create!(cupping_id: cupping.id,
-                      grader_id: grader.id,
-                      status: :pending),
-      Invite.create!(cupping_id: cupping.id,
-                      grader_id: grader.id,
-                      status: :pending)]
-  end
-
+  let(:invites) { create_list(:invite, 5, cupping_id: cupping.id) }
   let(:invite) { invites.first }
 
   describe 'GET /cuppings/:cupping_id/invites' do
