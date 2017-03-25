@@ -63,9 +63,6 @@ RSpec.describe 'Scores API', type: :request do
       before { post '/scores', params: valid_attributes }
 
       it 'returns the score' do
-        p "*" * 50
-        p json
-        p "*" * 50
         expect(json['notes']).to eq(valid_attributes[:notes])
       end
 
