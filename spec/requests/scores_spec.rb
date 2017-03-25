@@ -16,9 +16,6 @@ RSpec.describe 'Scores API', type: :request do
     end
 
     it 'returns all scores' do
-      p "*" * 50
-      p json
-      p "*" * 50
       expect(json).not_to be_empty
       expect(json.size).to eq(5)
     end
@@ -58,34 +55,37 @@ RSpec.describe 'Scores API', type: :request do
     end
   end
 
-  # describe 'POST /scores' do
-  #   let(:valid_attributes) { { name: 'Cafe Elfie', location: 'Millbrae, CA', website: 'www.cafeelfie.com' } }
+  describe 'POST /scores' do
+    let(:valid_attributes) { { roast_level: 4, aroma: 8, aftertaste: 7.25, acidity: 9, body: 7, uniformity: 6, balance: 9, clean_cup: 6.5, sweetness: 8, overall: 9, defects: 1, total_score: 72.75, notes: "pretty okay", cupping_id: cupping.id, cupped_coffee_id: cupped_coffee.id, grader_id: grader.id } }
 
-  #   context 'with valid attributes' do
-  #     before { post '/roasters', params: valid_attributes }
+    context 'with valid attributes' do
+      before { post '/scores', params: valid_attributes }
 
-  #     it 'returns the score' do
-  #       expect(json['location']).to eq(valid_attributes[:location])
-  #     end
+      it 'returns the score' do
+        p "*" * 50
+        p json
+        p "*" * 50
+        expect(json['notes']).to eq(valid_attributes[:notes])
+      end
 
-  #     it 'returns status code 201' do
-  #       expect(response).to have_http_status(201)
-  #     end
-  #   end
+      it 'returns status code 201' do
+        expect(response).to have_http_status(201)
+      end
+    end
 
-  #   context 'with invalid attributes' do
-  #     it 'returns status code 422' do
-  #       post scores_path, params: { score: { name: nil }}
-  #       expect(response).to have_http_status(422)
-  #     end
+    context 'with invalid attributes' do
+      it 'returns status code 422' do
+        post scores_path, params: { score: { roast_level: nil }}
+        expect(response).to have_http_status(422)
+      end
 
-  #     it 'returns a validation failure message' do
-  #       post scores_path, params: { score: { name: nil }}
-  #       expect(response.body)
-  #         .to match(/Validation failed: Name can't be blank/)
-  #     end
-  #   end
-  # end
+      it 'returns a validation failure message' do
+        post scores_path, params: { score: { roast_level: nil }}
+        expect(response.body)
+          .to match(/Validation failed: Grader must exist, Cupped coffee must exist, Cupping must exist, Grader can't be blank, Cupping can't be blank, Cupped coffee can't be blank, Aroma can't be blank, Aftertaste can't be blank, Acidity can't be blank, Body can't be blank, Uniformity can't be blank, Balance can't be blank, Clean cup can't be blank, Sweetness can't be blank, Overall can't be blank, Defects can't be blank, Total score can't be blank/)
+      end
+    end
+  end
 
   # describe 'PATCH /scores/:id' do
   #   let(:valid_attributes) { { location: 'Carpinteria, CA' } }
