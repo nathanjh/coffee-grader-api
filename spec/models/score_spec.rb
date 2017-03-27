@@ -51,7 +51,6 @@ RSpec.describe Score, type: :model do
     it { should validate_presence_of(:total_score) }
     it { should validate_presence_of(:final_score) }
     it { should validate_presence_of(:flavor) }
-
   end
 
   describe 'associations' do

@@ -1,12 +1,17 @@
 require 'rails_helper'
 
 RSpec.describe 'Scores API', type: :request do
-  let(:coffee) { create(:coffee) }
-  let(:roaster) { create(:roaster) }
   let(:cupping) { create(:cupping) }
   let(:cupped_coffee) { create(:cupped_coffee, cupping_id: cupping.id) }
-  let(:grader) { create(:user) }
-  let(:scores) { create_list(:score, 5, cupping_id: cupping.id, cupped_coffee_id: cupped_coffee.id, grader_id: grader.id ) }
+  let(:graders) { create_list(:user, 5) }
+  # let(:scores) { create_list(:score, 5, cupping_id: cupping.id, cupped_coffee_id: cupped_coffee.id, grader_id: grader.id ) }
+  let(:scores) do
+    graders.map do |grader|
+      create(:score, grader_id: grader.id,
+                     cupped_coffee_id: cupped_coffee.id,
+                     cupping_id: cupping.id)
+    end
+  end
   let(:score) { scores.first }
   let(:score_id) { score.id }
 
@@ -57,7 +62,12 @@ RSpec.describe 'Scores API', type: :request do
   end
 
   describe 'POST /scores' do
-    let(:valid_attributes) { { roast_level: 4, aroma: 8, aftertaste: 7.25, acidity: 9, body: 7, uniformity: 6, balance: 9, clean_cup: 6.5, sweetness: 8, overall: 9, defects: 1, total_score: 72.75, notes: "pretty okay", cupping_id: cupping.id, cupped_coffee_id: cupped_coffee.id, grader_id: grader.id } }
+    let(:valid_attributes) do
+      attributes_for(:score,
+                     cupping_id: cupping.id,
+                     cupped_coffee_id: cupped_coffee.id,
+                     grader_id: graders.first.id)
+    end
 
     context 'with valid attributes' do
       before { post '/scores', params: valid_attributes }
@@ -72,15 +82,16 @@ RSpec.describe 'Scores API', type: :request do
     end
 
     context 'with invalid attributes' do
+      # FactoryGirl.attributes_for doesn't generate foreign keys
       it 'returns status code 422' do
-        post scores_path, params: { score: { roast_level: nil }}
+        post scores_path, params: attributes_for(:score)
         expect(response).to have_http_status(422)
       end
 
       it 'returns a validation failure message' do
-        post scores_path, params: { score: { roast_level: nil }}
+        post scores_path, params: attributes_for(:score)
         expect(response.body)
-          .to match(/Validation failed: Grader must exist, Cupped coffee must exist, Cupping must exist, Grader can't be blank, Cupping can't be blank, Cupped coffee can't be blank, Aroma can't be blank, Aftertaste can't be blank, Acidity can't be blank, Body can't be blank, Uniformity can't be blank, Balance can't be blank, Clean cup can't be blank, Sweetness can't be blank, Overall can't be blank, Defects can't be blank, Total score can't be blank/)
+          .to match(/Validation failed: Grader must exist, Cupped coffee must exist, Cupping must exist, Grader can't be blank, Cupping can't be blank, Cupped coffee can't be blank/)
       end
     end
   end
