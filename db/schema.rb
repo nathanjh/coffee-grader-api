@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170323194618) do
+ActiveRecord::Schema.define(version: 20170326043439) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -84,6 +84,8 @@ ActiveRecord::Schema.define(version: 20170323194618) do
     t.datetime "created_at",                               null: false
     t.datetime "updated_at",                               null: false
     t.integer  "grader_id"
+    t.decimal  "final_score"
+    t.decimal  "flavor"
     t.index ["cupped_coffee_id"], name: "index_scores_on_cupped_coffee_id", using: :btree
     t.index ["cupping_id"], name: "index_scores_on_cupping_id", using: :btree
     t.index ["grader_id"], name: "index_scores_on_grader_id", using: :btree

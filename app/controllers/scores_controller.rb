@@ -37,6 +37,6 @@ class ScoresController < ApplicationController
   end
 
   def score_params
-    params.permit(:cupped_coffee_id, :cupping_id, :roast_level, :aroma, :aftertaste, :acidity, :body, :uniformity, :balance, :clean_cup, :sweetness, :overall, :defects, :total_score, :notes, :grader_id)
+    params.permit(:cupped_coffee_id, :cupping_id, :roast_level, :aroma, :aftertaste, :acidity, :body, :uniformity, :balance, :clean_cup, :sweetness, :overall, :defects, :total_score, :notes, :grader_id, :flavor, :final_score)
   end
 end
