@@ -4,7 +4,6 @@ RSpec.describe 'Scores API', type: :request do
   let(:cupping) { create(:cupping) }
   let(:cupped_coffee) { create(:cupped_coffee, cupping_id: cupping.id) }
   let(:graders) { create_list(:user, 5) }
-  # let(:scores) { create_list(:score, 5, cupping_id: cupping.id, cupped_coffee_id: cupped_coffee.id, grader_id: grader.id ) }
   let(:scores) do
     graders.map do |grader|
       create(:score, grader_id: grader.id,
