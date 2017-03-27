@@ -28,6 +28,8 @@ RSpec.describe Score, type: :model do
     it { should respond_to(:cupped_coffee_id) }
     it { should respond_to(:cupping_id) }
     it { should respond_to(:grader_id) }
+    it { should respond_to(:flavor) }
+    it { should respond_to(:final_score) }
   end
 
   describe 'validations' do
@@ -47,6 +49,9 @@ RSpec.describe Score, type: :model do
     it { should validate_presence_of(:overall) }
     it { should validate_presence_of(:defects) }
     it { should validate_presence_of(:total_score) }
+    it { should validate_presence_of(:final_score) }
+    it { should validate_presence_of(:flavor) }
+
   end
 
   describe 'associations' do

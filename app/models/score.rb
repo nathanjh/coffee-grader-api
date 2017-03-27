@@ -11,10 +11,12 @@ class Score < ApplicationRecord
                         :acidity,
                         :body,
                         :uniformity,
+                        :flavor,
                         :balance,
                         :clean_cup,
                         :sweetness,
                         :overall,
                         :defects,
-                        :total_score
+                        :total_score,
+                        :final_score
 end

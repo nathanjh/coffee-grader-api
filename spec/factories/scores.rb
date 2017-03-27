@@ -5,6 +5,7 @@ FactoryGirl.define do
     aftertaste 7.25
     acidity 9
     body 6.5
+    flavor 7.75
     uniformity 8
     balance 9.5
     clean_cup 6.5
@@ -12,11 +13,16 @@ FactoryGirl.define do
     overall 9
     defects 1
     total_score 71
+    final_score 85.50
     notes "tea-like"
 
     association :grader, factory: :user
     cupping
     cupped_coffee
 
+  end
+
+  def score_range(min, max)
+    (min..max).step(0.25).to_a.sample
   end
 end
