@@ -17,7 +17,7 @@ FactoryGirl.define do
        balance, uniformity, aftertaste, overall].inject(:+)
     end
     final_score { total_score - defects }
-    notes Faker::Coffee.notes
+    notes { Faker::Coffee.notes }
 
     association :grader, factory: :user
     cupping
