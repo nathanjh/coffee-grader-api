@@ -1,4 +1,4 @@
-class CuppingRouteController < ApplicationController
+class CuppingRouteController < CoffeeGraderApiController
   private
 
   def find_cupping
