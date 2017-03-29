@@ -10,7 +10,5 @@ class UsersController < ApplicationController
 
   def find_user
     @user = User.find(params[:id])
-  rescue ActiveRecord::RecordNotFound
-    render json: { error: 'User does not exist' }, status: :not_found
   end
 end

@@ -31,7 +31,9 @@ RSpec.describe UsersController, type: :controller do
     let(:requested_user) { create(:user) }
 
     context 'when signed-in' do
-      login_user
+      before :each do
+        login_user(requested_user)
+      end
 
       it 'returns a successful 200 response' do
         get :show, params: { id: requested_user }, format: :json
