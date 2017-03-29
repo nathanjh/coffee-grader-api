@@ -7,6 +7,8 @@ RSpec.describe CuppedCoffeesController, type: :controller do
   let(:cupped_coffees) { create_list(:cupped_coffee, 2, cupping_id: cupping.id) }
   let(:cupped_coffee) { cupped_coffees.first }
 
+  before { login_user(User.find(cupping.host_id)) }
+
   describe 'GET #index' do
     it 'collects all cuppeded coffees into @cupped_coffees' do
       cupped_coffees
