@@ -5,17 +5,17 @@ RSpec.describe CoffeesController, type: :controller do
     it 'collects all coffees into @coffees' do
       # coffees = create_list(:coffee, 5)
       coffees = [create(:coffee), create(:coffee, name: 'Hunapu')]
-      login_user(create(:user))
       get :index, format: :json
       expect(assigns(:coffees)).to eq coffees
     end
   end
 
+  before { login_user(create(:user)) }
+
   describe 'GET #show' do
     let(:requested_coffee) { create(:coffee) }
 
     it 'assigns the requested coffee as @coffee' do
-      login_user(create(:user))
       get :show, params: { id: requested_coffee }
       expect(assigns(:coffee)).to eq requested_coffee
     end
@@ -23,7 +23,6 @@ RSpec.describe CoffeesController, type: :controller do
 
   describe 'POST #create' do
     context 'with valid attributes' do
-      before { login_user(create(:user)) }
 
       it 'saves a new coffee in the database' do
         expect { post :create, params: attributes_for(:coffee) }
@@ -45,7 +44,6 @@ RSpec.describe CoffeesController, type: :controller do
                        name: 'Aragon',
                        origin: 'Guatemala',
                        producer: 'Beneficio Bella Vista')
-      login_user(create(:user))
     end
 
     context 'with valid attributes' do
@@ -81,7 +79,6 @@ RSpec.describe CoffeesController, type: :controller do
   describe 'DELETE #destroy' do
     it 'deletes the coffee record from the database' do
       coffee = create(:coffee)
-      login_user(create(:user))
       expect { delete :destroy, params: { id: coffee.id } }
         .to change(Coffee, :count).by(-1)
     end

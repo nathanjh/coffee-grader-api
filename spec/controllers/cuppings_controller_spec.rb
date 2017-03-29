@@ -7,6 +7,8 @@ RSpec.describe CuppingsController, type: :controller do
   let(:cupping) { cuppings.first }
   let(:cupping_id) { cupping.id }
 
+  before { login_user(user) }
+
   describe 'GET #index' do
     it 'collects all cuppings into @cuppings' do
       get :index, format: :json
