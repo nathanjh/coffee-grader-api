@@ -1,4 +1,4 @@
-class UsersController < ApplicationController
+class UsersController < CoffeeGraderApiController
   before_action :authenticate_user!
   before_action :find_user, only: [:show]
   # GET /users/id

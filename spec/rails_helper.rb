@@ -44,8 +44,8 @@ RSpec.configure do |config|
   # Include Devise Test Helpers for controllers
   config.include Devise::Test::ControllerHelpers, type: :controller
 
-  # Include login macros for testing basic token auth
-  config.include LoginMacros
+  # Include login macros for testing basic token auth for controllers
+  config.include LoginMacros, type: :controller
 
   # Include request helpers
   config.include RequestSpecHelper, type: :request

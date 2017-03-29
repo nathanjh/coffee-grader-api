@@ -1,4 +1,4 @@
-# Provides authentication support for controller/ request specs
+# Provides authentication support for controller specs
 module LoginMacros
   def login_user(user)
     auth_headers = user.create_new_auth_token

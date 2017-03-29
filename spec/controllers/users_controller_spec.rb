@@ -51,7 +51,7 @@ RSpec.describe UsersController, type: :controller do
       it 'returns an error message when user does not exist' do
         get :show, params: { id: 1_000_000_000 }, format: :json
         parsed_response = JSON.parse(response.body)
-        expect(parsed_response['error']).to eq 'User does not exist'
+        expect(parsed_response['message']).to match(/Couldn't find User/)
         expect(response).to have_http_status(404)
       end
     end
