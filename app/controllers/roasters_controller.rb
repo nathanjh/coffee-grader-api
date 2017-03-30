@@ -1,4 +1,4 @@
-class RoastersController < ApplicationController
+class RoastersController < CoffeeGraderApiController
   before_action :find_roaster, only: [:show, :update, :destroy]
 
   # GET /roasters

@@ -1,4 +1,4 @@
-class CoffeesController < ApplicationController
+class CoffeesController < CoffeeGraderApiController
   before_action :find_coffee, only: [:show, :update, :destroy]
   # GET '/coffees'
   def index

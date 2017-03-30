@@ -10,6 +10,8 @@ RSpec.describe CoffeesController, type: :controller do
     end
   end
 
+  before { login_user(create(:user)) }
+
   describe 'GET #show' do
     let(:requested_coffee) { create(:coffee) }
 
@@ -21,6 +23,7 @@ RSpec.describe CoffeesController, type: :controller do
 
   describe 'POST #create' do
     context 'with valid attributes' do
+
       it 'saves a new coffee in the database' do
         expect { post :create, params: attributes_for(:coffee) }
           .to change(Coffee, :count).by(1)

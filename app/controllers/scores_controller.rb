@@ -1,4 +1,4 @@
-class ScoresController < ApplicationController
+class ScoresController < CoffeeGraderApiController
   before_action :find_score, only: [:show, :update, :destroy]
 
   # GET /scores

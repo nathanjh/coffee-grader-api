@@ -6,7 +6,7 @@ abort("The Rails environment is running in production mode!") if Rails.env.produ
 require 'spec_helper'
 require 'rspec/rails'
 require 'shoulda-matchers'
-require 'support/controller_macros'
+require 'support/login_macros'
 require 'support/request_spec_helper'
 # Add additional requires below this line. Rails is not loaded until this point!
 
@@ -44,8 +44,8 @@ RSpec.configure do |config|
   # Include Devise Test Helpers for controllers
   config.include Devise::Test::ControllerHelpers, type: :controller
 
-  # Include controller macros
-  config.extend ControllerMacros, type: :controller
+  # Include login macros for testing basic token auth for controllers
+  config.include LoginMacros, type: :controller
 
   # Include request helpers
   config.include RequestSpecHelper, type: :request

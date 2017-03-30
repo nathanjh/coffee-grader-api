@@ -12,6 +12,8 @@ RSpec.describe InvitesController, type: :controller do
       status: :pending }
   end
 
+  before { login_user(grader) }
+
   describe 'GET #index' do
     it 'returns all invites as @invites' do
       invites
@@ -28,7 +30,7 @@ RSpec.describe InvitesController, type: :controller do
   end
 
   describe 'POST #create' do
-    context 'with vaild attributes' do
+    context 'with valid attributes' do
       it 'saves an invite in the database' do
         expect do
           post :create, params: {

@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.describe ScoresController, type: :controller do
   let(:cupping) { create(:cupping) }
+  let(:host) { User.find(cupping.host_id) }
   let(:cupped_coffee) { create(:cupped_coffee, cupping_id: cupping.id) }
   let(:graders) { create_list(:user, 5) }
   let(:scores) do
@@ -22,6 +23,8 @@ RSpec.describe ScoresController, type: :controller do
                    grader_id: graders.first.id)
   end
 
+  before { login_user(host) }
+
   describe 'GET #index' do
     it 'returns all scores as @scores' do
       scores
@@ -38,7 +41,7 @@ RSpec.describe ScoresController, type: :controller do
   end
 
   describe 'POST #create' do
-    context 'with vaild attributes' do
+    context 'with valid attributes' do
       it 'saves an score in the database' do
         expect { post :create, params: valid_attributes }
           .to change(Score, :count).by(1)

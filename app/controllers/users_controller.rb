@@ -1,4 +1,4 @@
-class UsersController < ApplicationController
+class UsersController < CoffeeGraderApiController
   before_action :authenticate_user!
   before_action :find_user, only: [:show]
   # GET /users/id
@@ -10,7 +10,5 @@ class UsersController < ApplicationController
 
   def find_user
     @user = User.find(params[:id])
-  rescue ActiveRecord::RecordNotFound
-    render json: { error: 'User does not exist' }, status: :not_found
   end
 end
