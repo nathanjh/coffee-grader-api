@@ -12,6 +12,8 @@ RSpec.describe InvitesController, type: :controller do
       status: :pending }
   end
 
+  before { login_user(grader) }
+
   describe 'GET #index' do
     it 'returns all invites as @invites' do
       invites
