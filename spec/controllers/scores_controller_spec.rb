@@ -38,7 +38,7 @@ RSpec.describe ScoresController, type: :controller do
   end
 
   describe 'POST #create' do
-    context 'with vaild attributes' do
+    context 'with valid attributes' do
       it 'saves an score in the database' do
         expect { post :create, params: valid_attributes }
           .to change(Score, :count).by(1)

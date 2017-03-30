@@ -17,7 +17,7 @@ RSpec.describe 'Cuppings API', type: :request do
   end
 
   describe 'GET /cuppings' do
-    context 'with vaild auth token' do
+    context 'with valid auth token' do
       before { get cuppings_path, headers: auth_headers(user) }
 
       it 'returns all cuppings' do
@@ -121,7 +121,7 @@ RSpec.describe 'Cuppings API', type: :request do
   describe 'PATCH /cuppings/:id' do
     let(:valid_attributes) { { location: 'Shoreline, WA' } }
 
-    context 'with vaild auth token' do
+    context 'with valid auth token' do
       context 'when the cupping exists' do
         before do
           patch "/cuppings/#{cupping_id}", params: valid_attributes,

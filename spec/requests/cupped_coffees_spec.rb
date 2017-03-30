@@ -113,7 +113,7 @@ RSpec.describe 'CuppedCoffees API', type: :request do
         end
       end
 
-      context 'with invaild attributes' do
+      context 'with invalid attributes' do
         before :each do
           post cupping_cupped_coffees_path(cupping),
                params: { cupped_coffee: { roast_date: nil,
@@ -143,7 +143,7 @@ RSpec.describe 'CuppedCoffees API', type: :request do
     let(:valid_attributes) { { coffee_alias: 'Late November' } }
 
     context 'with valid auth token' do
-      context 'with vaild attributes' do
+      context 'with valid attributes' do
         before :each do
           patch cupping_cupped_coffee_path(cupping, cupped_coffee),
                 params: { cupped_coffee: valid_attributes },
@@ -166,7 +166,7 @@ RSpec.describe 'CuppedCoffees API', type: :request do
                 headers: auth_headers(host)
         end
 
-        it 'returns a vaildation failure message' do
+        it 'returns a validation failure message' do
           expect(response.body).to match(/Validation failed:/)
         end
 

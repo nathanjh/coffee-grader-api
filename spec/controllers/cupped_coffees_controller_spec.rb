@@ -26,7 +26,7 @@ RSpec.describe CuppedCoffeesController, type: :controller do
   end
 
   describe 'POST #create' do
-    context 'with vaild attributes' do
+    context 'with valid attributes' do
       it 'saves a new cupped_coffee in the database' do
         expect do
           post :create, params: {
@@ -55,7 +55,7 @@ RSpec.describe CuppedCoffeesController, type: :controller do
   end
 
   describe 'PATCH #update' do
-    context 'with vaild attributes' do
+    context 'with valid attributes' do
       it 'locates the requested cupped_coffee' do
         patch :update, params: { id: cupped_coffee,
                                  cupping_id: cupping.id,

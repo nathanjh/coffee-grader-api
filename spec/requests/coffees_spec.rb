@@ -15,7 +15,7 @@ RSpec.describe 'Coffees API', type: :request do
   end
 
   describe 'GET /coffees' do
-    context 'with vaild auth token' do
+    context 'with valid auth token' do
       before :each do
         get coffees_path, headers: auth_headers(create(:user))
       end
@@ -78,7 +78,7 @@ RSpec.describe 'Coffees API', type: :request do
   describe 'POST /coffees' do
     let(:valid_attributes) { attributes_for(:coffee, name: 'El Diamante') }
 
-    context 'with vaild auth token' do
+    context 'with valid auth token' do
       context 'with valid attributes' do
         it 'returns the coffee' do
           post coffees_path, headers: auth_headers(create(:user)),
@@ -121,7 +121,7 @@ RSpec.describe 'Coffees API', type: :request do
     let(:valid_attributes) { { origin: 'Honduras' } }
 
     context 'with valid auth token' do
-      context 'with vaild attributes' do
+      context 'with valid attributes' do
         it 'updates the coffee' do
           patch coffee_path(coffee), params: valid_attributes,
                                      headers: auth_headers(create(:user))
