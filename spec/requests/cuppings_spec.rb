@@ -110,11 +110,12 @@ RSpec.describe 'Cuppings API', type: :request do
         end
       end
 
-      context 'without valid auth token' do
-        before { get cupping_path(cupping) }
+    end
 
-        it_behaves_like 'restricted access to cuppings'
-      end
+    context 'without valid auth token' do
+      before { get cupping_path(cupping) }
+
+      it_behaves_like 'restricted access to cuppings'
     end
   end
 
@@ -136,12 +137,12 @@ RSpec.describe 'Cuppings API', type: :request do
           expect(response).to have_http_status(204)
         end
       end
+    end
 
-      context 'without valid auth token' do
-        before { get cupping_path(cupping) }
+    context 'without valid auth token' do
+      before { get cupping_path(cupping) }
 
-        it_behaves_like 'restricted access to cuppings'
-      end
+      it_behaves_like 'restricted access to cuppings'
     end
   end
 
