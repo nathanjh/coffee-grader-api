@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe RoastersController, type: :controller do
   before { login_user(create(:user)) }
-  
+
   describe 'GET #index' do
     it 'collects all roasters into @roasters' do
       roasters = [create(:roaster), create(:roaster, name: 'Cup A Joe')]
