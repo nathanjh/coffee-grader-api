@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.describe ScoresController, type: :controller do
   let(:cupping) { create(:cupping) }
+  let(:host) { User.find(cupping.host_id) }
   let(:cupped_coffee) { create(:cupped_coffee, cupping_id: cupping.id) }
   let(:graders) { create_list(:user, 5) }
   let(:scores) do
@@ -21,6 +22,8 @@ RSpec.describe ScoresController, type: :controller do
                    cupped_coffee_id: cupped_coffee.id,
                    grader_id: graders.first.id)
   end
+
+  before { login_user(host) }
 
   describe 'GET #index' do
     it 'returns all scores as @scores' do
