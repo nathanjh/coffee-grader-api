@@ -16,6 +16,8 @@ back-end rails api for 'coffee-grader' coffee cupping app
 
 coffees have the following properties:
 
+Field | Description
+------|------------
 **name** | Name of coffee as string
 **origin** | Origin of coffee as string
 **Procucer** | Coffee producer as string
