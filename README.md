@@ -146,3 +146,29 @@ Field | Description
 ]
 ```
 
+###Cuppings Endpoints
+    GET /cuppings
+    GET /cuppings/:id
+    POST /cuppings
+    PATCH /cuppings/:id
+    DELETE /cuppings/:id
+
+####Sample Response from GET /cuppings/:cupping_id/cupped_coffees
+```JSON
+[
+{
+  "location":"58490 Patience Point",
+  "cup_date":"2017-02-27 10:56:43",
+  "host_id":"3543",
+  "cups_per_sample":"4"
+},
+{
+  "location":"602 Matilda Village",
+  "cup_date":"2017-02-27 10:56:43",
+  "host_id":"3544",
+  "cups_per_sample":"4"
+},
+...
+]
+```
+
