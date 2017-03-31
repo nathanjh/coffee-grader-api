@@ -159,7 +159,6 @@ RSpec.describe 'Invites API', type: :request do
           patch cupping_invite_path(cupping, invite),
                 params: { invite: { grader_id: 100_000_000 } },
                 headers: auth_headers(grader)
-          # tried changing status to "hellyeah", but it wouldn't let me
         end
 
         it 'returns a validation failure message' do
