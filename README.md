@@ -153,7 +153,7 @@ Field | Description
     PATCH /cuppings/:id
     DELETE /cuppings/:id
 
-####Sample Response from GET /cuppings/:cupping_id/cupped_coffees
+####Sample Response from GET /cuppings
 ```JSON
 [
 {
@@ -172,3 +172,50 @@ Field | Description
 ]
 ```
 
+###Invites Endpoints
+    GET /cuppings/:cupping_id/invites
+    GET /cuppings/:cupping_id/invites/:id
+    POST /cuppings/:cupping_id/invites
+    PATCH /cuppings/:cupping_id/invites/:id
+    DELETE /cuppings/:cupping_id/invites/:id
+
+####Sample Response from GET /cuppings/:cupping_id/invites
+```JSON
+[
+{
+  "cupping_id":"2246",
+  "grader_id":"4323",
+  "status":"pending"
+},
+{
+  "cupping_id":"2246",
+  "grader_id":"4324",
+  "status":"pending"
+},
+...
+]
+```
+
+###Roasters Endpoints
+    GET /roasters
+    GET /roasters/:id
+    POST /roasters
+    PATCH /roasters/:id
+    DELETE /roasters/:id
+
+####Sample Response from GET /roasters
+```JSON
+[
+{
+  "name":"Godard Cafe",
+  "location":"Spinkastad",
+  "website":"http://fisher.biz/greyson_cole"
+},
+{
+  "name":"Slow-carb Cafe",
+  "location":"Lake Mary",
+  "website":"http://johns.name/cecilia_leffler"
+},
+...
+]
+```
