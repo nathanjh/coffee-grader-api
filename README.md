@@ -20,8 +20,8 @@ Field | Description
 ------|------------
 **name** | Name of coffee as string
 **origin** | Origin of coffee as string
-**Procucer** | Coffee producer as string
-**Variety** | Type of coffee as string
+**procucer** | Coffee producer as string
+**variety** | Type of coffee as string
 
 
 cupped_coffees have the following properties:
