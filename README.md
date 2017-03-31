@@ -90,3 +90,31 @@ Field | Description
 **name** | Name of user as string
 **username** | User determined alias as string
 **email** | Email address of user as string
+
+
+###Coffees Endpoints
+    GET /coffees
+    GET /coffees/:id
+    POST /coffees
+    PATCH /coffees/:id
+    DELETE /coffees/:id
+
+####Sample Response from GET /coffees
+```JSON
+[
+{
+  "name":"Evening Delight",
+  "origin":"Kayanza, Burundi",
+  "producer":"Nigel Schaefer",
+  "variety":"Mundo Novo"
+},
+{
+  "name":"Hello America",
+  "origin":"Rivas, Nicaragua",
+  "producer":"Vidal Lemke",
+  "variety":"Dilla"
+},
+...
+]
+```
+
