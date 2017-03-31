@@ -1,7 +1,7 @@
 # coffee-grader-api
 back-end rails api for 'coffee-grader' coffee cupping app
 
-:coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee:
+:coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee:
 
 ###### Built on RAILS 5
     bundle install
