@@ -94,14 +94,14 @@ Field | Description
 **email** | Email address of user as string
 
 
-###Coffees Endpoints
+### Coffees Endpoints
     GET /coffees
     GET /coffees/:id
     POST /coffees
     PATCH /coffees/:id
     DELETE /coffees/:id
 
-####Sample Response from GET /coffees
+#### Sample Response from GET /coffees
 ```JSON
 [
 {
@@ -120,14 +120,14 @@ Field | Description
 ]
 ```
 
-###Cupped Coffees Endpoints
+### Cupped Coffees Endpoints
     GET /cuppings/:cupping_id/cupped_coffees
     GET /cuppings/:cupping_id/cupped_coffees/:id
     POST /cuppings/:cupping_id/cupped_coffees
     PATCH /cuppings/:cupping_id/cupped_coffees/:id
     DELETE /cuppings/:cupping_id/cupped_coffees/:id
 
-####Sample Response from GET /cuppings/:cupping_id/cupped_coffees
+#### Sample Response from GET /cuppings/:cupping_id/cupped_coffees
 ```JSON
 [
 {
@@ -148,14 +148,14 @@ Field | Description
 ]
 ```
 
-###Cuppings Endpoints
+### Cuppings Endpoints
     GET /cuppings
     GET /cuppings/:id
     POST /cuppings
     PATCH /cuppings/:id
     DELETE /cuppings/:id
 
-####Sample Response from GET /cuppings
+#### Sample Response from GET /cuppings
 ```JSON
 [
 {
@@ -174,14 +174,14 @@ Field | Description
 ]
 ```
 
-###Invites Endpoints
+### Invites Endpoints
     GET /cuppings/:cupping_id/invites
     GET /cuppings/:cupping_id/invites/:id
     POST /cuppings/:cupping_id/invites
     PATCH /cuppings/:cupping_id/invites/:id
     DELETE /cuppings/:cupping_id/invites/:id
 
-####Sample Response from GET /cuppings/:cupping_id/invites
+#### Sample Response from GET /cuppings/:cupping_id/invites
 ```JSON
 [
 {
@@ -198,14 +198,14 @@ Field | Description
 ]
 ```
 
-###Roasters Endpoints
+### Roasters Endpoints
     GET /roasters
     GET /roasters/:id
     POST /roasters
     PATCH /roasters/:id
     DELETE /roasters/:id
 
-####Sample Response from GET /roasters
+#### Sample Response from GET /roasters
 ```JSON
 [
 {
@@ -222,14 +222,14 @@ Field | Description
 ]
 ```
 
-###Scores Endpoints
+### Scores Endpoints
     GET /scores
     GET /scores/:id
     POST /scores
     PATCH /scores/:id
     DELETE /scores/:id
 
-####Sample Response from GET /scores
+#### Sample Response from GET /scores
 ```JSON
 [
 {
