@@ -118,3 +118,31 @@ Field | Description
 ]
 ```
 
+###Cupped Coffees Endpoints
+    GET /cuppings/:cupping_id/cupped_coffees
+    GET /cuppings/:cupping_id/cupped_coffees/:id
+    POST /cuppings/:cupping_id/cupped_coffees
+    PATCH /cuppings/:cupping_id/cupped_coffees/:id
+    DELETE /cuppings/:cupping_id/cupped_coffees/:id
+
+####Sample Response from GET /cuppings/:cupping_id/cupped_coffees
+```JSON
+[
+{
+  "roast_date":"2017-03-30 01:30:31",
+  "coffee_alias":"n15on",
+  "coffee_id":"1269",
+  "roaster_id":"1077",
+  "cupping_id":"1450"
+},
+{
+  "roast_date":"2017-03-31 01:30:31",
+  "coffee_alias":"a26i8",
+  "coffee_id":"1270",
+  "roaster_id":"1078",
+  "cupping_id":"1450"
+},
+...
+]
+```
+
