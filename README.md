@@ -219,3 +219,37 @@ Field | Description
 ...
 ]
 ```
+
+###Scores Endpoints
+    GET /scores
+    GET /scores/:id
+    POST /scores
+    PATCH /scores/:id
+    DELETE /scores/:id
+
+####Sample Response from GET /scores
+```JSON
+[
+{
+  "cupped_coffee_id":"1039",
+  "cupping_id":"2925",
+  "roast_level":"4",
+  "aroma":"9.25",
+  "aftertaste":"7.5",
+  "acidity":"8.75",
+  "body":"7",
+  "uniformity":"8.5",
+  "balance":"8.25",
+  "clean_cup":"7.75",
+  "sweetness":"7",
+  "overall":"9.25",
+  "defects":"4",
+  "total_score":"67",
+  "notes":"bright, full, clementine, molasses, cream",
+  "grader_id":"5748",
+  "final_score":"65",
+  "flavor":"8.5"
+},
+...
+]
+```
