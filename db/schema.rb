@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170326043439) do
+ActiveRecord::Schema.define(version: 20170401214101) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -66,26 +66,26 @@ ActiveRecord::Schema.define(version: 20170326043439) do
   end
 
   create_table "scores", force: :cascade do |t|
-    t.integer  "cupped_coffee_id"
-    t.integer  "cupping_id"
+    t.integer  "cupped_coffee_id",                                     null: false
+    t.integer  "cupping_id",                                           null: false
     t.integer  "roast_level"
-    t.decimal  "aroma",            precision: 4, scale: 2
-    t.decimal  "aftertaste",       precision: 4, scale: 2
-    t.decimal  "acidity",          precision: 4, scale: 2
-    t.decimal  "body",             precision: 4, scale: 2
-    t.decimal  "uniformity"
-    t.decimal  "balance",          precision: 4, scale: 2
-    t.decimal  "clean_cup"
-    t.decimal  "sweetness"
-    t.decimal  "overall",          precision: 4, scale: 2
-    t.integer  "defects"
-    t.decimal  "total_score"
+    t.decimal  "aroma",            precision: 4, scale: 2,             null: false
+    t.decimal  "aftertaste",       precision: 4, scale: 2,             null: false
+    t.decimal  "acidity",          precision: 4, scale: 2,             null: false
+    t.decimal  "body",             precision: 4, scale: 2,             null: false
+    t.decimal  "uniformity",                                           null: false
+    t.decimal  "balance",          precision: 4, scale: 2,             null: false
+    t.decimal  "clean_cup",                                            null: false
+    t.decimal  "sweetness",                                            null: false
+    t.decimal  "overall",          precision: 4, scale: 2,             null: false
+    t.integer  "defects",                                  default: 0, null: false
+    t.decimal  "total_score",                                          null: false
     t.text     "notes"
-    t.datetime "created_at",                               null: false
-    t.datetime "updated_at",                               null: false
-    t.integer  "grader_id"
-    t.decimal  "final_score"
-    t.decimal  "flavor"
+    t.datetime "created_at",                                           null: false
+    t.datetime "updated_at",                                           null: false
+    t.integer  "grader_id",                                            null: false
+    t.decimal  "final_score",                                          null: false
+    t.decimal  "flavor",                                               null: false
     t.index ["cupped_coffee_id"], name: "index_scores_on_cupped_coffee_id", using: :btree
     t.index ["cupping_id"], name: "index_scores_on_cupping_id", using: :btree
     t.index ["grader_id"], name: "index_scores_on_grader_id", using: :btree

@@ -90,4 +90,38 @@ RSpec.describe ScoresController, type: :controller do
         .to change(Score, :count).by(-1)
     end
   end
+
+  describe 'POST #submit_scores' do
+    before :each do
+      cupped_coffees = create_list(:cupped_coffee, 3, cupping_id: cupping.id)
+      @new_scores = cupped_coffees.map do |cupped_coffee|
+        attributes_for(:score,
+                       grader_id: graders.last.id,
+                       cupping_id: cupping.id,
+                       cupped_coffee_id: cupped_coffee.id)
+      end
+    end
+    context 'with valid attributes' do
+      it 'saves a batch of scores to the database' do
+        expect do
+          post :submit_scores, params: { scores: @new_scores }, format: :json
+        end
+          .to change(Score, :count).by(3)
+      end
+    end
+
+    context 'with invalid attributes for any score in the collection' do
+      it "doesn't save any scores in the database" do
+        # no grader_id
+        invalid_score = attributes_for(:score,
+                                       cupping_id: cupping.id,
+                                       cupped_coffee_id: cupped_coffee.id)
+        @new_scores << invalid_score
+        expect do
+          post :submit_scores, params: { scores: @new_scores }, format: :json
+        end
+          .not_to change(Score, :count)
+      end
+    end
+  end
 end
