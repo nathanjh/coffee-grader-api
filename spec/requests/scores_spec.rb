@@ -187,7 +187,6 @@ RSpec.describe 'Scores API', type: :request do
     end
     context 'with valid auth token' do
       context 'with valid attributes for scores' do
-        # TODO: decide how to respond to successful batch create action
         it 'returns status code 204' do
           post '/scores/submit_scores',
                params: { scores: @new_scores }, headers: auth_headers(graders.last)

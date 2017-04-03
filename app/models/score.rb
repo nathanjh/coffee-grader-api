@@ -22,7 +22,7 @@ class Score < ApplicationRecord
 
   # In case we run into performance issues with creating multiple scores...
   # it'll be interesting to test either way...
-  # MUST ENSURE VALID PARAMS FOR SCORES! this method WILL save invalid scores
+  # Database constraints ensure that no bad scores are saved
   def self.import(scores)
     return unless scores.any?
 
