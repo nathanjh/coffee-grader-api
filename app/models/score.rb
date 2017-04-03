@@ -46,12 +46,9 @@ class Score < ApplicationRecord
     begin
       connection.execute(query)
     rescue ActiveRecord::StatementInvalid
-      # TODO: Raise error to catch and rescue with excepionhandler in controller!
-      # Rails.logger.info('Invalid params; did not create batch records')
-      # puts "SQL error in #{__method__}"
       connection.execute('ROLLBACK TO SAVEPOINT batch_insert_savepoint')
       raise BatchInsertScoresError
-    ensure # perhaps use ensure, as we don't want this savepoint to persist
+    ensure
       connection.execute('RELEASE SAVEPOINT batch_insert_savepoint')
     end
   end

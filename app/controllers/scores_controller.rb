@@ -22,6 +22,7 @@ class ScoresController < CoffeeGraderApiController
   def submit_scores
     @scores = scores_params[:scores].map { |score| Score.new(score) }
     Score.import(@scores)
+    head :no_content
   end
 
   # PATCH /scores/:id

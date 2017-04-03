@@ -176,19 +176,53 @@ RSpec.describe 'Scores API', type: :request do
   end
 
   describe 'POST /scores/submit_scores' do
-    context 'with valid auth token' do
-      it 'hits the correct route with a valid json request' do
-        cupped_coffees = create_list(:cupped_coffee, 3, cupping_id: cupping.id)
-        new_scores = cupped_coffees.map do |cupped_coffee|
-          attributes_for(:score,
-                         grader_id: graders.last.id,
-                         cupping_id: cupping.id,
-                         cupped_coffee_id: cupped_coffee.id)
-        end
-        post '/scores/submit_scores',
-             params: new_scores.to_json, headers: auth_headers(host)
-        expect(response).to have_http_status(200)
+    before :each do
+      cupped_coffees = create_list(:cupped_coffee, 3, cupping_id: cupping.id)
+      @new_scores = cupped_coffees.map do |cupped_coffee|
+        attributes_for(:score,
+                       grader_id: graders.last.id,
+                       cupping_id: cupping.id,
+                       cupped_coffee_id: cupped_coffee.id)
       end
+    end
+    context 'with valid auth token' do
+      context 'with valid attributes for scores' do
+        # TODO: decide how to respond to successful batch create action
+        it 'returns status code 204' do
+          post '/scores/submit_scores',
+               params: { scores: @new_scores }, headers: auth_headers(graders.last)
+          expect(response).to have_http_status(:no_content)
+        end
+      end
+
+      context 'with invalid attributes for scores' do
+        before :each do
+          # no grader_id
+          invalid_score = attributes_for(:score,
+                                         cupping_id: cupping.id,
+                                         cupped_coffee_id: cupped_coffee.id)
+          @new_scores << invalid_score
+
+          post '/scores/submit_scores',
+               params: { scores: @new_scores },
+               headers: auth_headers(graders.last)
+        end
+
+        it 'returns status code 422' do
+          expect(response).to have_http_status(422)
+        end
+
+        it 'returns an error message' do
+          json = JSON.parse(response.body)
+          expect(json['message']).not_to be_blank
+        end
+      end
+    end
+
+    context 'without valid auth token' do
+      before { post submit_scores_scores_path }
+
+      it_behaves_like 'restricted access to scores'
     end
   end
 end
