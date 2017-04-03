@@ -174,4 +174,21 @@ RSpec.describe 'Scores API', type: :request do
       it_behaves_like 'restricted access to scores'
     end
   end
+
+  describe 'POST /scores/submit_scores' do
+    context 'with valid auth token' do
+      it 'hits the correct route with a valid json request' do
+        cupped_coffees = create_list(:cupped_coffee, 3, cupping_id: cupping.id)
+        new_scores = cupped_coffees.map do |cupped_coffee|
+          attributes_for(:score,
+                         grader_id: graders.last.id,
+                         cupping_id: cupping.id,
+                         cupped_coffee_id: cupped_coffee.id)
+        end
+        post '/scores/submit_scores',
+             params: new_scores.to_json, headers: auth_headers(host)
+        expect(response).to have_http_status(200)
+      end
+    end
+  end
 end
