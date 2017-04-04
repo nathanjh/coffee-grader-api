@@ -207,8 +207,8 @@ RSpec.describe 'Scores API', type: :request do
                headers: auth_headers(graders.last)
         end
 
-        it 'returns status code 422' do
-          expect(response).to have_http_status(422)
+        it 'returns status code 400' do
+          expect(response).to have_http_status(400)
         end
 
         it 'returns an error message' do

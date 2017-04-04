@@ -1,5 +1,5 @@
 # coffee-grader-api
-back-end rails api for 'coffee-grader' coffee cupping app
+back-end api for 'coffee-grader' coffee cupping app
 
 :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee: :coffee:
 
@@ -228,6 +228,7 @@ Field | Description
     GET /scores
     GET /scores/:id
     POST /scores
+    POST /scores/submit_scores
     PATCH /scores/:id
     DELETE /scores/:id
 
@@ -257,3 +258,34 @@ Field | Description
 ...
 ]
 ```
+
+#### Batch create for scores
+`POST` `/scores/submit_scores` allows for the addition of multiple scores with a single call.
+```JSON
+Example POST data (JSON):
+{
+  "scores": [
+    {
+      "roast_level": "3",
+      "aroma": "8.5",
+      "aftertaste": "9.25",
+      "acidity": "9.0",
+      "body": "8.75",
+      ...
+      "cupped_coffee_id": "123"
+    },
+    {
+      "roast_level": "4",
+      "aroma": "7.25",
+      "aftertaste": "8.25",
+      "acidity": "7.5",
+      "body": "8.0",
+      ...
+      "cupped_coffee_id": "456"
+    }
+  ]
+}
+
+```
+Please note that **any errors in a single score will prevent the entire batch of scores from processing**.
+The server returns a 204 No Content response on success, and a 400 Bad Request response--along with an error message--on failure.
