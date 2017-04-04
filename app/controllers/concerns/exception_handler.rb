@@ -11,7 +11,7 @@ module ExceptionHandler
     end
 
     rescue_from Score::BatchInsertScoresError do |e|
-      json_response({ message: e.message }, :unprocessable_entity)
+      json_response({ message: e.message }, :bad_request)
     end
   end
 end
