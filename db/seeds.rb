@@ -3,7 +3,8 @@ if Rails.env.development?
   Array.new(50) do
     Coffee.create!(name: Faker::Coffee.blend_name,
                    origin: Faker::Coffee.origin,
-                   producer: Faker::Name.name)
+                   producer: Faker::Name.name,
+                   variety: Faker::Coffee.variety)
   end if Coffee.count.zero?
 
   # roasters
