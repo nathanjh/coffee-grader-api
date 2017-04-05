@@ -20,6 +20,10 @@ class Score < ApplicationRecord
                         :total_score,
                         :final_score
 
+  validates :grader_id,
+            uniqueness: { scope: :cupped_coffee_id,
+                          message: 'has already scored this coffee!' }
+
   # Database constraints ensure that no bad scores are saved
   def self.import(scores)
     return unless scores.any?
