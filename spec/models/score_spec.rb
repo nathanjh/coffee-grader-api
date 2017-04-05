@@ -1,13 +1,20 @@
 require 'rails_helper'
 
 RSpec.describe Score, type: :model do
-  let(:score) do
-    @coffee = create(:coffee)
-    @roaster = create(:roaster)
-    @user = create(:user)
-    @cupping = create(:cupping, host_id: @user.id)
-    @cupped_coffee = create(:cupped_coffee, coffee_id: @coffee.id, roaster_id: @roaster.id, cupping_id: @cupping.id)
-    @score = create(:score, grader_id: @user.id, cupping_id: @cupping.id, cupped_coffee_id: @cupped_coffee.id)
+  let(:user) { create(:user) }
+  let(:cupping) { create(:cupping, host_id: user.id) }
+  let(:cupped_coffee) do
+    coffee = create(:coffee)
+    roaster = create(:roaster)
+    create(:cupped_coffee, coffee_id: coffee.id,
+                           roaster_id: roaster.id,
+                           cupping_id: cupping.id)
+  end
+
+  let!(:score) do
+    create(:score, grader_id: user.id,
+                   cupping_id: cupping.id,
+                   cupped_coffee_id: cupped_coffee.id)
   end
 
   describe 'attributes' do
@@ -51,6 +58,11 @@ RSpec.describe Score, type: :model do
     it { should validate_presence_of(:total_score) }
     it { should validate_presence_of(:final_score) }
     it { should validate_presence_of(:flavor) }
+
+    it do
+      should validate_uniqueness_of(:grader_id).scoped_to(:cupped_coffee_id)
+        .with_message('has already scored this coffee!')
+    end
   end
 
   describe 'associations' do
