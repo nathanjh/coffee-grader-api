@@ -13,6 +13,10 @@ RSpec.describe Cupping, type: :model do
     it { should respond_to(:cup_date) }
     it { should respond_to(:cups_per_sample) }
     it { should respond_to(:host_id) }
+    it { should respond_to(:open) }
+    it 'open attribute should default to true' do
+      expect(cupping.open).to be true
+    end
   end
 
   describe 'validations' do
