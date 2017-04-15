@@ -27,6 +27,8 @@ class Score < ApplicationRecord
   # Database constraints ensure that no bad scores are saved
   def self.import(scores)
     return unless scores.any?
+    cupping_check(scores)
+
     values = score_values(scores)
 
     begin
@@ -55,6 +57,14 @@ class Score < ApplicationRecord
   # to add private class helper methods for Score
   class << self
     private
+
+    def cupping_check(scores)
+      cupping_ids = scores.pluck(:cupping_id).uniq
+      cupping_statuses = cupping_ids.map { |id| Cupping.find(id).open }
+      raise BatchInsertScoresError,
+            'Cupping is closed and cannot receive any new scores.' if
+        cupping_statuses.include?(false)
+    end
 
     def score_values(scores)
       scores.map do |score|
