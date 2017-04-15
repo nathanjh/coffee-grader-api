@@ -60,12 +60,12 @@ class Score < ApplicationRecord
       scores.map do |score|
         sanitize_sql_array(
           ['(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-           score.cupped_coffee_id, score.cupping_id, score.roast_level,
-           score.aroma, score.aftertaste, score.acidity, score.body,
-           score.uniformity, score.balance, score.clean_cup, score.sweetness,
-           score.overall, score.defects, score.total_score, score.notes,
-           DateTime.now, DateTime.now, score.grader_id, score.final_score,
-           score.flavor]
+           score[:cupped_coffee_id], score[:cupping_id], score[:roast_level],
+           score[:aroma], score[:aftertaste], score[:acidity], score[:body],
+           score[:uniformity], score[:balance], score[:clean_cup], score[:sweetness],
+           score[:overall], score[:defects], score[:total_score], score[:notes],
+           DateTime.now, DateTime.now, score[:grader_id], score[:final_score],
+           score[:flavor]]
         )
       end
     end
