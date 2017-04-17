@@ -72,4 +72,34 @@ RSpec.describe Score, type: :model do
     it { should belong_to(:cupped_coffee) }
     it { should belong_to(:cupping) }
   end
+
+  describe '::import' do
+    before :each do
+      @grader = create(:user)
+      cupped_coffees = create_list(:cupped_coffee, 3, cupping_id: cupping.id)
+      @new_scores = cupped_coffees.map do |cupped_coffee|
+        attributes_for(:score,
+                       grader_id: @grader.id,
+                       cupping_id: cupping.id,
+                       cupped_coffee_id: cupped_coffee.id)
+      end
+    end
+    it 'raises an exception if any null values are passed' do
+      invalid_score = attributes_for(:score,
+                                     cupping_id: cupping.id,
+                                     cupped_coffee_id: cupped_coffee.id)
+      @new_scores << invalid_score
+      expect { Score.import(@new_scores) }
+        .to raise_error(Score::BatchInsertScoresError)
+    end
+
+    it 'raises an expection if cupping is closed' do
+      cupping.update(open: false)
+      cupping.reload
+
+      expect { Score.import(@new_scores) }
+        .to raise_error(Score::BatchInsertScoresError)
+        .with_message('Cupping is closed and cannot receive any new scores.')
+    end
+  end
 end

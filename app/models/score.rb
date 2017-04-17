@@ -27,6 +27,8 @@ class Score < ApplicationRecord
   # Database constraints ensure that no bad scores are saved
   def self.import(scores)
     return unless scores.any?
+    cupping_check(scores)
+
     values = score_values(scores)
 
     begin
@@ -56,16 +58,24 @@ class Score < ApplicationRecord
   class << self
     private
 
+    def cupping_check(scores)
+      cupping_ids = scores.pluck(:cupping_id).uniq
+      cupping_statuses = cupping_ids.map { |id| Cupping.find(id).open }
+      raise BatchInsertScoresError,
+            'Cupping is closed and cannot receive any new scores.' if
+        cupping_statuses.include?(false)
+    end
+
     def score_values(scores)
       scores.map do |score|
         sanitize_sql_array(
           ['(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-           score.cupped_coffee_id, score.cupping_id, score.roast_level,
-           score.aroma, score.aftertaste, score.acidity, score.body,
-           score.uniformity, score.balance, score.clean_cup, score.sweetness,
-           score.overall, score.defects, score.total_score, score.notes,
-           DateTime.now, DateTime.now, score.grader_id, score.final_score,
-           score.flavor]
+           score[:cupped_coffee_id], score[:cupping_id], score[:roast_level],
+           score[:aroma], score[:aftertaste], score[:acidity], score[:body],
+           score[:uniformity], score[:balance], score[:clean_cup], score[:sweetness],
+           score[:overall], score[:defects], score[:total_score], score[:notes],
+           DateTime.now, DateTime.now, score[:grader_id], score[:final_score],
+           score[:flavor]]
         )
       end
     end

@@ -123,5 +123,16 @@ RSpec.describe ScoresController, type: :controller do
           .not_to change(Score, :count)
       end
     end
+
+    context 'when cupping is closed' do
+      it "doesn't save any scores in the database" do
+        cupping.update(open: false)
+
+        expect do
+          post :submit_scores, params: { scores: @new_scores }, format: :json
+        end
+          .not_to change(Score, :count)
+      end
+    end
   end
 end

@@ -25,6 +25,16 @@ RSpec.describe 'Scores API', type: :request do
     end
   end
 
+  shared_examples 'restricted access when cupping is closed' do
+    it 'returns status code 400' do
+      expect(response).to have_http_status(400)
+    end
+
+    it 'returns an error message' do
+      expect(json['message']).to match(/Cupping is closed/)
+    end
+  end
+
   describe 'GET /scores' do
     context 'with valid auth token' do
       before do
@@ -222,6 +232,27 @@ RSpec.describe 'Scores API', type: :request do
       before { post submit_scores_scores_path }
 
       it_behaves_like 'restricted access to scores'
+    end
+
+    context 'when cupping is closed' do
+      describe 'POST /scores/submit_scores' do
+        before :each do
+          cupped_coffees = create_list(:cupped_coffee, 3, cupping_id: cupping.id)
+          @new_scores = cupped_coffees.map do |cupped_coffee|
+            attributes_for(:score,
+                           grader_id: graders.last.id,
+                           cupping_id: cupping.id,
+                           cupped_coffee_id: cupped_coffee.id)
+          end
+          cupping.update(open: false)
+
+          post '/scores/submit_scores',
+               params: { scores: @new_scores },
+               headers: auth_headers(graders.last)
+        end
+
+        it_behaves_like 'restricted access when cupping is closed'
+      end
     end
   end
 end
