@@ -1,4 +1,4 @@
-class InvitesController < CuppingRouteController
+class InvitesController < CuppingDependentController
   before_action :find_cupping, only: [:index, :create]
   before_action :find_invite, only: [:show, :update, :destroy]
 

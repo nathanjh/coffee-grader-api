@@ -1,4 +1,4 @@
-class CuppingsController < CuppingRouteController
+class CuppingsController < CuppingDependentController
   before_action :find_cupping, only: [:show, :update, :destroy]
 
   # GET /cuppings

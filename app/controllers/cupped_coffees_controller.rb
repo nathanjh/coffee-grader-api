@@ -1,4 +1,4 @@
-class CuppedCoffeesController < CuppingRouteController
+class CuppedCoffeesController < CuppingDependentController
   before_action :find_cupping, only: [:index, :create]
   before_action :find_cupped_coffee, only: [:show, :update, :destroy]
   # GET /cuppings/:cupping_id/cupped_coffees/
