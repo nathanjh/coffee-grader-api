@@ -52,6 +52,21 @@ RSpec.describe InvitesController, type: :controller do
           .not_to change(Invite, :count)
       end
     end
+
+    context 'when cupping is closed' do
+      it "doesn't save the new invite in the database" do
+        cupping.update(open: false)
+
+        expect do
+          post :create, params: {
+            invite: { grader_id: grader.id,
+                      status: :pending },
+            cupping_id: cupping.id
+          }, format: :json
+        end
+          .not_to change(Invite, :count)
+      end
+    end
   end
 
   describe 'PATCH #update' do
@@ -68,7 +83,19 @@ RSpec.describe InvitesController, type: :controller do
                                  cupping_id: cupping.id,
                                  invite: { status: :accepted } }, format: :json
         invite.reload
-        expect(invite.status).to eq("accepted")
+        expect(invite.status).to eq('accepted')
+      end
+    end
+
+    context 'when cupping is closed' do
+      it "doesn't save the new invite in the database" do
+        cupping.update(open: false)
+
+        patch :update, params: { id: invite,
+                                 cupping_id: cupping.id,
+                                 invite: { status: :maybe } }, format: :json
+        invite.reload
+        expect(invite.status).to eq('pending')
       end
     end
   end
@@ -89,6 +116,20 @@ RSpec.describe InvitesController, type: :controller do
                          format: :json
       end
         .to change(Invite, :count).by(-1)
+    end
+
+    context 'when cupping is closed' do
+      it "doesn't delete the invite from the database" do
+        invites
+        cupping.update(open: false)
+
+        expect do
+          delete :destroy, params: { id: invite,
+                                     cupping_id: cupping.id },
+                           format: :json
+        end
+          .not_to change(Invite, :count)
+      end
     end
   end
 end

@@ -1,6 +1,7 @@
 class InvitesController < CuppingDependentController
   before_action :find_cupping, only: [:index, :create]
   before_action :find_invite, only: [:show, :update, :destroy]
+  before_action :check_cupping_status, only: [:create, :update, :destroy]
 
   # GET /cuppings/:cupping_id/invites
   def index

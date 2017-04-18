@@ -1,7 +1,7 @@
+# Parent controller for all controllers dependent on cuppings
 class CuppingDependentController < CoffeeGraderApiController
   private
-  # TODO: think about updating finders to return head: ... instead of render
-  # nothing... when no content is coming back...
+
   def find_cupping
     @cupping =
       if params[:cupping_id]
@@ -28,7 +28,6 @@ class CuppingDependentController < CoffeeGraderApiController
   end
 
   def check_cupping_status
-
     # add logic to find a cupping by params (otherwise, locate by requested
     # resource's cupping_id), then check open status and render
     # an appropriate response if @cupping.open == false
