@@ -32,7 +32,7 @@ RSpec.describe 'Scores API', type: :request do
     end
 
     it 'returns an error message' do
-      expect(json['message']).to match(/Cupping is closed/)
+      expect(response.body).to match(/Cupping is closed/)
     end
   end
 
