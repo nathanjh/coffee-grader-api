@@ -55,6 +55,17 @@ RSpec.describe ScoresController, type: :controller do
           .not_to change(Score, :count)
       end
     end
+
+    context 'when cupping is closed' do
+      it "doesn't save the new score in the database" do
+        cupping.update(open: false)
+
+        expect do
+          post :create, params: valid_attributes, format: :json
+        end
+          .not_to change(Score, :count)
+      end
+    end
   end
 
   describe 'PATCH #update' do
@@ -70,6 +81,16 @@ RSpec.describe ScoresController, type: :controller do
                                  aftertaste: 8 }, format: :json
         score.reload
         expect(score.aftertaste).to eq(8)
+      end
+    end
+
+    context 'when cupping is closed' do
+      it "doesn't update the score's attrbutes" do
+        cupping.update(open: false)
+        patch :update, params: { id: score,
+                                 aftertaste: 2 }, format: :json
+        score.reload
+        expect(score.aftertaste).not_to eq(2)
       end
     end
   end
@@ -88,6 +109,18 @@ RSpec.describe ScoresController, type: :controller do
                          format: :json
       end
         .to change(Score, :count).by(-1)
+    end
+
+    context 'when cupping is closed' do
+      it "doesn't delete the score from the database" do
+        scores
+        cupping.update(open: false)
+        expect do
+          delete :destroy, params: { id: score },
+                           format: :json
+        end
+          .not_to change(Score, :count)
+      end
     end
   end
 

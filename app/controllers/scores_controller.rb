@@ -1,5 +1,6 @@
-class ScoresController < CoffeeGraderApiController
+class ScoresController < CuppingDependentController
   before_action :find_score, only: [:show, :update, :destroy]
+  before_action :check_cupping_status, only: [:create, :update, :destroy]
 
   # GET /scores
   def index
@@ -38,10 +39,6 @@ class ScoresController < CoffeeGraderApiController
   end
 
   private
-
-  def find_score
-    @score = Score.find(params[:id])
-  end
 
   def score_params
     params.permit(:cupped_coffee_id, :cupping_id, :roast_level,

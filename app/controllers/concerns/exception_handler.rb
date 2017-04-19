@@ -13,5 +13,9 @@ module ExceptionHandler
     rescue_from Score::BatchInsertScoresError do |e|
       json_response({ message: e.message }, :bad_request)
     end
+
+    rescue_from ActiveRecord::DeleteRestrictionError do |e|
+      json_response({ message: e.message }, :forbidden)
+    end
   end
 end

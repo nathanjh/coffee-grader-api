@@ -17,6 +17,16 @@ RSpec.describe 'Invites API', type: :request do
     end
   end
 
+  shared_examples 'restricted access when cupping is closed' do
+    it 'returns status code 400' do
+      expect(response).to have_http_status(400)
+    end
+
+    it 'returns an error message' do
+      expect(response.body).to match(/Cupping is closed/)
+    end
+  end
+
   describe 'GET /cuppings/:cupping_id/invites' do
     context 'with valid auth token' do
       before do
@@ -131,6 +141,17 @@ RSpec.describe 'Invites API', type: :request do
 
       it_behaves_like 'restricted access to invites'
     end
+
+    context 'when cupping is closed' do
+      before :each do
+        cupping.update(open: false)
+        post cupping_invites_path(cupping),
+             params: { invite: valid_attributes },
+             headers: auth_headers(grader)
+      end
+
+      it_behaves_like 'restricted access when cupping is closed'
+    end
   end
 
   describe 'PATCH /cuppings/:cupping_id/invites/:id' do
@@ -176,6 +197,17 @@ RSpec.describe 'Invites API', type: :request do
 
       it_behaves_like 'restricted access to invites'
     end
+
+    context 'when cupping is closed' do
+      before :each do
+        cupping.update(open: false)
+        patch cupping_invite_path(cupping, invite),
+              params: { invite: valid_attributes },
+              headers: auth_headers(grader)
+      end
+
+      it_behaves_like 'restricted access when cupping is closed'
+    end
   end
 
   describe 'DELETE /cuppings/:cupping_id/invites/:id' do
@@ -191,6 +223,15 @@ RSpec.describe 'Invites API', type: :request do
       before { delete cupping_invite_path(cupping, invite) }
 
       it_behaves_like 'restricted access to invites'
+    end
+
+    context 'when cupping is closed' do
+      before :each do
+        cupping.update(open: false)
+        delete cupping_invite_path(cupping, invite), headers: auth_headers(grader)
+      end
+
+      it_behaves_like 'restricted access when cupping is closed'
     end
   end
 end

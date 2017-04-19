@@ -5,6 +5,7 @@ RSpec.describe 'Scores API', type: :request do
   let(:host) { User.find(cupping.host_id) }
   let(:cupped_coffee) { create(:cupped_coffee, cupping_id: cupping.id) }
   let(:graders) { create_list(:user, 5) }
+  let(:grader) { graders.first }
   let(:scores) do
     graders.map do |grader|
       create(:score, grader_id: grader.id,
@@ -31,7 +32,7 @@ RSpec.describe 'Scores API', type: :request do
     end
 
     it 'returns an error message' do
-      expect(json['message']).to match(/Cupping is closed/)
+      expect(response.body).to match(/Cupping is closed/)
     end
   end
 
@@ -102,7 +103,7 @@ RSpec.describe 'Scores API', type: :request do
       attributes_for(:score,
                      cupping_id: cupping.id,
                      cupped_coffee_id: cupped_coffee.id,
-                     grader_id: graders.first.id)
+                     grader_id: grader.id)
     end
     context 'with valid auth token' do
       context 'with valid attributes' do
@@ -141,6 +142,16 @@ RSpec.describe 'Scores API', type: :request do
 
       it_behaves_like 'restricted access to scores'
     end
+
+    context 'when cupping is closed' do
+      before :each do
+        cupping.update(open: false)
+        post scores_path, params: valid_attributes,
+                          headers: auth_headers(grader)
+      end
+
+      it_behaves_like 'restricted access when cupping is closed'
+    end
   end
 
   describe 'PATCH /scores/:id' do
@@ -150,7 +161,7 @@ RSpec.describe 'Scores API', type: :request do
       context 'when the score exists' do
         before do
           patch "/scores/#{score_id}", params: valid_attributes,
-                                       headers: auth_headers(host)
+                                       headers: auth_headers(grader)
         end
 
         it 'updates the score' do
@@ -168,11 +179,21 @@ RSpec.describe 'Scores API', type: :request do
 
       it_behaves_like 'restricted access to scores'
     end
+
+    context 'when cupping is closed' do
+      before :each do
+        cupping.update(open: false)
+        patch score_path(score), params: valid_attributes,
+                                 headers: auth_headers(grader)
+      end
+
+      it_behaves_like 'restricted access when cupping is closed'
+    end
   end
 
   describe 'DELETE /scores/:id' do
     context 'with valid auth token' do
-      before { delete "/scores/#{score_id}", headers: auth_headers(host) }
+      before { delete "/scores/#{score_id}", headers: auth_headers(grader) }
       it 'returns status code 204' do
         expect(response).to have_http_status(204)
       end
@@ -182,6 +203,15 @@ RSpec.describe 'Scores API', type: :request do
       before { delete score_path(score) }
 
       it_behaves_like 'restricted access to scores'
+    end
+
+    context 'when cupping is closed' do
+      before :each do
+        cupping.update(open: false)
+        delete score_path(score), headers: auth_headers(grader)
+      end
+
+      it_behaves_like 'restricted access when cupping is closed'
     end
   end
 
