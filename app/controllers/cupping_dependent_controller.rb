@@ -35,7 +35,7 @@ class CuppingDependentController < CoffeeGraderApiController
         Cupping.find(@score.cupping_id)
       end
     error_message = 'Cupping is closed and cannot receive any new invites, coffee samples, or scores.'
-    json_response({ error: error_message }, :bad_request) if
+    json_response({ message: error_message }, :bad_request) if
       @cupping && !@cupping.open
   end
 end
