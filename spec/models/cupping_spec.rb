@@ -32,8 +32,8 @@ RSpec.describe Cupping, type: :model do
     subject { cupping }
 
     it { should belong_to(:host) }
-    it { should have_many(:invites) }
-    it { should have_many(:scores) }
-    it { should have_many(:cupped_coffees) }
+    it { should have_many(:invites).dependent(:destroy) }
+    it { should have_many(:scores).dependent(:restrict_with_exception) }
+    it { should have_many(:cupped_coffees).dependent(:destroy) }
   end
 end
