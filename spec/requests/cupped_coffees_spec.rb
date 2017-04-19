@@ -18,6 +18,15 @@ RSpec.describe 'CuppedCoffees API', type: :request do
     end
   end
 
+  shared_examples 'restricted access when cupping is closed' do
+    it 'returns status code 400' do
+      expect(response).to have_http_status(400)
+    end
+
+    it 'returns an error message' do
+      expect(response.body).to match(/Cupping is closed/)
+    end
+  end
 
   describe 'GET /cuppings/:cupping_id/cupped_coffees' do
     context 'with valid auth token' do
@@ -137,6 +146,18 @@ RSpec.describe 'CuppedCoffees API', type: :request do
 
       it_behaves_like 'restricted access to cupped_coffees'
     end
+
+    context 'when cupping is closed' do
+      before :each do
+        cupping.update(open: false)
+        post cupping_cupped_coffees_path(cupping),
+             params: { cupped_coffee: { roast_date: nil,
+                                        coffee_id: nil } },
+             headers: auth_headers(host)
+      end
+
+      it_behaves_like 'restricted access when cupping is closed'
+    end
   end
 
   describe 'PATCH /cuppings/:cupping_id/cupped_coffees/:id' do
@@ -181,6 +202,17 @@ RSpec.describe 'CuppedCoffees API', type: :request do
 
       it_behaves_like 'restricted access to cupped_coffees'
     end
+
+    context 'when cupping is closed' do
+      before :each do
+        cupping.update(open: false)
+        patch cupping_cupped_coffee_path(cupping, cupped_coffee),
+              params: { cupped_coffee: valid_attributes },
+              headers: auth_headers(host)
+      end
+
+      it_behaves_like 'restricted access when cupping is closed'
+    end
   end
 
   describe 'DELETE /cuppings/:cupping_id/cupped_coffees/:id' do
@@ -198,5 +230,14 @@ RSpec.describe 'CuppedCoffees API', type: :request do
       it_behaves_like 'restricted access to cupped_coffees'
     end
 
+    context 'when cupping is closed' do
+      before :each do
+        cupping.update(open: false)
+        delete "/cuppings/#{cupping.id}/cupped_coffees/#{cupped_coffee.id}",
+               headers: auth_headers(host)
+      end
+
+      it_behaves_like 'restricted access when cupping is closed'
+    end
   end
 end
