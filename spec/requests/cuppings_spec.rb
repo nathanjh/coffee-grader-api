@@ -5,6 +5,7 @@ RSpec.describe 'Cuppings API', type: :request do
   let!(:cuppings) { create_list(:cupping, 5) }
   let(:cupping) { cuppings.first }
   let(:cupping_id) { cupping.id }
+  let(:host) { User.find(cupping.host_id) }
 
   shared_examples 'restricted access to cuppings' do
     it 'returns status code 401' do
@@ -109,11 +110,10 @@ RSpec.describe 'Cuppings API', type: :request do
             .to match(/Validation failed: Host must exist, Location can't be blank, Cup date can't be blank, Cups per sample can't be blank, Host can't be blank/)
         end
       end
-
     end
 
     context 'without valid auth token' do
-      before { get cupping_path(cupping) }
+      before { post cuppings_path }
 
       it_behaves_like 'restricted access to cuppings'
     end
@@ -126,7 +126,7 @@ RSpec.describe 'Cuppings API', type: :request do
       context 'when the cupping exists' do
         before do
           patch "/cuppings/#{cupping_id}", params: valid_attributes,
-                                           headers: auth_headers(user)
+                                           headers: auth_headers(host)
         end
 
         it 'updates the cupping' do
@@ -140,22 +140,38 @@ RSpec.describe 'Cuppings API', type: :request do
     end
 
     context 'without valid auth token' do
-      before { get cupping_path(cupping) }
+      before { patch cupping_path(cupping) }
+
+      it_behaves_like 'restricted access to cuppings'
+    end
+
+    context "when logged in, but not as cupping's host" do
+      before :each do
+        patch cupping_path(cupping), params: valid_attributes,
+                                     headers: auth_headers(user)
+      end
 
       it_behaves_like 'restricted access to cuppings'
     end
   end
 
   describe 'DELETE /cuppings/:id' do
-    before { delete "/cuppings/#{cupping_id}", headers: auth_headers(user) }
     context 'with valid auth token' do
+      before { delete "/cuppings/#{cupping_id}", headers: auth_headers(host) }
+
       it 'returns status code 204' do
         expect(response).to have_http_status(204)
       end
     end
 
     context 'without valid auth token' do
-      before { get cupping_path(cupping) }
+      before { delete cupping_path(cupping) }
+
+      it_behaves_like 'restricted access to cuppings'
+    end
+
+    context "when logged in, but not as cupping's host" do
+      before { delete cupping_path(cupping), headers: auth_headers(user) }
 
       it_behaves_like 'restricted access to cuppings'
     end
