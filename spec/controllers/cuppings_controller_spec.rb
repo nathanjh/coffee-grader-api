@@ -69,14 +69,14 @@ RSpec.describe CuppingsController, type: :controller do
 
   describe 'DELETE #destroy' do
     it 'deletes the cupping record from the database' do
-      cupping = create(:cupping)
+      cupping = create(:cupping, host_id: user.id)
       expect { delete :destroy, params: { id: cupping.id } }
         .to change(Cupping, :count).by(-1)
     end
     # cupping cannot be deleted if it has any scores
     context 'when cupping has scores' do
       it "doesn't delete the cupping record from the database" do
-        cupping = create(:cupping)
+        cupping = create(:cupping, host_id: user.id)
         cupped_coffee = create(:cupped_coffee, cupping_id: cupping.id)
         graders = create_list(:user, 2)
         graders.map do |grader|
