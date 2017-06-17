@@ -6,7 +6,7 @@ RSpec.describe 'Invites API', type: :request do
   let(:host) { cupping.host }
   let(:grader) { create(:user) }
   let(:invites) { create_list(:invite, 5, cupping_id: cupping.id) }
-  let(:invite) { invites.first }
+  let(:invite) { create(:invite, cupping_id: cupping.id, grader_id: grader.id) }
 
   shared_examples 'restricted access to invites' do
     it 'returns status code 401' do
@@ -32,7 +32,7 @@ RSpec.describe 'Invites API', type: :request do
     context 'with valid auth token' do
       before do
         invites
-        get cupping_invites_path(cupping), headers: auth_headers(grader)
+        get cupping_invites_path(cupping), headers: auth_headers(host)
       end
 
       it 'returns all invites' do
@@ -158,7 +158,7 @@ RSpec.describe 'Invites API', type: :request do
         cupping.update(open: false)
         post cupping_invites_path(cupping),
              params: { invite: valid_attributes },
-             headers: auth_headers(grader)
+             headers: auth_headers(host)
       end
 
       it_behaves_like 'restricted access when cupping is closed'
@@ -190,7 +190,7 @@ RSpec.describe 'Invites API', type: :request do
         before :each do
           patch cupping_invite_path(cupping, invite),
                 params: { invite: { grader_id: 100_000_000 } },
-                headers: auth_headers(grader)
+                headers: auth_headers(host)
         end
 
         it 'returns a validation failure message' do
@@ -201,6 +201,18 @@ RSpec.describe 'Invites API', type: :request do
           expect(response).to have_http_status(422)
         end
       end
+    end
+
+    context 'when logged in, but not as cupping host or invited grader' do
+      let(:other) { create(:user) }
+
+      before :each do
+        patch cupping_invite_path(cupping, invite),
+              params: { invite: valid_attributes },
+              headers: auth_headers(other)
+      end
+
+      it_behaves_like 'restricted access to invites'
     end
 
     context 'without valid auth token' do
@@ -225,7 +237,7 @@ RSpec.describe 'Invites API', type: :request do
     context 'with valid auth token' do
       it 'returns status code 204' do
         delete "/cuppings/#{cupping.id}/invites/#{invite.id}",
-               headers: auth_headers(grader)
+               headers: auth_headers(host)
         expect(response).to have_http_status(204)
       end
     end
@@ -239,10 +251,19 @@ RSpec.describe 'Invites API', type: :request do
     context 'when cupping is closed' do
       before :each do
         cupping.update(open: false)
-        delete cupping_invite_path(cupping, invite), headers: auth_headers(grader)
+        delete cupping_invite_path(cupping, invite), headers: auth_headers(host)
       end
 
       it_behaves_like 'restricted access when cupping is closed'
+    end
+
+    context "when logged in, but not as cupping's host" do
+      before do
+        delete cupping_invite_path(cupping, invite),
+               headers: auth_headers(grader)
+      end
+
+      it_behaves_like 'restricted access to invites'
     end
   end
 end

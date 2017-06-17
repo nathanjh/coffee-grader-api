@@ -41,6 +41,10 @@ class CuppingDependentController < CoffeeGraderApiController
 
   def verify_host
     json_response({ errors: ['Authorized users only'] }, :unauthorized) unless
-      current_user && current_user.id == @cupping.host_id
+      current_user_is_host?
+  end
+
+  def current_user_is_host?
+    current_user && current_user.id == @cupping.host_id
   end
 end
