@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/nathanjh/coffee-grader-api.svg?branch=development)](https://travis-ci.org/nathanjh/coffee-grader-api)
 # coffee-grader-api
 back-end api for 'coffee-grader' coffee cupping app
 
