@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe 'CuppedCoffees API', type: :request do
   let(:cupping) { create(:cupping) }
   let(:host) { User.find(cupping.host_id) }
+  let(:other) { create(:user) }
   let(:coffee) { create(:coffee) }
   let(:roaster) { create(:roaster) }
   let(:cupped_coffees) { create_list(:cupped_coffee, 2, cupping_id: cupping.id) }
@@ -158,6 +159,16 @@ RSpec.describe 'CuppedCoffees API', type: :request do
 
       it_behaves_like 'restricted access when cupping is closed'
     end
+
+    context "when logged in, but not as cupping's host" do
+      before do
+        post cupping_cupped_coffees_path(cupping),
+             params: { cupped_coffee: valid_attributes },
+             headers: auth_headers(other)
+      end
+
+      it_behaves_like 'restricted access to cupped_coffees'
+    end
   end
 
   describe 'PATCH /cuppings/:cupping_id/cupped_coffees/:id' do
@@ -213,6 +224,16 @@ RSpec.describe 'CuppedCoffees API', type: :request do
 
       it_behaves_like 'restricted access when cupping is closed'
     end
+
+    context "when logged in, but not as cupping's host" do
+      before do
+        patch cupping_cupped_coffee_path(cupping, cupped_coffee),
+              params: { cupped_coffee: valid_attributes },
+              headers: auth_headers(other)
+      end
+
+      it_behaves_like 'restricted access to cupped_coffees'
+    end
   end
 
   describe 'DELETE /cuppings/:cupping_id/cupped_coffees/:id' do
@@ -238,6 +259,15 @@ RSpec.describe 'CuppedCoffees API', type: :request do
       end
 
       it_behaves_like 'restricted access when cupping is closed'
+    end
+
+    context "when logged in, but not as cupping's host" do
+      before do
+        delete cupping_cupped_coffee_path(cupping, cupped_coffee),
+               headers: auth_headers(other)
+      end
+
+      it_behaves_like 'restricted access to cupped_coffees'
     end
   end
 end
