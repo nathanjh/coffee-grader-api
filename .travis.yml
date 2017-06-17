@@ -2,6 +2,9 @@ language: ruby
 rvm:
   - 2.3.1
 
+sudo: required
+dist: precise
+
 addons:
   postgresql: "9.5"
 
@@ -11,4 +14,3 @@ services:
 before_script:
   - cp config/database.yml.travis config/database.yml
   - psql -c 'create database travis_ci_test;' -U postgres
-  - bin/rails db:migrate RAILS_ENV=test
