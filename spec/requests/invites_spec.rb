@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe 'Invites API', type: :request do
   # invite requires cupping, and a user as grader
   let(:cupping) { create(:cupping) }
+  let(:host) { cupping.host }
   let(:grader) { create(:user) }
   let(:invites) { create_list(:invite, 5, cupping_id: cupping.id) }
   let(:invite) { invites.first }
@@ -104,7 +105,7 @@ RSpec.describe 'Invites API', type: :request do
         before :each do
           post cupping_invites_path(cupping),
                params: { invite: valid_attributes },
-               headers: auth_headers(grader)
+               headers: auth_headers(host)
         end
 
         it 'returns the invite status' do
@@ -122,7 +123,7 @@ RSpec.describe 'Invites API', type: :request do
                params: { invite: { cupping_id: nil,
                                    grader_id: nil,
                                    status: :pending } },
-               headers: auth_headers(grader)
+               headers: auth_headers(host)
         end
 
         it 'returns status code 422' do
@@ -134,6 +135,16 @@ RSpec.describe 'Invites API', type: :request do
             .to match(/Validation failed: Grader must exist/)
         end
       end
+    end
+
+    context "when logged in, but not as cupping's host" do
+      before do
+        post cupping_invites_path(cupping),
+             params: { invite: valid_attributes },
+             headers: auth_headers(grader)
+      end
+
+      it_behaves_like 'restricted access to invites'
     end
 
     context 'without valid auth token' do
