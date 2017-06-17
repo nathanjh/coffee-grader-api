@@ -2,6 +2,8 @@ class InvitesController < CuppingDependentController
   before_action :find_cupping, only: [:index, :create]
   before_action :find_invite, only: [:show, :update, :destroy]
   before_action :check_cupping_status, only: [:create, :update, :destroy]
+  before_action :verify_host, only: [:create, :destroy]
+  before_action :verify_grader_or_host, only: [:update]
 
   # GET /cuppings/:cupping_id/invites
   def index
@@ -36,5 +38,10 @@ class InvitesController < CuppingDependentController
 
   def invite_params
     params.require(:invite).permit(:cupping_id, :grader_id, :status)
+  end
+
+  def verify_grader_or_host
+    json_response({ errors: ['Authorized users only'] }, :unauthorized) unless
+      current_user_is_host? || current_user.id == @invite.grader_id
   end
 end

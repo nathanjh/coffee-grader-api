@@ -1,5 +1,6 @@
 class CuppingsController < CuppingDependentController
   before_action :find_cupping, only: [:show, :update, :destroy]
+  before_action :verify_host, only: [:update, :destroy]
 
   # GET /cuppings
   def index

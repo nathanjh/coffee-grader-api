@@ -38,4 +38,13 @@ class CuppingDependentController < CoffeeGraderApiController
     json_response({ message: error_message }, :bad_request) if
       @cupping && !@cupping.open
   end
+
+  def verify_host
+    json_response({ errors: ['Authorized users only'] }, :unauthorized) unless
+      current_user_is_host?
+  end
+
+  def current_user_is_host?
+    current_user && current_user.id == @cupping.host_id
+  end
 end

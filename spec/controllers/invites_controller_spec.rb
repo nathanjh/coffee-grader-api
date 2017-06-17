@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.describe InvitesController, type: :controller do
   let(:cupping) { create(:cupping) }
+  let(:host) { cupping.host }
   let(:grader) { create(:user) }
   let(:invites) { create_list(:invite, 5, cupping_id: cupping.id) }
   let(:invite) { invites.first }
@@ -12,7 +13,7 @@ RSpec.describe InvitesController, type: :controller do
       status: :pending }
   end
 
-  before { login_user(grader) }
+  before { login_user(host) }
 
   describe 'GET #index' do
     it 'returns all invites as @invites' do
