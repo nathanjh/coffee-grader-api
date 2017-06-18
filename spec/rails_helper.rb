@@ -9,6 +9,11 @@ require 'shoulda-matchers'
 require 'support/login_macros'
 require 'support/request_spec_helper'
 # Add additional requires below this line. Rails is not loaded until this point!
+# setup code coverage reporting...
+require 'simplecov'
+SimpleCov.start
+require 'codecov'
+SimpleCov.formatter = SimpleCov::Formatter::Codecov
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
