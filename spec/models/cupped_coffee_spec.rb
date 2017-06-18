@@ -14,7 +14,10 @@ RSpec.describe CuppedCoffee, type: :model do
     subject { cupped_coffee }
 
     it { should validate_presence_of(:roast_date) }
-    it { should validate_uniqueness_of(:coffee_alias).scoped_to(:cupping_id) }
+    it do
+      should validate_uniqueness_of(:coffee_alias)
+        .scoped_to(:cupping_id).case_insensitive
+    end
   end
 
   describe 'associations' do
