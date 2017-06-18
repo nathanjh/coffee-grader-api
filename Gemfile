@@ -32,7 +32,7 @@ gem 'devise_token_auth'
 # gem 'rack-cors'
 
 # set up code coverage reports with codecov
-gem 'codecov', :require => false, :group => :test
+# gem 'codecov', :require => false, :group => :test
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

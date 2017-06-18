@@ -11,11 +11,11 @@ require 'support/request_spec_helper'
 # Add additional requires below this line. Rails is not loaded until this point!
 
 # to set up code coverage reporting...
-require 'simplecov'
-SimpleCov.start
-
-require 'codecov'
-SimpleCov.formatter = SimpleCov::Formatter::Codecov
+# require 'simplecov'
+# SimpleCov.start
+#
+# require 'codecov'
+# SimpleCov.formatter = SimpleCov::Formatter::Codecov
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
