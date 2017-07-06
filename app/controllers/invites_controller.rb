@@ -37,7 +37,8 @@ class InvitesController < CuppingDependentController
   private
 
   def invite_params
-    params.require(:invite).permit(:cupping_id, :grader_id, :status)
+    params.require(:invite).permit(:cupping_id, :grader_id,
+                                   :status, :grader_email)
   end
 
   def verify_grader_or_host
