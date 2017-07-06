@@ -12,6 +12,8 @@ RSpec.describe Invite, type: :model do
     it { should respond_to(:grader_id) }
     it { should respond_to(:cupping_id) }
     it { should respond_to(:status) }
+    it { should respond_to(:grader_email) }
+    it { should respond_to(:invite_token) }
 
     describe '#status' do
       it "should have a default value of 'pending'" do
