@@ -38,6 +38,9 @@ RSpec.describe Invite, type: :model do
         .with_message('has already been invited to this cupping')
     end
 
+    it { should allow_value('iamokemail@valid.namespace.com').for(:grader_email) }
+    it { should_not allow_value('notokatinvalid.@com').for(:grader_email) }
+
     it 'should be valid without a grader_id' do
       no_grader_invite = Invite.new(cupping_id: create(:cupping).id)
       expect(no_grader_invite).to be_valid
