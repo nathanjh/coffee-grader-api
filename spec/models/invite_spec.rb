@@ -35,6 +35,11 @@ RSpec.describe Invite, type: :model do
       should validate_uniqueness_of(:grader_id).scoped_to(:cupping_id)
         .with_message('has already been invited to this cupping')
     end
+
+    it 'should be valid without a grader_id' do
+      no_grader_invite = Invite.new(cupping_id: create(:cupping).id)
+      expect(no_grader_invite).to be_valid
+    end
   end
 
   describe 'associations' do
