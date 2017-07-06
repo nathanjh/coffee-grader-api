@@ -14,8 +14,10 @@ class Invite < ApplicationRecord
   validates :grader_id,
             uniqueness: { scope: :cupping_id,
                           message:
-                          'has already been invited to this cupping' }
+                          'has already been invited to this cupping' },
+            allow_blank: true
 
-  validates :grader_email, format: { with: /\A[^@\s]+@([^@\s.]+\.)+[^@\W]+\z/ },
-                           allow_blank: true
+  validates :grader_email,
+            format: { with: /\A[^@\s]+@([^@\s.]+\.)+[^@\W]+\z/ },
+            allow_blank: true
 end

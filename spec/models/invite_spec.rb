@@ -35,7 +35,7 @@ RSpec.describe Invite, type: :model do
 
     it do
       should validate_uniqueness_of(:grader_id).scoped_to(:cupping_id)
-        .with_message('has already been invited to this cupping')
+        .with_message('has already been invited to this cupping').allow_blank
     end
 
     it { should allow_value('iamokemail@valid.namespace.com').for(:grader_email) }

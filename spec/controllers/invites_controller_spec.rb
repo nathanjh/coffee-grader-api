@@ -44,8 +44,6 @@ RSpec.describe InvitesController, type: :controller do
       end
     end
 
-    # TODO: update this test to check email validation for grader_email, as
-    # grader_id = nil is now valid
     context 'with invalid attributes' do
       it "doesn't save the new invite in the database" do
         expect do
