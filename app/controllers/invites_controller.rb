@@ -5,6 +5,13 @@ class InvitesController < CuppingDependentController
   before_action :verify_host, only: [:create, :destroy]
   before_action :verify_grader_or_host, only: [:update]
 
+  # Handle specific exception where an invalid grader_id can be passed into
+  # POST#create (as grader association is optional)...
+  rescue_from ActiveRecord::InvalidForeignKey do |e|
+    json_response({ message: 'Validation failed: Grader id is invalid',
+                    detail: e.message }, :unprocessable_entity)
+  end
+
   # GET /cuppings/:cupping_id/invites
   def index
     @invites = @cupping.invites
