@@ -7,17 +7,28 @@ RSpec.describe InviteMailer, type: :mailer do
   let(:user_invite) { cupping.invites.create!(grader_id: create(:user).id) }
   let(:user_email) { InviteMailer.user_invitation(user_invite, cupping) }
 
-  # before(:context) do
-  #   cupping = create(:cupping)
-  #   invite = cupping.invites.create!(grader_email: 'newfriend@whatever.com')
-  #   @mail = InviteMailer.guest_invitation(invite, cupping)
-  # end
   after(:context) { ActionMailer::Base.deliveries.clear }
 
   describe '#guest_invitation' do
-    it 'sends the email' do
+    before(:example) do
       guest_email.deliver_now
-      expect(ActionMailer::Base.deliveries.count).to eq 1
+      @delivered_mail = ActionMailer::Base.deliveries.first
+    end
+    it 'sends the email' do
+      expect(@delivered_mail).to be_a(Mail::Message)
+    end
+
+    it 'renders the headers' do
+      expect(@delivered_mail.subject).to match(/invited you to a cupping/)
+      expect(@delivered_mail.to).to eq([guest_invite.grader_email])
+      expect(@delivered_mail.from).to eq([InviteMailer.default[:from]])
+    end
+
+    it 'renders the body' do
+      sign_up_link_re =
+        %r{https:\/\/www.coffeegrader.com\/sign-up\?inviteToken=}
+      expect(@delivered_mail.body.encoded)
+        .to match(sign_up_link_re)
     end
   end
 
