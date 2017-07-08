@@ -1,9 +1,5 @@
-<p>Woo! You've been invited to taste some coffees with <%= @host_name %>!</p>
-<p>The details:</p>
-<ul>
-  <li>Time: <%= @cupping.cup_date.strftime('%A, %b %d') %></li>
-  <li>Place: <%= @cupping.location %></li>
-</ul>
+<%= render partial: 'cupping_invitation',
+           locals: { host_name: @host_name, cupping: @cupping }%>
 <p>
   Whilst tasting said coffees, we'll be using the <strong>CoffeeGrader</strong>
   app for all our scoring/rating needs...what? don't have it? No problem!  It's

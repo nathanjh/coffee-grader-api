@@ -1,0 +1,6 @@
+<%= render partial: 'cupping_invitation',
+           locals: { host_name: @host_name, cupping: @cupping }%>
+<p>
+  Head over to your <a href="<%= @url %>">account page</a> at your convenience to
+  manage this invite, and let <%= @host_name %> know if you're able to attend!
+</p>
