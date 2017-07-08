@@ -1,0 +1,12 @@
+<p>Woo! You've been invited to taste some coffees with <%= @host_name %>!</p>
+<p>The details:</p>
+<ul>
+  <li>Time: <%= @cupping.cup_date.strftime('%A, %b %d') %></li>
+  <li>Place: <%= @cupping.location %></li>
+</ul>
+<p>
+  Whilst tasting said coffees, we'll be using the <strong>CoffeeGrader</strong>
+  app for all our scoring/rating needs...what? don't have it? No problem!  It's
+  super easy to <a href="<%= @url %>">sign up</a>, and only takes a second.  Plus,
+  you'll be able to let <%= @host_name %> know you're down to cup.
+</p>
