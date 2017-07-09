@@ -1,18 +1,24 @@
 class InviteHandler
   def self.build
-    new
+    new(GuestInviteContact.build)
   end
 
-  def call(invite)
+  def initialize(guest_invite_contact)
+    self.guest_invite_contact = guest_invite_contact
+  end
+
+  def call(invite, cupping)
     if invite.grader_id.blank?
       invite.update!(invite_token: generate_token)
-      # call mailer service (no user account for grader)
+      guest_invite_contact.call(invite, cupping)
     else
       # call mailer service (user account for grader)
     end
   end
 
   private
+
+  attr_accessor :guest_invite_contact
 
   def generate_token
     SecureRandom.urlsafe_base64(16)
