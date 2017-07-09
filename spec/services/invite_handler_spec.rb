@@ -35,7 +35,7 @@ RSpec.describe InviteHandler do
       it 'implements InviteHandler::GuestInviteContact' do
         guest_invite_contact =
           instance_double('InviteHandler::GuestInviteContact', call: nil)
-        test_service = InviteHandler.new(guest_invite_contact)
+        test_service = InviteHandler.new(guest_invite_contact, proc {})
         test_service.call(@invite, cupping)
         expect(guest_invite_contact).to have_received(:call)
           .with(@invite, cupping)
@@ -44,7 +44,35 @@ RSpec.describe InviteHandler do
   end
 
   context 'invite has a valid grader_id' do
-    xit "sends the preexisting user invite email to grader's email address" do
+    before do
+      @invite = cupping.invites.create!(grader_id: create(:user).id)
+    end
+
+    context 'sends the preexisting user invite email' do
+      before { ActiveJob::Base.queue_adapter = :test }
+
+      it 'queues the job' do
+        # enqueues the job in 'mailers' queue
+        expect { service.call(@invite, cupping) }.to have_enqueued_job
+          .on_queue('mailers')
+      end
+
+      it "sends the invite email with the correct 'to' header" do
+        # sends the email with the correct 'to' header
+        grader_email = User.find(@invite.grader_id).email
+        perform_enqueued_jobs { service.call(@invite, cupping) }
+        mail = ActionMailer::Base.deliveries.last
+        expect(mail.to).to eq([grader_email])
+      end
+
+      it 'implements InviteHandler::UserInviteContact' do
+        user_invite_contact =
+          instance_double('InviteHandler::UserInviteContact', call: nil)
+        test_service = InviteHandler.new(proc {}, user_invite_contact)
+        test_service.call(@invite, cupping)
+        expect(user_invite_contact).to have_received(:call)
+          .with(@invite, cupping)
+      end
     end
   end
 end
