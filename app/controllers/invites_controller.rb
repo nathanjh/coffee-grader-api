@@ -26,6 +26,7 @@ class InvitesController < CuppingDependentController
   # POST /cuppings/:cupping_id/invites
   def create
     @invite = @cupping.invites.create!(invite_params)
+    InviteHandler.build.call(@invite, @cupping)
     json_response(@invite, :created)
   end
 

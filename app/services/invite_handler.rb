@@ -13,7 +13,6 @@ class InviteHandler
       invite.update!(invite_token: generate_token)
       guest_invite_contact.call(invite, cupping)
     else
-      # call mailer service (user account for grader)
       user_invite_contact.call(invite, cupping)
     end
   end

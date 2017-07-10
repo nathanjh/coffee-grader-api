@@ -115,6 +115,15 @@ RSpec.describe 'Invites API', type: :request do
         it 'returns status code 201' do
           expect(response).to have_http_status(201)
         end
+
+        context 'when no grader account and grader_email is provided' do
+          it 'sets an invite token' do
+            post cupping_invites_path(cupping),
+                 params: { invite: { grader_email: 'jen@isawesome.com' } },
+                 headers: auth_headers(host)
+            expect(json['invite_token']).not_to be_blank
+          end
+        end
       end
 
       context 'with invalid attributes' do
