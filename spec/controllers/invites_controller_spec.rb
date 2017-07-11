@@ -48,7 +48,8 @@ RSpec.describe InvitesController, type: :controller do
       it "doesn't save the new invite in the database" do
         expect do
           post :create, params: { cupping_id: cupping.id,
-                                  invite: { grader_id: nil } }, format: :json
+                                  invite: { grader_email: 'not.valid@email' } },
+                        format: :json
         end
           .not_to change(Invite, :count)
       end

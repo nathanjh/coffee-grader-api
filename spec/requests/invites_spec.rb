@@ -115,13 +115,21 @@ RSpec.describe 'Invites API', type: :request do
         it 'returns status code 201' do
           expect(response).to have_http_status(201)
         end
+
+        context 'when no grader account and grader_email is provided' do
+          it 'sets an invite token' do
+            post cupping_invites_path(cupping),
+                 params: { invite: { grader_email: 'jen@isawesome.com' } },
+                 headers: auth_headers(host)
+            expect(json['invite_token']).not_to be_blank
+          end
+        end
       end
 
       context 'with invalid attributes' do
         before :each do
           post cupping_invites_path(cupping),
-               params: { invite: { cupping_id: nil,
-                                   grader_id: nil,
+               params: { invite: { grader_id: 1_000_000,
                                    status: :pending } },
                headers: auth_headers(host)
         end
@@ -132,7 +140,7 @@ RSpec.describe 'Invites API', type: :request do
 
         it 'returns a validation failure message' do
           expect(response.body)
-            .to match(/Validation failed: Grader must exist/)
+            .to match(/Validation failed:/)
         end
       end
     end
@@ -189,12 +197,13 @@ RSpec.describe 'Invites API', type: :request do
       context 'with invalid attributes' do
         before :each do
           patch cupping_invite_path(cupping, invite),
-                params: { invite: { grader_id: 100_000_000 } },
+                params: { invite: { grader_email: 'invalid.email@fail' } },
                 headers: auth_headers(host)
         end
 
         it 'returns a validation failure message' do
-          expect(response.body).to match(/Validation failed:/)
+          expect(response.body)
+            .to match(/Validation failed:/)
         end
 
         it 'returns status code 422' do

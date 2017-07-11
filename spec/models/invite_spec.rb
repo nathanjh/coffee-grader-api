@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe Invite, type: :model do
   let(:invite) do
     host = create(:user)
-    Invite.create!(grader_id: create(:user).id,
+    Invite.new(grader_id: create(:user).id,
                    cupping_id: create(:cupping, host_id: host.id).id)
   end
   describe 'attributes' do
@@ -12,6 +12,8 @@ RSpec.describe Invite, type: :model do
     it { should respond_to(:grader_id) }
     it { should respond_to(:cupping_id) }
     it { should respond_to(:status) }
+    it { should respond_to(:grader_email) }
+    it { should respond_to(:invite_token) }
 
     describe '#status' do
       it "should have a default value of 'pending'" do
@@ -34,6 +36,20 @@ RSpec.describe Invite, type: :model do
     it do
       should validate_uniqueness_of(:grader_id).scoped_to(:cupping_id)
         .with_message('has already been invited to this cupping')
+        .allow_blank
+    end
+
+    it { should allow_value('okemail@valid.namespace.com').for(:grader_email) }
+    it { should_not allow_value('notokatinvalid.@com').for(:grader_email) }
+
+    context 'when grader_id is nil or blank' do
+      before { subject.grader_id = nil }
+      it { should validate_presence_of(:grader_email) }
+    end
+
+    context 'when grader_email is nil or blank' do
+      before { subject.grader_email = '' }
+      it { should validate_presence_of(:grader_id) }
     end
   end
 

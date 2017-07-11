@@ -11,6 +11,7 @@ RSpec.describe User, type: :model do
     it { should respond_to(:password) }
     it { should respond_to(:password_confirmation) }
     it { should respond_to(:create_new_auth_token) }
+    it { should respond_to(:invite_token) }
   end
 
   describe 'validations' do
