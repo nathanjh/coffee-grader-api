@@ -201,6 +201,22 @@ Field | Description
 ...
 ]
 ```
+#### On Invite Creation
+When sending `POST` requests to `cuppings/:id/invites`, the typical request params
+need only include an `invite` object with a valid `grader_id`.  A notification email
+will be sent to the corresponding user.
+- Want to invite a friend without an account?  No problem!  Just send along any valid email address eg.
+`
+{
+  "invite": {
+    "grader_email": "your@coffee.friend"
+  }
+}
+`
+and we'll send an email to the provided address containing a custom link to sign-up,
+which passes along (as a query string) a unique invite token which needs to be
+`POST`ed, along with required account registration params, to `/auth`.  We take it
+from there, and update your invite with the new user.
 
 ### Roasters Endpoints
     GET /roasters
