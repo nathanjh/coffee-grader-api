@@ -60,7 +60,7 @@ RSpec.describe 'Invites API', type: :request do
               headers: auth_headers(grader)
         end
 
-        it 'returns the cupped_coffee' do
+        it 'returns the invite' do
           expect(json).not_to be_empty
           expect(json['id']).to eq(invite.id)
         end
