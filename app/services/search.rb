@@ -9,6 +9,11 @@ class Search
     @columns = columns
   end
 
+  def call(term)
+    term = "%#{term}%"
+    table_model.where(sql_query, term: term)
+  end
+
   private
 
   def valid_table?(table)
@@ -37,11 +42,24 @@ class Search
   end
 
   def table_column_names
+    table_model.column_names
+  end
+
+  def table_model
     # silly string manipulation to get a model name to check for column names
-    @table.chomp('s').capitalize.constantize.column_names
+    @table.chomp('s').capitalize.constantize
   end
 
   def capitalization_check(table)
     " Did you mean #{table.downcase}?" if valid_table?(table.downcase)
+  end
+
+  # possible postgres dependency with 'ILIKE' for case insesitive matching
+  def sql_query
+    query = "#{@columns[0]} ILIKE :term "
+    return query unless @columns.length > 1
+
+    @columns[1..-1].each { |col| query += "OR #{col} ILIKE :term " }
+    query
   end
 end

@@ -31,14 +31,26 @@ RSpec.describe Search do
   end
 
   describe '#call' do
-    before(:example) { @users_search = Search.new('users', %w(username email)) }
+    before(:example) do
+      { email: 'test@me.com', username: 'test_the_search' }
+        .each { |k, v| create(:user, k => v) }
+      @users_search = Search.new('users', %w(username email))
+    end
 
     context 'given a search term that matches one or more records' do
-      xit 'returns an array of matching objects' do
+      it 'returns an array of matching objects' do
+        search_results = @users_search.call('test')
+        expect(search_results.length).to eq 2
+        expect(search_results.first).to be_a User
+
+        search_results = @users_search.call('me.com')
+        expect(search_results.length).to eq 1
       end
     end
     context 'given a search terms that does not match any records' do
-      xit 'returns an empty array if no matches found' do
+      it 'returns an empty array if no matches found' do
+        search_results = @users_search.call('nomatch')
+        expect(search_results.empty?).to be true
       end
     end
   end
