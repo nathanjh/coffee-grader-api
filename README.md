@@ -307,3 +307,13 @@ Example POST data (JSON):
 ```
 Please note that **any errors in a single score will prevent the entire batch of scores from processing**.
 The server returns a 204 No Content response on success, and a 400 Bad Request response--along with an error message--on failure.
+
+### Users Endpoints
+    GET /users/:id
+    GET /users/search
+
+#### Users search
+Queries for users by both `email` and `username`. Please send search term with
+key `term`, eg. `{ "term": "your_search" }`.  Also supports optional pagination
+parameters: `limit`, the number of records per page, and `page`, which calculates
+offset for records returned (relative to `limit`).
