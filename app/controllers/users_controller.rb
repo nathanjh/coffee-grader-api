@@ -9,11 +9,7 @@ class UsersController < CoffeeGraderApiController
   # GET /users/search
   def search
     @results =
-      if params[:term]
-        users_search.call(params[:term], pagination_options)
-      else
-        []
-      end
+      params[:term] ? users_search.call(params[:term], pagination_options) : []
     json_response(@results)
   end
 
