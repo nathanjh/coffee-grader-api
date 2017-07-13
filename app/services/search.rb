@@ -9,9 +9,14 @@ class Search
     @columns = columns
   end
 
-  def call(term)
+  # can be called with a pagination options hash
+  def call(term, options = {})
     term = "%#{term}%"
+    limit = options[:limit] || 10
+    page = options[:page] || 1
     table_model.where(sql_query, term: term)
+               .limit(limit)
+               .offset((page - 1) * limit)
   end
 
   private
