@@ -31,18 +31,25 @@ gem 'devise_token_auth'
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 # gem 'rack-cors'
 
-# adds Codecov for coverage reporting
-gem 'codecov', :require => false, :group => :test
+# Use Sidekiq for background processing
+gem 'sidekiq'
+
+group :test do
+  # adds Codecov for coverage reporting
+  gem 'codecov', require: false
+  # adds Sidekiq rspec helpers and matchers
+  gem 'rspec-sidekiq'
+  gem 'rspec-rails'
+  gem 'rails-controller-testing'
+  gem 'shoulda-matchers', '~> 3.1', require: false
+end
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
-  gem 'rspec-rails'
-  gem 'rails-controller-testing'
   gem 'factory_girl_rails'
   gem 'faker', git: 'git://github.com/stympy/faker.git', branch: 'master'
   gem 'hirb'
-  gem 'shoulda-matchers', '~> 3.1', require: false
 end
 
 group :development do
