@@ -45,6 +45,9 @@ Rails.application.configure do
   # routes, locales, etc. This feature depends on the listen gem.
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
 
+  # To work with Sidekiq in development
+  config.active_job.queue_adapter = :sidekiq
+
   # To configure action mailer for development env
   # Default Mailer Host
   config.action_mailer.default_url_options = { host: 'localhost:3000' }

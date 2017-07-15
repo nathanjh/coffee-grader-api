@@ -3,6 +3,13 @@ Rails.application.routes.draw do
     registrations: 'custom_registrations'
   }
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+
+  # To use the Sidekiq Web UI in development env only!
+  if Rails.env == 'development'
+    require 'sidekiq/web'
+    mount Sidekiq::Web => '/sidekiq'
+  end
+
   resources :users, only: :show, defaults: { format: :json } do
     get 'search', on: :collection
   end
