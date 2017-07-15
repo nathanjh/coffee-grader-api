@@ -31,18 +31,25 @@ gem 'devise_token_auth'
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 # gem 'rack-cors'
 
-# adds Codecov for coverage reporting
-gem 'codecov', :require => false, :group => :test
+# Use Sidekiq for background processing
+gem 'sidekiq'
+
+group :test do
+  # adds Codecov for coverage reporting
+  gem 'codecov', require: false
+  # adds Sidekiq rspec helpers and matchers
+  # gem 'rspec-sidekiq'
+  gem 'rspec-rails'
+  gem 'rails-controller-testing'
+  gem 'shoulda-matchers', '~> 3.1', require: false
+end
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
-  gem 'rspec-rails'
-  gem 'rails-controller-testing'
   gem 'factory_girl_rails'
   gem 'faker', git: 'git://github.com/stympy/faker.git', branch: 'master'
   gem 'hirb'
-  gem 'shoulda-matchers', '~> 3.1', require: false
 end
 
 group :development do
@@ -50,6 +57,8 @@ group :development do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
+  # To use sidekiq web UI
+  gem 'sinatra', github: 'sinatra/sinatra'
 end
 
 ruby '2.3.1'

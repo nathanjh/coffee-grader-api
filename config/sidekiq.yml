@@ -1,0 +1,7 @@
+# Heroku recommended time-out setting
+:timeout: 8
+
+# Include mailers queue
+:queues:
+  - default
+  - mailers
