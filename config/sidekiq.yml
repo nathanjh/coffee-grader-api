@@ -5,3 +5,8 @@
 :queues:
   - default
   - mailers
+
+# Concurrency override based on redis-to-go plan in production environment
+# NOTE: calculated with http://manuelvanrijn.nl/sidekiq-heroku-redis-calc/
+production:
+  :concurrency: 3
