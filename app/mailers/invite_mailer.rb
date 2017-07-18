@@ -1,4 +1,6 @@
 class InviteMailer < ApplicationMailer
+  default from: 'Invites@coffee-grader.com'
+
   def guest_invitation(invite, cupping)
     @cupping = cupping
     @url =
