@@ -25,7 +25,7 @@ RSpec.describe CoffeesController, type: :controller do
     context 'with valid attributes' do
 
       it 'saves a new coffee in the database' do
-        expect { post :create, params: attributes_for(:coffee) }
+        expect { post :create, params: { coffee: attributes_for(:coffee) } }
           .to change(Coffee, :count).by(1)
       end
     end
@@ -55,7 +55,7 @@ RSpec.describe CoffeesController, type: :controller do
       it "updates coffee's attributes" do
         patch :update,
               params: { id: @coffee,
-                        origin: 'El Salvador' }
+                        coffee: { origin: 'El Salvador' } }
         @coffee.reload
         expect(@coffee.origin).to eq('El Salvador')
       end
@@ -70,7 +70,7 @@ RSpec.describe CoffeesController, type: :controller do
 
       it "doesn't change the coffee's attributes" do
         # record is invalid: uniqueness of name scoped to origin and producer
-        patch :update, params: { id: @coffee, name: 'Hunapu' }
+        patch :update, params: { id: @coffee, coffee: { name: 'Hunapu' } }
         expect(@coffee.name).not_to eq('Hunapu')
       end
     end
