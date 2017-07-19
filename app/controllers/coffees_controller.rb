@@ -37,6 +37,6 @@ class CoffeesController < CoffeeGraderApiController
   end
 
   def coffee_params
-    params.permit(:name, :origin, :producer)
+    params.require(:coffee).permit(:name, :origin, :producer)
   end
 end
