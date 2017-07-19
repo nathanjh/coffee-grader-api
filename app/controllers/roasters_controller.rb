@@ -37,6 +37,6 @@ class RoastersController < CoffeeGraderApiController
   end
 
   def roaster_params
-    params.permit(:name, :location, :website)
+    params.require(:roaster).permit(:name, :location, :website)
   end
 end
