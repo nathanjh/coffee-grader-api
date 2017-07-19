@@ -81,7 +81,7 @@ RSpec.describe 'Users API', type: :request do
               params: { term: 'nowaythiscouldpossiblymatch' }
         end
         it 'returns an empty array' do
-          expect(json).to be_empty
+          expect(json['users']).to be_empty
         end
 
         it 'returns status code 200' do
@@ -105,9 +105,9 @@ RSpec.describe 'Users API', type: :request do
       end
       context 'when route is visited with no query' do
         before(:example) { get search_users_path, headers: auth_headers(user) }
-        
+
         it 'returns an empty array' do
-          expect(json).to be_empty
+          expect(json['users']).to be_empty
         end
 
         it 'returns status code 200' do

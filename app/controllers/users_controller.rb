@@ -8,8 +8,7 @@ class UsersController < CoffeeGraderApiController
 
   # GET /users/search
   def search
-    @results =
-      params[:term] ? users_search.call(params[:term], pagination_options) : []
+    @results = search_results
     json_response(@results)
   end
 
@@ -21,5 +20,10 @@ class UsersController < CoffeeGraderApiController
 
   def users_search
     Search.new('users', %w(username email))
+  end
+
+  def search_results
+    return { users: [] } unless params[:term]
+    users_search.call(params[:term], pagination_options)
   end
 end

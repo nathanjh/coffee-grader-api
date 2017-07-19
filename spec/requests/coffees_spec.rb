@@ -21,8 +21,8 @@ RSpec.describe 'Coffees API', type: :request do
       end
 
       it 'returns all coffees' do
-        expect(json).not_to be_empty
-        expect(json.size).to eq(5)
+        expect(json['coffees']).not_to be_empty
+        expect(json['coffees'].size).to eq(5)
       end
 
       it 'returns status code 200' do
@@ -43,8 +43,8 @@ RSpec.describe 'Coffees API', type: :request do
         before { get coffee_path(coffee), headers: auth_headers(create(:user)) }
 
         it 'returns the coffee' do
-          expect(json).not_to be_empty
-          expect(json['id']).to eq(coffee.id)
+          expect(json['coffee']).not_to be_empty
+          expect(json['coffee']['id']).to eq(coffee.id)
         end
 
         it 'returns status code 200' do
@@ -83,7 +83,7 @@ RSpec.describe 'Coffees API', type: :request do
         it 'returns the coffee' do
           post coffees_path, headers: auth_headers(create(:user)),
                              params: valid_attributes
-          expect(json['origin']).to eq(valid_attributes[:origin])
+          expect(json['coffee']['origin']).to eq(valid_attributes[:origin])
         end
 
         it 'returns status code 201' do
