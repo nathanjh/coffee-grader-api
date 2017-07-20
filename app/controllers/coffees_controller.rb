@@ -30,6 +30,12 @@ class CoffeesController < CoffeeGraderApiController
     head :no_content
   end
 
+  # GET '/coffees/search'
+  def search
+    @results = search_results
+    json_response(@results)
+  end
+
   private
 
   def find_coffee
@@ -38,5 +44,14 @@ class CoffeesController < CoffeeGraderApiController
 
   def coffee_params
     params.require(:coffee).permit(:name, :origin, :producer)
+  end
+
+  def coffees_search
+    Search.new('coffees', %w(name producer origin))
+  end
+
+  def search_results
+    return { coffees: [] } unless params[:term]
+    coffees_search.call(params[:term], pagination_options)
   end
 end

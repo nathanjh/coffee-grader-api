@@ -15,7 +15,9 @@ Rails.application.routes.draw do
     get 'search', on: :collection
   end
   resources :roasters
-  resources :coffees
+  resources :coffees, defaults: { format: :json } do
+    get 'search', on: :collection
+  end
   resources :cuppings
   resources :cuppings do
     resources :invites
