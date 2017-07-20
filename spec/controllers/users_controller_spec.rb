@@ -44,8 +44,8 @@ RSpec.describe UsersController, type: :controller do
       it 'returns the data for requested user' do
         get :show, params: { id: requested_user }, format: :json
         parsed_response = JSON.parse(response.body)
-        expect(parsed_response['id']).to eq requested_user.id
-        expect(parsed_response['email']).to eq requested_user.email
+        expect(parsed_response['user']['id']).to eq requested_user.id
+        expect(parsed_response['user']['email']).to eq requested_user.email
       end
 
       it 'returns an error message when user does not exist' do
