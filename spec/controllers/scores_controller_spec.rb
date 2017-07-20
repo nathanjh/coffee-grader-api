@@ -17,10 +17,10 @@ RSpec.describe ScoresController, type: :controller do
   let(:score_id) { score.id }
 
   let(:valid_attributes) do
-    attributes_for(:score,
-                   cupping_id: cupping.id,
-                   cupped_coffee_id: cupped_coffee.id,
-                   grader_id: graders.first.id)
+    { score: attributes_for(:score,
+                            cupping_id: cupping.id,
+                            cupped_coffee_id: cupped_coffee.id,
+                            grader_id: graders.first.id) }
   end
 
   before { login_user(host) }
@@ -51,7 +51,7 @@ RSpec.describe ScoresController, type: :controller do
     context 'with invalid attributes' do
       # FactoryGirl.attributes_for doesn't generate foreign keys
       it "doesn't save the new score in the database" do
-        expect { post :create, params: attributes_for(:score) }
+        expect { post :create, params: { score: attributes_for(:score) } }
           .not_to change(Score, :count)
       end
     end
@@ -78,7 +78,7 @@ RSpec.describe ScoresController, type: :controller do
 
       it "updates the score's attributes" do
         patch :update, params: { id: score,
-                                 aftertaste: 8 }, format: :json
+                                 score: { aftertaste: 8 } }, format: :json
         score.reload
         expect(score.aftertaste).to eq(8)
       end

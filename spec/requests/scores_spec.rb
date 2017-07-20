@@ -44,8 +44,8 @@ RSpec.describe 'Scores API', type: :request do
       end
 
       it 'returns all scores' do
-        expect(json).not_to be_empty
-        expect(json.size).to eq(5)
+        expect(json['scores']).not_to be_empty
+        expect(json['scores'].size).to eq(5)
       end
 
       it 'returns status code 200' do
@@ -66,8 +66,8 @@ RSpec.describe 'Scores API', type: :request do
         before { get score_path(score), headers: auth_headers(host) }
 
         it 'returns the score' do
-          expect(json).not_to be_empty
-          expect(json['id']).to eq(score.id)
+          expect(json['score']).not_to be_empty
+          expect(json['score']['id']).to eq(score.id)
         end
 
         it 'returns status code 200' do
@@ -100,10 +100,10 @@ RSpec.describe 'Scores API', type: :request do
 
   describe 'POST /scores' do
     let(:valid_attributes) do
-      attributes_for(:score,
-                     cupping_id: cupping.id,
-                     cupped_coffee_id: cupped_coffee.id,
-                     grader_id: grader.id)
+      { score: attributes_for(:score,
+                              cupping_id: cupping.id,
+                              cupped_coffee_id: cupped_coffee.id,
+                              grader_id: grader.id) }
     end
     context 'with valid auth token' do
       context 'with valid attributes' do
@@ -112,7 +112,7 @@ RSpec.describe 'Scores API', type: :request do
         end
 
         it 'returns the score' do
-          expect(json['notes']).to eq(valid_attributes[:notes])
+          expect(json['score']['notes']).to eq(valid_attributes[:score][:notes])
         end
 
         it 'returns status code 201' do
@@ -123,13 +123,13 @@ RSpec.describe 'Scores API', type: :request do
       context 'with invalid attributes' do
         # FactoryGirl.attributes_for doesn't generate foreign keys
         it 'returns status code 422' do
-          post scores_path, params: attributes_for(:score),
+          post scores_path, params: { score: attributes_for(:score) },
                             headers: auth_headers(host)
           expect(response).to have_http_status(422)
         end
 
         it 'returns a validation failure message' do
-          post scores_path, params: attributes_for(:score),
+          post scores_path, params: { score: attributes_for(:score) },
                             headers: auth_headers(host)
           expect(response.body)
             .to match(/Validation failed: Grader must exist, Cupped coffee must exist, Cupping must exist, Grader can't be blank, Cupping can't be blank, Cupped coffee can't be blank/)
@@ -155,7 +155,7 @@ RSpec.describe 'Scores API', type: :request do
   end
 
   describe 'PATCH /scores/:id' do
-    let(:valid_attributes) { { acidity: 3 } }
+    let(:valid_attributes) { { score: { acidity: 3 } } }
 
     context 'with valid auth token' do
       context 'when the score exists' do
