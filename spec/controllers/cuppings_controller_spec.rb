@@ -28,7 +28,10 @@ RSpec.describe CuppingsController, type: :controller do
   describe 'POST #create' do
     context 'with valid attributes' do
       it 'saves a new cupping in the database' do
-        expect { post :create, params: attributes_for(:cupping, host_id: user.id) }
+        expect do
+          post :create,
+               params: { cupping: attributes_for(:cupping, host_id: user.id) }
+        end
           .to change(Cupping, :count).by(1)
       end
     end
@@ -44,23 +47,23 @@ RSpec.describe CuppingsController, type: :controller do
   describe 'PATCH #update' do
     before :each do
       @cupping = create(:cupping,
-                       host_id: user.id,
-                       location: 'San Francisco, CA',
-                       cup_date: Time.now,
-                       cups_per_sample: 3
-                       )
+                        host_id: user.id,
+                        location: 'San Francisco, CA',
+                        cup_date: Time.now,
+                        cups_per_sample: 3)
     end
 
     context 'with valid attributes' do
       it 'locates the requested cupping' do
-        patch :update, params: { id: @cupping, cupping: attributes_for(:cupping) }
+        patch :update, params: { id: @cupping,
+                                 cupping: attributes_for(:cupping) }
         expect(assigns(:cupping)).to eq(@cupping)
       end
 
       it "updates cupping's attributes" do
         patch :update,
               params: { id: @cupping,
-                        location: 'Santa Clara' }
+                        cupping: { location: 'Santa Clara' } }
         @cupping.reload
         expect(@cupping.location).to eq('Santa Clara')
       end

@@ -34,6 +34,7 @@ class CuppingsController < CuppingDependentController
   private
 
   def cupping_params
-    params.permit(:location, :cup_date, :cups_per_sample, :host_id)
+    params.require(:cupping)
+          .permit(:location, :cup_date, :cups_per_sample, :host_id)
   end
 end
