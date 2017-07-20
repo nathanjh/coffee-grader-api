@@ -16,7 +16,7 @@ class CuppingsController < CuppingDependentController
   # POST /cuppings
   def create
     @cupping = Cupping.create!(cupping_params)
-    json_response(@cupping, :created)
+    json_response(@cupping, status: :created)
   end
 
   # PATCH /cuppings/:id
@@ -34,6 +34,7 @@ class CuppingsController < CuppingDependentController
   private
 
   def cupping_params
-    params.permit(:location, :cup_date, :cups_per_sample, :host_id)
+    params.require(:cupping)
+          .permit(:location, :cup_date, :cups_per_sample, :host_id)
   end
 end

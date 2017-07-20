@@ -5,4 +5,8 @@ class CustomRegistrationsController < DeviseTokenAuth::RegistrationsController
       MatchInviteToken.build.call(resource)
     end
   end
+
+  def render_create_success
+    json_response(@resource)
+  end
 end

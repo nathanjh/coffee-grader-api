@@ -14,7 +14,7 @@ class CoffeesController < CoffeeGraderApiController
   # POST '/coffees'
   def create
     @coffee = Coffee.create!(coffee_params)
-    json_response(@coffee, :created)
+    json_response(@coffee, status: :created)
   end
 
   # PATCH '/coffees/:id'
@@ -37,6 +37,6 @@ class CoffeesController < CoffeeGraderApiController
   end
 
   def coffee_params
-    params.permit(:name, :origin, :producer)
+    params.require(:coffee).permit(:name, :origin, :producer)
   end
 end

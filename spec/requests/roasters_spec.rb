@@ -22,7 +22,7 @@ RSpec.describe 'Roasters API', type: :request do
 
       it 'returns all roasters' do
         expect(json).not_to be_empty
-        expect(json.size).to eq(5)
+        expect(json['roasters'].size).to eq(5)
       end
 
       it 'returns status code 200' do
@@ -44,7 +44,7 @@ RSpec.describe 'Roasters API', type: :request do
 
         it 'returns the roaster' do
           expect(json).not_to be_empty
-          expect(json['id']).to eq(roaster.id)
+          expect(json['roaster']['id']).to eq(roaster.id)
         end
 
         it 'returns status code 200' do
@@ -76,7 +76,11 @@ RSpec.describe 'Roasters API', type: :request do
   end
 
   describe 'POST /roasters' do
-    let(:valid_attributes) { { name: 'Cafe Elfie', location: 'Millbrae, CA', website: 'www.cafeelfie.com' } }
+    let(:valid_attributes) do
+      { roaster: { name: 'Cafe Elfie',
+                   location: 'Millbrae, CA',
+                   website: 'www.cafeelfie.com' } }
+    end
 
     context 'with valid auth token' do
       context 'with valid attributes' do
@@ -87,7 +91,8 @@ RSpec.describe 'Roasters API', type: :request do
         end
 
         it 'returns the roaster' do
-          expect(json['location']).to eq(valid_attributes[:location])
+          expect(json['roaster']['location'])
+            .to eq(valid_attributes[:roaster][:location])
         end
 
         it 'returns status code 201' do
@@ -119,7 +124,7 @@ RSpec.describe 'Roasters API', type: :request do
   end
 
   describe 'PATCH /roasters/:id' do
-    let(:valid_attributes) { { location: 'Carpinteria, CA' } }
+    let(:valid_attributes) { { roaster: { location: 'Carpinteria, CA' } } }
 
     context 'with valid auth token' do
       context 'when the roaster exists' do

@@ -38,8 +38,8 @@ RSpec.describe 'CuppedCoffees API', type: :request do
       end
 
       it 'returns all cupped_coffees' do
-        expect(json).not_to be_empty
-        expect(json.size).to eq(2)
+        expect(json['cupped_coffees']).not_to be_empty
+        expect(json['cupped_coffees'].size).to eq(2)
       end
 
       it 'returns status code 200' do
@@ -64,8 +64,8 @@ RSpec.describe 'CuppedCoffees API', type: :request do
         end
 
         it 'returns the cupped_coffee' do
-          expect(json).not_to be_empty
-          expect(json['id']).to eq(cupped_coffee.id)
+          expect(json['cupped_coffee']).not_to be_empty
+          expect(json['cupped_coffee']['id']).to eq(cupped_coffee.id)
         end
 
         it 'returns status code 200' do
@@ -115,7 +115,8 @@ RSpec.describe 'CuppedCoffees API', type: :request do
         end
 
         it 'returns the coffee' do
-          expect(json['coffee_alias']).to eq('Sample Alvarius B')
+          expect(json['cupped_coffee']['coffee_alias'])
+            .to eq('Sample Alvarius B')
         end
 
         it 'returns status code 201' do

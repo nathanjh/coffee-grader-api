@@ -23,7 +23,7 @@ RSpec.describe RoastersController, type: :controller do
   describe 'POST #create' do
     context 'with valid attributes' do
       it 'saves a new roaster in the database' do
-        expect { post :create, params: attributes_for(:roaster) }
+        expect { post :create, params: { roaster: attributes_for(:roaster) } }
           .to change(Roaster, :count).by(1)
       end
     end
@@ -39,21 +39,22 @@ RSpec.describe RoastersController, type: :controller do
   describe 'PATCH #update' do
     before :each do
       @roaster = create(:roaster,
-                       name: 'Some Roaster',
-                       location: 'Arcadia, CA',
-                       website: 'www.someroaster.com')
+                        name: 'Some Roaster',
+                        location: 'Arcadia, CA',
+                        website: 'www.someroaster.com')
     end
 
     context 'with valid attributes' do
       it 'locates the requested roaster' do
-        patch :update, params: { id: @roaster, roaster: attributes_for(:roaster) }
+        patch :update, params: { id: @roaster,
+                                 roaster: attributes_for(:roaster) }
         expect(assigns(:roaster)).to eq(@roaster)
       end
 
       it "updates roaster's attributes" do
         patch :update,
               params: { id: @roaster,
-                        location: 'El Salvador' }
+                        roaster: { location: 'El Salvador' } }
         @roaster.reload
         expect(@roaster.location).to eq('El Salvador')
       end
@@ -68,7 +69,7 @@ RSpec.describe RoastersController, type: :controller do
 
       it "doesn't change the roaster's attributes" do
         # record is invalid: uniqueness of name scoped to location
-        patch :update, params: { id: @roaster, name: 'Cup A Joe' }
+        patch :update, params: { id: @roaster, roaster: { name: 'Cup A Joe' } }
         expect(@roaster.name).not_to eq('Cup A Joe')
       end
     end

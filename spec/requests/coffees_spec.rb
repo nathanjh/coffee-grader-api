@@ -21,8 +21,8 @@ RSpec.describe 'Coffees API', type: :request do
       end
 
       it 'returns all coffees' do
-        expect(json).not_to be_empty
-        expect(json.size).to eq(5)
+        expect(json['coffees']).not_to be_empty
+        expect(json['coffees'].size).to eq(5)
       end
 
       it 'returns status code 200' do
@@ -43,8 +43,8 @@ RSpec.describe 'Coffees API', type: :request do
         before { get coffee_path(coffee), headers: auth_headers(create(:user)) }
 
         it 'returns the coffee' do
-          expect(json).not_to be_empty
-          expect(json['id']).to eq(coffee.id)
+          expect(json['coffee']).not_to be_empty
+          expect(json['coffee']['id']).to eq(coffee.id)
         end
 
         it 'returns status code 200' do
@@ -76,14 +76,17 @@ RSpec.describe 'Coffees API', type: :request do
   end
 
   describe 'POST /coffees' do
-    let(:valid_attributes) { attributes_for(:coffee, name: 'El Diamante') }
+    let(:valid_attributes) do
+      { coffee: attributes_for(:coffee, name: 'El Diamante') }
+    end
 
     context 'with valid auth token' do
       context 'with valid attributes' do
         it 'returns the coffee' do
           post coffees_path, headers: auth_headers(create(:user)),
                              params: valid_attributes
-          expect(json['origin']).to eq(valid_attributes[:origin])
+          expect(json['coffee']['origin'])
+            .to eq(valid_attributes[:coffee][:origin])
         end
 
         it 'returns status code 201' do
@@ -96,7 +99,7 @@ RSpec.describe 'Coffees API', type: :request do
       context 'with invalid attributes' do
         before :each do
           post coffees_path, headers: auth_headers(create(:user)),
-                             params: { name: nil }
+                             params: { coffee: { name: nil } }
         end
 
         it 'returns status code 422' do
@@ -118,7 +121,7 @@ RSpec.describe 'Coffees API', type: :request do
   end
 
   describe 'PATCH /coffees/:id' do
-    let(:valid_attributes) { { origin: 'Honduras' } }
+    let(:valid_attributes) { { coffee: { origin: 'Honduras' } } }
 
     context 'with valid auth token' do
       context 'with valid attributes' do
@@ -141,10 +144,11 @@ RSpec.describe 'Coffees API', type: :request do
           Coffee.create!(name: 'El Limon',
                          origin: 'Guatemala',
                          producer: 'Beneficio Bella Vista')
-          patch coffee_path(coffee), params: { name: 'El Limon',
-                                               origin: 'Guatemala',
-                                               producer: 'Beneficio Bella Vista' },
-                                     headers: auth_headers(create(:user))
+          patch coffee_path(coffee),
+                params: { coffee: { name: 'El Limon',
+                                    origin: 'Guatemala',
+                                    producer: 'Beneficio Bella Vista' } },
+                headers: auth_headers(create(:user))
         end
         it 'returns a validation failure message' do
           expect(response.body).to match(/Validation failed:/)

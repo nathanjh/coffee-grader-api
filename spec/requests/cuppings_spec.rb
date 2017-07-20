@@ -22,8 +22,8 @@ RSpec.describe 'Cuppings API', type: :request do
       before { get cuppings_path, headers: auth_headers(user) }
 
       it 'returns all cuppings' do
-        expect(json).not_to be_empty
-        expect(json.size).to eq(5)
+        expect(json['cuppings']).not_to be_empty
+        expect(json['cuppings'].size).to eq(5)
       end
 
       it 'returns status code 200' do
@@ -44,8 +44,8 @@ RSpec.describe 'Cuppings API', type: :request do
         before { get cupping_path(cupping), headers: auth_headers(user) }
 
         it 'returns the cupping' do
-          expect(json).not_to be_empty
-          expect(json['id']).to eq(cupping_id)
+          expect(json['cupping']).not_to be_empty
+          expect(json['cupping']['id']).to eq(cupping_id)
         end
 
         it 'returns status code 200' do
@@ -77,7 +77,12 @@ RSpec.describe 'Cuppings API', type: :request do
   end
 
   describe 'POST /cuppings' do
-    let(:valid_attributes) { { host_id: user.id, location: 'San Francisco, CA', cup_date: Time.now, cups_per_sample: 3 } }
+    let(:valid_attributes) do
+      { cupping: { host_id: user.id,
+                   location: 'San Francisco, CA',
+                   cup_date: Time.now,
+                   cups_per_sample: 3 } }
+    end
 
     context 'with valid auth token' do
       context 'with valid attributes' do
@@ -87,7 +92,8 @@ RSpec.describe 'Cuppings API', type: :request do
         end
 
         it 'returns the cupping' do
-          expect(json['location']).to eq(valid_attributes[:location])
+          expect(json['cupping']['location'])
+            .to eq(valid_attributes[:cupping][:location])
         end
 
         it 'returns status code 201' do
@@ -120,7 +126,7 @@ RSpec.describe 'Cuppings API', type: :request do
   end
 
   describe 'PATCH /cuppings/:id' do
-    let(:valid_attributes) { { location: 'Shoreline, WA' } }
+    let(:valid_attributes) { { cupping: { location: 'Shoreline, WA' } } }
 
     context 'with valid auth token' do
       context 'when the cupping exists' do

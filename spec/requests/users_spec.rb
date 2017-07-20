@@ -22,8 +22,8 @@ RSpec.describe 'Users API', type: :request do
         end
 
         it 'returns the user' do
-          expect(json).not_to be_empty
-          expect(json['id']).to eq(user.id)
+          expect(json['user']).not_to be_empty
+          expect(json['user']['id']).to eq(user.id)
         end
 
         it 'returns status code 200' do
@@ -81,7 +81,7 @@ RSpec.describe 'Users API', type: :request do
               params: { term: 'nowaythiscouldpossiblymatch' }
         end
         it 'returns an empty array' do
-          expect(json).to be_empty
+          expect(json['users']).to be_empty
         end
 
         it 'returns status code 200' do
@@ -92,7 +92,7 @@ RSpec.describe 'Users API', type: :request do
         it 'limits the results per page' do
           get '/users/search', headers: auth_headers(user),
                                params: { term: '@', limit: 5 }
-          expect(json.length).to eq 5
+          expect(json['users'].length).to eq 5
         end
         it 'returns records determined by page number' do
           get '/users/search', headers: auth_headers(user),
@@ -100,14 +100,14 @@ RSpec.describe 'Users API', type: :request do
           # since there are eleven matching records (all ten we created plus our
           # user, and our records per page is 7, then the second page should have
           # four records
-          expect(json.length).to eq 4
+          expect(json['users'].length).to eq 4
         end
       end
       context 'when route is visited with no query' do
         before(:example) { get search_users_path, headers: auth_headers(user) }
-        
+
         it 'returns an empty array' do
-          expect(json).to be_empty
+          expect(json['users']).to be_empty
         end
 
         it 'returns status code 200' do

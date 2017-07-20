@@ -36,8 +36,8 @@ RSpec.describe 'Invites API', type: :request do
       end
 
       it 'returns all invites' do
-        expect(json).not_to be_empty
-        expect(json.size).to eq(5)
+        expect(json['invites']).not_to be_empty
+        expect(json['invites'].size).to eq(5)
       end
 
       it 'returns status code 200' do
@@ -61,8 +61,8 @@ RSpec.describe 'Invites API', type: :request do
         end
 
         it 'returns the invite' do
-          expect(json).not_to be_empty
-          expect(json['id']).to eq(invite.id)
+          expect(json['invite']).not_to be_empty
+          expect(json['invite']['id']).to eq(invite.id)
         end
 
         it 'returns status code 200' do
@@ -109,7 +109,7 @@ RSpec.describe 'Invites API', type: :request do
         end
 
         it 'returns the invite status' do
-          expect(json['status']).to eq('pending')
+          expect(json['invite']['status']).to eq('pending')
         end
 
         it 'returns status code 201' do
@@ -121,7 +121,7 @@ RSpec.describe 'Invites API', type: :request do
             post cupping_invites_path(cupping),
                  params: { invite: { grader_email: 'jen@isawesome.com' } },
                  headers: auth_headers(host)
-            expect(json['invite_token']).not_to be_blank
+            expect(json['invite']['invite_token']).not_to be_blank
           end
         end
       end

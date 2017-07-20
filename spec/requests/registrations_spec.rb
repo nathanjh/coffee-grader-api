@@ -7,7 +7,7 @@ RSpec.describe 'Registrations API', type: :request do
         post '/auth', params: attributes_for(:user, invite_token: 'abc')
       end
       it 'returns the user' do
-        expect(json['data']['invite_token']).to eq 'abc'
+        expect(json['user']['invite_token']).to eq 'abc'
       end
 
       it 'returns status code 200' do

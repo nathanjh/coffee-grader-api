@@ -1,5 +1,5 @@
 class CuppedCoffeesController < CuppingDependentController
-  before_action :find_cupping, only: [:index, :create]
+  before_action :find_cupping, only: [:index, :create, :update, :destroy]
   before_action :find_cupped_coffee, only: [:show, :update, :destroy]
   before_action :check_cupping_status, only: [:create, :update, :destroy]
   before_action :verify_host, only: [:create, :update, :destroy]
@@ -17,7 +17,7 @@ class CuppedCoffeesController < CuppingDependentController
   # POST /cuppings/:cupping_id/cupped_coffees/
   def create
     @cupped_coffee = @cupping.cupped_coffees.create!(cupped_coffee_params)
-    json_response(@cupped_coffee, :created)
+    json_response(@cupped_coffee, status: :created)
   end
 
   # PATCH /cuppings/:cupping_id/cupped_coffees/:id
