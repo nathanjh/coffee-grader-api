@@ -165,4 +165,75 @@ RSpec.describe 'Roasters API', type: :request do
       it_behaves_like 'restricted access to roasters'
     end
   end
+
+  describe 'GET /roasters/search' do
+    # to make sure we can get at least three hits
+    let(:term) { roaster.name[0..2] }
+    before(:example) do
+      %w(_1 _2).each { |str| create(:roaster, name: roaster.name + str) }
+    end
+
+    context 'with valid auth token' do
+      context 'when matching records exist' do
+        before :each do
+          get '/roasters/search',
+              headers: auth_headers(user),
+              params: { term: term }
+        end
+
+        it 'returns a collection of roasters' do
+          expect(json['roasters']).not_to be_empty
+          expect(json['roasters'].length).to be >= 3
+        end
+
+        it 'returns status code 200' do
+          expect(response).to have_http_status(200)
+        end
+      end
+      context 'when no records match' do
+        before :each do
+          get '/roasters/search',
+              headers: auth_headers(user),
+              params: { term: 'nowaythiscouldpossiblymatch' }
+        end
+        it 'returns an empty array' do
+          expect(json['roasters']).to be_empty
+        end
+
+        it 'returns status code 200' do
+          expect(response).to have_http_status(200)
+        end
+      end
+      context 'with pagination params passed in' do
+        it 'limits the results per page' do
+          get '/roasters/search', headers: auth_headers(user),
+                                 params: { term: term, limit: 2 }
+          expect(json['roasters'].length).to eq 2
+        end
+        it 'returns records determined by page number' do
+          get '/roasters/search', headers: auth_headers(user),
+                                 params: { term: term, limit: 2, page: 2 }
+          # since there are three matching records, and our records per page
+          # is 2, then the second page should have at least one record
+          expect(json['roasters'].length).to be >= 1
+        end
+      end
+      context 'when route is visited with no query' do
+        before(:example) { get search_roasters_path, headers: auth_headers(user) }
+
+        it 'returns an empty array' do
+          expect(json['roasters']).to be_empty
+        end
+
+        it 'returns status code 200' do
+          expect(response).to have_http_status(200)
+        end
+      end
+    end
+    context 'without valid auth token' do
+      before(:example) { get search_roasters_path }
+
+      it_behaves_like 'restricted access to roasters'
+    end
+  end
 end

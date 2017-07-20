@@ -30,6 +30,12 @@ class RoastersController < CoffeeGraderApiController
     head :no_content
   end
 
+  # GET /roasters/search
+  def search
+    @results = search_results
+    json_response(@results)
+  end
+
   private
 
   def find_roaster
@@ -38,5 +44,14 @@ class RoastersController < CoffeeGraderApiController
 
   def roaster_params
     params.require(:roaster).permit(:name, :location, :website)
+  end
+
+  def roasters_search
+    Search.new('roasters', %w(name location))
+  end
+
+  def search_results
+    return { roasters: [] } unless params[:term]
+    roasters_search.call(params[:term], pagination_options)
   end
 end
