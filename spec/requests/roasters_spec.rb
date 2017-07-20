@@ -207,12 +207,12 @@ RSpec.describe 'Roasters API', type: :request do
       context 'with pagination params passed in' do
         it 'limits the results per page' do
           get '/roasters/search', headers: auth_headers(user),
-                                 params: { term: term, limit: 2 }
+                                  params: { term: term, limit: 2 }
           expect(json['roasters'].length).to eq 2
         end
         it 'returns records determined by page number' do
           get '/roasters/search', headers: auth_headers(user),
-                                 params: { term: term, limit: 2, page: 2 }
+                                  params: { term: term, limit: 2, page: 2 }
           # since there are three matching records, and our records per page
           # is 2, then the second page should have at least one record
           expect(json['roasters'].length).to be >= 1
