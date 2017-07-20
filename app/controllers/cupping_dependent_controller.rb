@@ -30,7 +30,7 @@ class CuppingDependentController < CoffeeGraderApiController
   def check_cupping_status
     assign_cupping_from_score unless @cupping
     error_message = 'Cupping is closed and cannot receive any new invites, coffee samples, or scores.'
-    json_response({ message: error_message }, :bad_request) if
+    json_response({ message: error_message }, status: :bad_request) if
       @cupping && !@cupping.open
   end
 
@@ -44,8 +44,8 @@ class CuppingDependentController < CoffeeGraderApiController
   end
 
   def verify_host
-    json_response({ errors: ['Authorized users only'] }, :unauthorized) unless
-      current_user_is_host?
+    json_response({ errors: ['Authorized users only'] },
+                  status: :unauthorized) unless current_user_is_host?
   end
 
   def current_user_is_host?

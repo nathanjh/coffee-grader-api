@@ -22,6 +22,7 @@ RSpec.describe 'Users API', type: :request do
         end
 
         it 'returns the user' do
+          p json
           expect(json['user']).not_to be_empty
           expect(json['user']['id']).to eq(user.id)
         end

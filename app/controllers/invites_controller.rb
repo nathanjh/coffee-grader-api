@@ -9,7 +9,7 @@ class InvitesController < CuppingDependentController
   # POST#create (as grader association is optional)...
   rescue_from ActiveRecord::InvalidForeignKey do |e|
     json_response({ message: 'Validation failed: Grader id is invalid',
-                    detail: e.message }, :unprocessable_entity)
+                    detail: e.message }, status: :unprocessable_entity)
   end
 
   # GET /cuppings/:cupping_id/invites
@@ -27,7 +27,7 @@ class InvitesController < CuppingDependentController
   def create
     @invite = @cupping.invites.create!(invite_params)
     InviteHandler.build.call(@invite, @cupping)
-    json_response(@invite, :created)
+    json_response(@invite, status: :created)
   end
 
   # PATCH /cuppings/:cupping_id/invites/:id
@@ -50,7 +50,8 @@ class InvitesController < CuppingDependentController
   end
 
   def verify_grader_or_host
-    json_response({ errors: ['Authorized users only'] }, :unauthorized) unless
+    json_response({ errors: ['Authorized users only'] },
+                  status: :unauthorized) unless
       current_user_is_host? || current_user.id == @invite.grader_id
   end
 end

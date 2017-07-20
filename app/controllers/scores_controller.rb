@@ -16,7 +16,7 @@ class ScoresController < CuppingDependentController
   # POST /scores
   def create
     @score = Score.create!(score_params)
-    json_response(@score, :created)
+    json_response(@score, status: :created)
   end
 
   # POST /scores/submit_scores

@@ -3,7 +3,7 @@ class UsersController < CoffeeGraderApiController
   before_action :find_user, only: [:show]
   # GET /users/id
   def show
-    json_response(@user)
+    json_response(@user, serializer: UserShowSerializer)
   end
 
   # GET /users/search

@@ -17,7 +17,7 @@ class CuppedCoffeesController < CuppingDependentController
   # POST /cuppings/:cupping_id/cupped_coffees/
   def create
     @cupped_coffee = @cupping.cupped_coffees.create!(cupped_coffee_params)
-    json_response(@cupped_coffee, :created)
+    json_response(@cupped_coffee, status: :created)
   end
 
   # PATCH /cuppings/:cupping_id/cupped_coffees/:id
