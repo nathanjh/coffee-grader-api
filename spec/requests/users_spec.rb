@@ -55,7 +55,7 @@ RSpec.describe 'Users API', type: :request do
     end
   end
 
-  describe 'GET /search' do
+  describe 'GET /users/search' do
     before(:example) { create_list(:user, 10) }
     context 'with valid auth token' do
       context 'when matching records exist' do
@@ -67,7 +67,7 @@ RSpec.describe 'Users API', type: :request do
         end
 
         it 'returns a collection of users' do
-          expect(json).not_to be_empty
+          expect(json['users']).not_to be_empty
         end
 
         it 'returns status code 200' do
