@@ -19,9 +19,9 @@ back-end api for 'coffee-grader' coffee cupping app
 * [Cuppings](#cuppings)
 * [Cupped-Coffees](#cupped-coffees)
 * [Invites](#invites)
-* [Scores](*scores)
-* [Users](*users)
-* [Coffees and Roasters](*coffees-and-roasters)
+* [Scores](#scores)
+* [Users](#users)
+* [Coffees and Roasters](#coffees-and-roasters)
 
 ## Authentication
 Coffee-Grader-API uses token-based authentication (leveraging the [DeviseTokenAuth](https://github.com/lynndylanhurley/devise_token_auth) gem).  The client should include the following headers in each request ([RFC 6750 Bearer Token](http://tools.ietf.org/html/rfc6750) format).
@@ -195,7 +195,7 @@ Field | Description
 ------|------------
 **`cupping_id`** | Foreign key of the associated cupping event (required)
 **`grader_id`** | Foreign key of the user being invited (required in the absence of `grader_email`)
-**`grader_email`** | Email address of a prospective grader; to be used when no user account exists for grader, see [below](#on-invite-creation) (required in the absence of `grader_id`) 
+**`grader_email`** | Email address of a prospective grader; to be used when no user account exists for grader, see [below](#on-invite-creation) (required in the absence of `grader_id`)
 **`status`** | Indication of whether invitee has accepted invite; possible values include: `'pending'`(default), `'accepted'`, `'declined'`, or `'maybe'`
 
 ###### Invites Endpoints
