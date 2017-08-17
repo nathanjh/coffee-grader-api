@@ -12,7 +12,7 @@ Rails.application.routes.draw do
     mount Sidekiq::Web => '/sidekiq'
   end
 
-  resources :users, only: :show, defaults: { format: :json } do
+  resources :users, only: [:index, :show], defaults: { format: :json } do
     get 'search', on: :collection
   end
   resources :roasters, defaults: { format: :json } do
