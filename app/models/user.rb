@@ -6,9 +6,11 @@ class User < ActiveRecord::Base
 
   include DeviseTokenAuth::Concerns::User
 
+  alias_attribute :nickname, :username
+
   validates_presence_of :username, :email, :name
   validates_uniqueness_of :email
-  validates_uniqueness_of :username, case_sensitive: false
+  # validates_uniqueness_of :username, case_sensitive: false
 
   has_many :scores, foreign_key: 'grader_id'
   has_many :invites, foreign_key: 'grader_id'

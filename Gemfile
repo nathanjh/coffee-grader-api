@@ -35,6 +35,9 @@ gem 'rack-cors'
 # Use Sidekiq for background processing
 gem 'sidekiq'
 
+# To use omniauth with google
+gem 'omniauth-google-oauth2'
+
 group :test do
   # adds Codecov for coverage reporting
   gem 'codecov', require: false
@@ -46,6 +49,8 @@ group :test do
 end
 
 group :development, :test do
+  # Manage environment vars in development
+  gem 'dotenv-rails'
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
   gem 'factory_girl_rails'

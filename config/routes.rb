@@ -1,7 +1,8 @@
 Rails.application.routes.draw do
   mount_devise_token_auth_for 'User', at: 'auth', controllers: {
     registrations: 'custom_registrations',
-    sessions: 'custom_sessions'
+    sessions: 'custom_sessions',
+    omniauth_callbacks: 'custom_omniauth_callbacks'
   }
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 
@@ -11,7 +12,7 @@ Rails.application.routes.draw do
     mount Sidekiq::Web => '/sidekiq'
   end
 
-  resources :users, only: :show, defaults: { format: :json } do
+  resources :users, only: [:index, :show], defaults: { format: :json } do
     get 'search', on: :collection
   end
   resources :roasters, defaults: { format: :json } do
@@ -20,7 +21,6 @@ Rails.application.routes.draw do
   resources :coffees, defaults: { format: :json } do
     get 'search', on: :collection
   end
-  resources :cuppings
   resources :cuppings do
     resources :invites
     resources :cupped_coffees
