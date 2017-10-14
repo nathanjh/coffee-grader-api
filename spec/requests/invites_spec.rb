@@ -121,7 +121,7 @@ RSpec.describe 'Invites API', type: :request do
             post cupping_invites_path(cupping),
                  params: { invite: { grader_email: 'jen@isawesome.com' } },
                  headers: auth_headers(host)
-            expect(json['invite']['invite_token']).not_to be_blank
+            expect(json['invite']['inviteToken']).not_to be_blank
           end
         end
       end
